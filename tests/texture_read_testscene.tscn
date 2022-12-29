@@ -1,0 +1,54 @@
+[gd_scene load_steps=5 format=3 uid="uid://pmxncxpy6m6"]
+
+[ext_resource type="Texture2D" uid="uid://bo2ptbrulyxcn" path="res://shadermotion_left_0000000001.png" id="1_kx4hy"]
+[ext_resource type="Script" path="res://tests/texture_read_test_script.gd" id="2_44ugh"]
+[ext_resource type="SpriteFrames" uid="uid://cln3k5oe75y02" path="res://tests/test_shadermotion_frame.tres" id="3_4lufg"]
+[ext_resource type="Texture2D" uid="uid://cojek2d8v4mcg" path="res://same_thing_as_atlas.png" id="3_njupn"]
+
+[node name="Node2D" type="Node2D"]
+
+[node name="ShadermotionLeft0000000001" type="Sprite2D" parent="." node_paths=PackedStringArray("color_rect")]
+texture_filter = 1
+texture_repeat = 1
+position = Vector2(546, 7.00001)
+scale = Vector2(3.49, 3.49)
+texture = ExtResource("1_kx4hy")
+centered = false
+hframes = 6
+vframes = 45
+script = ExtResource("2_44ugh")
+color_rect = NodePath("../ColorRect")
+
+[node name="Label" type="Label" parent="."]
+offset_left = 73.0
+offset_right = 113.0
+offset_bottom = 23.0
+
+[node name="ColorRect" type="ColorRect" parent="."]
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="ColorRect2" type="ColorRect" parent="."]
+offset_left = 57.0
+offset_right = 97.0
+offset_bottom = 40.0
+
+[node name="ShadermotionLeft0000000002" type="Sprite2D" parent="."]
+position = Vector2(523, 97)
+texture = ExtResource("1_kx4hy")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+frames = ExtResource("3_4lufg")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+offset_top = 102.0
+offset_right = 40.0
+offset_bottom = 142.0
+texture = ExtResource("3_njupn")
+
+[node name="TextureRect2" type="TextureRect" parent="."]
+offset_left = 54.0
+offset_top = 102.0
+offset_right = 94.0
+offset_bottom = 142.0
+texture = ExtResource("3_njupn")

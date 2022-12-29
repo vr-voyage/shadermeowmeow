@@ -1,0 +1,35 @@
+[gd_scene load_steps=2 format=3 uid="uid://c1icpunxqnvq2"]
+
+[ext_resource type="Script" path="res://texel_grb_color_info.gd" id="1_alrhd"]
+
+[node name="ColorPanel" type="VBoxContainer" node_paths=PackedStringArray("color_rect", "spinbox_r", "spinbox_g", "spinbox_b")]
+script = ExtResource("1_alrhd")
+color_rect = NodePath("ColorRect")
+spinbox_r = NodePath("HBoxContainer/SpinBoxG")
+spinbox_g = NodePath("HBoxContainer/SpinBoxR")
+spinbox_b = NodePath("HBoxContainer/SpinBoxB")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+custom_minimum_size = Vector2(128, 128)
+layout_mode = 2
+
+[node name="HBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="SpinBoxG" type="SpinBox" parent="HBoxContainer"]
+layout_mode = 2
+max_value = 255.0
+editable = false
+prefix = "G"
+
+[node name="SpinBoxR" type="SpinBox" parent="HBoxContainer"]
+layout_mode = 2
+max_value = 255.0
+editable = false
+prefix = "R"
+
+[node name="SpinBoxB" type="SpinBox" parent="HBoxContainer"]
+layout_mode = 2
+max_value = 255.0
+editable = false
+prefix = "B"

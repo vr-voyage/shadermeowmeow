@@ -1,0 +1,26 @@
+; Engine configuration file.
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are not all obvious.
+;
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
+
+config_version=5
+
+_global_script_classes=[{
+"base": "VBoxContainer",
+"class": &"ShowTexelGRB",
+"language": &"GDScript",
+"path": "res://texel_grb_color_info.gd"
+}]
+_global_script_class_icons={
+"ShowTexelGRB": ""
+}
+
+[application]
+
+config/name="ShaderMeowMeow"
+run/main_scene="res://shader_motion_slots_analyzer.tscn"
+config/features=PackedStringArray("4.0", "Forward Plus")
+config/icon="res://icon.svg"
