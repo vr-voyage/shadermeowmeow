@@ -10,4 +10,3 @@ func _ready():
 		process_mode = Node.PROCESS_MODE_DISABLED
 		return
 	analyzer_node.show_slots_from(analyzed_pixels)
-

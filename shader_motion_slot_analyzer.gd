@@ -43,6 +43,19 @@ func _sample_pixel_color_at_middle(texture:Texture2D) -> Color:
 func _join_vector3_as_string(vec:Vector3, separator:String = "") -> String:
 	return separator.join([vec[0], vec[1], vec[2]])
 
+func _vector3_add_to_int32_array(vec:Vector3, int32_array:PackedInt32Array):
+	int32_array.append(vec.x)
+	int32_array.append(vec.y)
+	int32_array.append(vec.z)
+
+func _int32_array_to_string(int32_array:PackedInt32Array, separator:String = "") -> String:
+	var strings = PackedStringArray()
+	
+	for value in int32_array:
+		strings.append(str(value))
+
+	return separator.join(strings)
+
 func _show_slot_samples(square_texture:Texture2D, square_adjacent_texture:Texture2D):
 	var square_sample = _sample_pixel_color_at_middle(square_texture)
 	var square_adjacent_sample = _sample_pixel_color_at_middle(square_adjacent_texture)
@@ -56,11 +69,14 @@ func _show_slot_samples(square_texture:Texture2D, square_adjacent_texture:Textur
 	square_adjacent_raw.show_color(square_adjacent_sample)
 	square_adjacent_converted.show_shadermotion_color(square_adjacent_sample)
 
-	gray_value.text = "%s%s" % [
-		_join_vector3_as_string(square_converted.get_bgr_gray_code()),
-		_join_vector3_as_string(square_adjacent_converted.get_bgr_gray_code())
-	]
-	
+	var gray_code:PackedInt32Array = PackedInt32Array()
+	_vector3_add_to_int32_array(square_converted.get_bgr_gray_code(), gray_code)
+	_vector3_add_to_int32_array(square_adjacent_converted.get_bgr_gray_code(), gray_code)
+	var decoded_value:int = gray_code_decoder(gray_code)
+	var float_value:float = shadermotion_gray_to_float(decoded_value)
+
+	gray_value.text = _int32_array_to_string(gray_code)
+	converted_value.text = "%d -> %f" % [decoded_value, float_value]
 
 func show_slot(pixels:SpriteFrames, slot_idx:int):
 	var frame_idx = slot_idx*2
@@ -74,3 +90,32 @@ func show_slot(pixels:SpriteFrames, slot_idx:int):
 
 	slot_value_label.text = str(slot_idx)
 	_show_slot_samples(square_texture, square_adjacent_texture)
+
+func _base3_total(numbers:PackedInt32Array) -> int:
+	var exponent = len(numbers) - 1
+	var accumulator = 0
+	printerr(_int32_array_to_string(numbers, ", "))
+	for i in range(0, len(numbers)):
+		var current_digit:int = numbers[i]
+		var value:int = current_digit * pow(3, exponent)
+		printerr("%d : %d + %d (%d)" % [i, accumulator, value, current_digit])
+		accumulator += value
+		exponent -= 1
+	return accumulator
+
+const flip_codes:PackedInt32Array = [2,1,0]
+
+func _flip_gray_code_array(numbers:PackedInt32Array):
+	for i in range(0,len(numbers)):
+		numbers[i] = flip_codes[numbers[i]]
+
+func gray_code_decoder(numbers:PackedInt32Array) -> int:
+	var result:PackedInt32Array = PackedInt32Array()
+	for i in range(0,len(numbers)):
+		result.append(numbers[i])
+		if (_base3_total(result) & 1) == 1:
+			_flip_gray_code_array(numbers)
+	return _base3_total(numbers)
+
+func shadermotion_gray_to_float(gray_value:int) -> float:
+	return (gray_value / 364.0) - 1
