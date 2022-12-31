@@ -25,58 +25,87 @@ gray_value = NodePath("VBoxContainer/HBoxContainer2/Label")
 converted_value = NodePath("VBoxContainer/HBoxContainer3/Label")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
-layout_mode = 2
+offset_right = 548.0
+offset_bottom = 281.0
 
 [node name="HBoxContainer4" type="HBoxContainer" parent="VBoxContainer"]
-layout_mode = 2
+offset_right = 548.0
+offset_bottom = 19.0
 
 [node name="Slot_Label" type="Label" parent="VBoxContainer/HBoxContainer4"]
-layout_mode = 2
+offset_right = 64.0
+offset_bottom = 19.0
 text = "Slot"
 
 [node name="Slot_Value" type="Label" parent="VBoxContainer/HBoxContainer4"]
-layout_mode = 2
+offset_left = 68.0
+offset_top = 1.0
+offset_right = 69.0
+offset_bottom = 17.0
 
 [node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
-layout_mode = 2
+offset_top = 23.0
+offset_right = 548.0
+offset_bottom = 235.0
 theme_override_constants/separation = 32
 
 [node name="StandardColors" type="HBoxContainer" parent="VBoxContainer/HBoxContainer"]
-layout_mode = 2
+offset_right = 258.0
+offset_bottom = 212.0
 theme_override_constants/separation = 2
 
 [node name="Pixel0" parent="VBoxContainer/HBoxContainer/StandardColors" instance=ExtResource("1_nxlyc")]
-layout_mode = 2
+offset_right = 128.0
+offset_bottom = 212.0
 
 [node name="Pixel1" parent="VBoxContainer/HBoxContainer/StandardColors" instance=ExtResource("1_nxlyc")]
-layout_mode = 2
+offset_left = 130.0
+offset_right = 258.0
+offset_bottom = 212.0
 
 [node name="ConvertedData" type="HBoxContainer" parent="VBoxContainer/HBoxContainer"]
-layout_mode = 2
+offset_left = 290.0
+offset_right = 548.0
+offset_bottom = 212.0
 theme_override_constants/separation = 2
 
 [node name="Pixel0" parent="VBoxContainer/HBoxContainer/ConvertedData" instance=ExtResource("1_nxlyc")]
-layout_mode = 2
+offset_right = 128.0
+offset_bottom = 212.0
 
 [node name="Pixel1" parent="VBoxContainer/HBoxContainer/ConvertedData" instance=ExtResource("1_nxlyc")]
-layout_mode = 2
+offset_left = 130.0
+offset_right = 258.0
+offset_bottom = 212.0
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer"]
-layout_mode = 2
+offset_top = 239.0
+offset_right = 548.0
+offset_bottom = 258.0
 
 [node name="Label2" type="Label" parent="VBoxContainer/HBoxContainer2"]
-layout_mode = 2
+offset_right = 192.0
+offset_bottom = 19.0
 text = "Gray Value :"
 
 [node name="Label" type="Label" parent="VBoxContainer/HBoxContainer2"]
-layout_mode = 2
+offset_left = 196.0
+offset_top = 1.0
+offset_right = 197.0
+offset_bottom = 17.0
 
 [node name="HBoxContainer3" type="HBoxContainer" parent="VBoxContainer"]
-layout_mode = 2
+offset_top = 262.0
+offset_right = 548.0
+offset_bottom = 281.0
 
 [node name="Label2" type="Label" parent="VBoxContainer/HBoxContainer3"]
-layout_mode = 2
+offset_right = 192.0
+offset_bottom = 19.0
 text = "Converted  :"
 
 [node name="Label" type="Label" parent="VBoxContainer/HBoxContainer3"]
-layout_mode = 2
+offset_left = 196.0
+offset_top = 1.0
+offset_right = 197.0
+offset_bottom = 17.0

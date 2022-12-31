@@ -24,3 +24,7 @@ config/name="ShaderMeowMeow"
 run/main_scene="res://shader_motion_slots_analyzer.tscn"
 config/features=PackedStringArray("4.0", "Forward Plus")
 config/icon="res://icon.svg"
+
+[autoload]
+
+NodeHelpers="*res://helpers/node_helpers.gd"
