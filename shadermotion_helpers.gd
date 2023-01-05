@@ -396,6 +396,11 @@ const mecanim_muscle_limits = {
 	MecanimMuscle.RIGHTHAND_LITTLE_3_STRETCHED: [-45, 45]
 }
 
+# Three values for 3 degrees of freedom
+# Coming from Unity "MuscleFromBone(MecanimBodyBone, dofIndex)"
+# Index 0 : X-Axis
+# Index 1 : Y-Axis
+# Index 2 : Z-Axis
 const mecanim_bone_muscles = {
 	MecanimBodyBone.Hips: [
 		[MecanimMuscle.INVALID, 1],
@@ -693,10 +698,11 @@ func _strings_to_enum_names(strings:PackedStringArray) -> PackedStringArray:
 		names.append(regex.sub(name_to_convert, "_", true).to_upper())
 	return names
 
-func _set_hips_position_rotation(hips_t, hips_q, human_scale):
-	var spread_quaternion = Quaternion.IDENTITY
-	var quaternion = Quaternion.IDENTITY
-	
+enum MecanimDOF {
+	X_AXIS,
+	Y_AXIS,
+	Z_AXIS
+}
 
 class HumanBodyPose:
 	var muscles:PackedFloat64Array = PackedFloat64Array()
@@ -711,6 +717,39 @@ func swing_twist(euler_angles:Vector3):
 		Quaternion(only_yz.normalized(), deg_to_rad(only_yz.length()))
 		* Quaternion(Vector3(1,0,0), deg_to_rad(euler_angles.x)))
 
+
+func _set_hips_position_rotation(pose:HumanBodyPose, hips_t:Vector3, hips_q:Quaternion, human_scale:float):
+	var spread_quaternion = Quaternion.IDENTITY
+	for bone_and_scale in spread_mass_q:
+		var mecanim_bone:MecanimBodyBone = bone_and_scale[0]
+		var bone_scale:Array = bone_and_scale[1]
+
+		var swing_twist_value:Vector3 = Vector3.ZERO
+		for degree_of_freedom in MecanimDOF:
+			# FIXME
+			# Improves the readability here.
+			# The latest 0 retrieves the associated muscle.
+			# 1 would retrieve an associated weight.
+			var muscle_for_bone_DOF:MecanimMuscle = (
+				mecanim_bone_muscles[mecanim_bone][degree_of_freedom][0]
+			)
+			swing_twist_value[degree_of_freedom] = (
+				pose.muscles[muscle_for_bone_DOF]
+				* scale[degree_of_freedom])
+
+		var spread_q:Quaternion = swing_twist(swing_twist_value)
+		
+		# Quaternion(Basis.looking_at(Vector3.LEFT, Vector3.BACK))
+		# == Quaternion(0.5,0.5,0.5,0.5) .
+		# In the original ShaderMotion, HumanPoser.cs uses
+		# Quaternion.LookRotation(Vector3.right, Vector3.forward) which
+		# evaluates to the same value.
+		
+		# t for ???
+		var t = Quaternion(Basis.looking_at(Vector3.LEFT, Vector3.BACK))
+		pose.body_position = hips_t / human_scale
+		pose.body_rotation = hips_q * (t * spread_q * t.inverse())
+	
 
 func set_bones_swing_twists(pose:HumanBodyPose, motion_data:PackedVector3Array):
 	# -1 to remove the INVALID one.
@@ -740,8 +779,8 @@ func _test_swing_twist():
 	pass
 
 func _ready():
-	
-	_test_swing_twist()
+	printerr(Quaternion(Basis.looking_at(Vector3.LEFT, Vector3.BACK)))
+	#_test_swing_twist()
 #	var quat_a = Quaternion(Vector3(1,0,0), deg_to_rad(30))
 #	print(quat_a)
 
