@@ -295,6 +295,7 @@ enum MecanimMuscle {
 	RIGHTHAND_LITTLE_SPREAD,
 	RIGHTHAND_LITTLE_2_STRETCHED,
 	RIGHTHAND_LITTLE_3_STRETCHED,
+	COUNT
 }
 
 const mecanim_muscle_limits = {
@@ -395,7 +396,7 @@ const mecanim_muscle_limits = {
 	MecanimMuscle.RIGHTHAND_LITTLE_3_STRETCHED: [-45, 45]
 }
 
-const bone_muscles_data = {
+const mecanim_bone_muscles = {
 	MecanimBodyBone.Hips: [
 		[MecanimMuscle.INVALID, 1],
 		[MecanimMuscle.INVALID, 1],
@@ -702,8 +703,54 @@ class HumanBodyPose:
 	var body_position:Vector3 = Vector3.ZERO
 	var body_rotation:Quaternion = Quaternion.IDENTITY
 
+# ???
+func swing_twist(euler_angles:Vector3):
+	var only_yz = Vector3(0, euler_angles.y, euler_angles.z)
+	# ... Magic values, magic operations leading to magic data...
+	return (
+		Quaternion(only_yz.normalized(), deg_to_rad(only_yz.length()))
+		* Quaternion(Vector3(1,0,0), deg_to_rad(euler_angles.x)))
+
+
+func set_bones_swing_twists(pose:HumanBodyPose, motion_data:PackedVector3Array):
+	# -1 to remove the INVALID one.
+	pose.muscles.resize(MecanimBodyBone.COUNT)
+	pose.muscles.fill(0)
+	for mecanim_bone in MecanimBodyBone:
+		for swing_twist_part in range(0,3):
+			motion_data[mecanim_bone][swing_twist_part]
+
+func _test_swing_twist():
+	var file_data = FileAccess.open("res://tests/data/swing_twist_tests.csv", FileAccess.READ)
+	var csv_row:PackedStringArray = file_data.get_csv_line()
+	while (len(csv_row) == 7):
+		var test_angle:Vector3 = Vector3(
+			float(csv_row[0]),
+			float(csv_row[1]),
+			float(csv_row[2]))
+		var unity_result:Quaternion = Quaternion(
+			float(csv_row[3]),
+			float(csv_row[4]),
+			float(csv_row[5]),
+			float(csv_row[6]))
+		var our_result:Quaternion = swing_twist(test_angle)
+		csv_row = file_data.get_csv_line()
+		printerr("swing_twist(%s) -> %s (Unity: %s)" % [test_angle, our_result, unity_result])
+		printerr("Equal (roughly) ? %s" % str(our_result.is_equal_approx(unity_result)))
+	pass
 
 func _ready():
+	
+	_test_swing_twist()
+#	var quat_a = Quaternion(Vector3(1,0,0), deg_to_rad(30))
+#	print(quat_a)
+
+#	printerr(len(MecanimMuscle))
+#	var a = Vector3(0,1,2)
+#	var b = a
+#	b[0] = 15
+#	printerr(a)
+#	printerr(b)
 	pass
 
 
