@@ -298,6 +298,12 @@ enum MecanimMuscle {
 	COUNT
 }
 
+enum MuscleMinMax
+{
+	MIN,
+	MAX
+}
+
 const mecanim_muscle_limits = {
 	MecanimMuscle.SPINE_FRONT_BACK: [-40, 40],
 	MecanimMuscle.SPINE_LEFT_RIGHT: [-40, 40],
@@ -681,9 +687,10 @@ const mecanim_bone_muscles = {
 
 # Bone - Scale
 const spread_mass_q = [
-	[MecanimBodyBone.Spine, [21.04, -29.166, -29.166]],
-	[MecanimBodyBone.Chest, [21.04, -18.517, -18.517]],
-];
+	[MecanimBodyBone.Spine, Vector3(20, -30, -30)],
+	[MecanimBodyBone.Chest, Vector3(20, -20, -20)],
+	[MecanimBodyBone.UpperChest, Vector3(10, -10, -10)]
+]
 
 func _strings_to_enum_names(strings:PackedStringArray) -> PackedStringArray:
 	var names:PackedStringArray = PackedStringArray()
@@ -698,7 +705,7 @@ func _strings_to_enum_names(strings:PackedStringArray) -> PackedStringArray:
 		names.append(regex.sub(name_to_convert, "_", true).to_upper())
 	return names
 
-enum MecanimDOF {
+enum MuscleAxis {
 	X_AXIS,
 	Y_AXIS,
 	Z_AXIS
@@ -717,47 +724,69 @@ func swing_twist(euler_angles:Vector3):
 		Quaternion(only_yz.normalized(), deg_to_rad(only_yz.length()))
 		* Quaternion(Vector3(1,0,0), deg_to_rad(euler_angles.x)))
 
+func _muscle_from_bone(mecanim_bone:MecanimBodyBone, muscle_axis:MuscleAxis):
+	# FIXME
+	# Improves the readability here.
+	# The latest 0 retrieves the associated muscle.
+	# 1 would retrieve an associated weight.
+	return mecanim_bone_muscles[mecanim_bone][muscle_axis][0]
 
 func _set_hips_position_rotation(pose:HumanBodyPose, hips_t:Vector3, hips_q:Quaternion, human_scale:float):
-	var spread_quaternion = Quaternion.IDENTITY
+	var spread_q = Quaternion.IDENTITY
 	for bone_and_scale in spread_mass_q:
 		var mecanim_bone:MecanimBodyBone = bone_and_scale[0]
-		var bone_scale:Array = bone_and_scale[1]
+		var bone_scale:Vector3 = bone_and_scale[1]
 
-		var swing_twist_value:Vector3 = Vector3.ZERO
-		for degree_of_freedom in MecanimDOF:
-			# FIXME
-			# Improves the readability here.
-			# The latest 0 retrieves the associated muscle.
-			# 1 would retrieve an associated weight.
-			var muscle_for_bone_DOF:MecanimMuscle = (
-				mecanim_bone_muscles[mecanim_bone][degree_of_freedom][0]
-			)
-			swing_twist_value[degree_of_freedom] = (
-				pose.muscles[muscle_for_bone_DOF]
-				* scale[degree_of_freedom])
+		var swing_twist_value:Vector3 = Vector3(
+			_muscle_from_bone(mecanim_bone, MuscleAxis.X) * bone_scale[MuscleAxis.X],
+			_muscle_from_bone(mecanim_bone, MuscleAxis.Y) * bone_scale[MuscleAxis.Y],
+			_muscle_from_bone(mecanim_bone, MuscleAxis.Z) * bone_scale[MuscleAxis.Z]
+		)
 
-		var spread_q:Quaternion = swing_twist(swing_twist_value)
-		
-		# Quaternion(Basis.looking_at(Vector3.LEFT, Vector3.BACK))
-		# == Quaternion(0.5,0.5,0.5,0.5) .
-		# In the original ShaderMotion, HumanPoser.cs uses
-		# Quaternion.LookRotation(Vector3.right, Vector3.forward) which
-		# evaluates to the same value.
-		
-		# t for ???
-		var t = Quaternion(Basis.looking_at(Vector3.LEFT, Vector3.BACK))
-		pose.body_position = hips_t / human_scale
-		pose.body_rotation = hips_q * (t * spread_q * t.inverse())
+		spread_q *= swing_twist(swing_twist_value)
+
+	# In the original ShaderMotion, HumanPoser.cs uses
+	# Quaternion.LookRotation(Vector3.right, Vector3.forward) which
+	# evaluates to Quaternion(0.5,0.5,0.5,0.5).
+	# In order to get the same value here, I'm using
+	#   Quaternion(Basis.looking_at(Vector3.LEFT, Vector3.BACK))
 	
+	# t for ???
+	var t = Quaternion(Basis.looking_at(Vector3.LEFT, Vector3.BACK))
+	pose.body_position = hips_t / human_scale
+	pose.body_rotation = hips_q * (t * spread_q * t.inverse())
 
-func set_bones_swing_twists(pose:HumanBodyPose, motion_data:PackedVector3Array):
-	# -1 to remove the INVALID one.
-	pose.muscles.resize(MecanimBodyBone.COUNT)
+# motion_data is supposed to contain motion information
+# in a data structure that can be referenced through mecanim bones indices.
+
+# swing_twists must be a data structure with swing/twists values
+# referenced by Mecanim Bones.
+# Meaning that swing_twists[MecanimBone.???] must not fail
+func set_bones_swing_twists(pose:HumanBodyPose, swing_twists):
+
+	pose.muscles.resize(MecanimMuscle.COUNT)
 	pose.muscles.fill(0)
 	for mecanim_bone in MecanimBodyBone:
-		for swing_twist_part in range(0,3):
-			motion_data[mecanim_bone][swing_twist_part]
+		for axis in MuscleAxis:
+			var muscle_and_weight = mecanim_bone_muscles[mecanim_bone][axis]
+
+			var muscle:MecanimMuscle = muscle_and_weight[0]
+			var weight:float = muscle_and_weight[1]
+
+			if muscle >= 0:
+				pose.muscles[muscle] += swing_twists[mecanim_bone][axis] * weight
+
+	for mecanim_muscle in MecanimMuscle:
+		var muscle_value:float = pose.muscles[mecanim_muscle]
+
+		var muscle_limits:Array = mecanim_muscle_limits[mecanim_muscle]
+		var divider:float
+		if muscle_value >= 0:
+			divider = muscle_limits[MuscleMinMax.MAX]
+		else:
+			divider = -muscle_limits[MuscleMinMax.MIN]
+
+		pose.muscles[mecanim_muscle] = muscle_value / divider
 
 func _test_swing_twist():
 	var file_data = FileAccess.open("res://tests/data/swing_twist_tests.csv", FileAccess.READ)
