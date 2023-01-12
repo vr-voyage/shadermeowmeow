@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://test_analyze_shader_motion_texture.gd" id="1_8qbsy"]
 [ext_resource type="Texture2D" uid="uid://bo2ptbrulyxcn" path="res://shadermotion_left_0000000001.png" id="1_kydr5"]
-[ext_resource type="SpriteFrames" uid="uid://cln3k5oe75y02" path="res://tests/test_shadermotion_frame.tres" id="2_4po4l"]
+[ext_resource type="SpriteFrames" uid="uid://ctrsjcyo2e08c" path="res://tests/result_frames.tres" id="2_7ktlh"]
 [ext_resource type="Script" path="res://shadermotion_slots_analyzer.gd" id="2_7ymwh"]
 [ext_resource type="PackedScene" uid="uid://bmp3gayxoxfmt" path="res://shader_motion_block_analyzer.tscn" id="5_058gf"]
 
@@ -13,21 +13,23 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_8qbsy")
-analyzed_pixels = ExtResource("2_4po4l")
+analyzed_pixels = ExtResource("2_7ktlh")
 analyzer_node = NodePath("ScrollContainer/VBoxContainer")
 
 [node name="TextureRect" type="TextureRect" parent="."]
 custom_minimum_size = Vector2(90, 0)
-layout_mode = 2
+offset_right = 90.0
+offset_bottom = 648.0
 texture = ExtResource("1_kydr5")
 stretch_mode = 5
 
 [node name="ScrollContainer" type="ScrollContainer" parent="."]
-layout_mode = 2
+offset_left = 94.0
+offset_right = 1152.0
+offset_bottom = 648.0
 size_flags_horizontal = 3
 
 [node name="VBoxContainer" type="VBoxContainer" parent="ScrollContainer" node_paths=PackedStringArray("show_in")]
-layout_mode = 2
 script = ExtResource("2_7ymwh")
 shader_motion_block_analyzer_prefab = ExtResource("5_058gf")
 show_in = NodePath(".")

@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=3 uid="uid://ca63yyi8wff8r"]
+
+[ext_resource type="Script" path="res://shadermotion_swingtwist_tests.gd" id="1_djirh"]
+
+[node name="TestShaderMotionSwingTwist" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource("1_djirh")
+results_json_filepath = "res://tests/swingtwist/swingtwist_unity_results.json"
