@@ -836,9 +836,9 @@ func _strings_to_enum_names(strings:PackedStringArray) -> PackedStringArray:
 	return names
 
 enum MuscleAxis {
-	X_AXIS,
-	Y_AXIS,
-	Z_AXIS
+	X,
+	Y,
+	Z
 }
 
 class HumanBodyPose:

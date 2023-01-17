@@ -81,14 +81,18 @@ func _show_slot_samples(square_texture:Texture2D, square_adjacent_texture:Textur
 	gray_value.text = _int32_array_to_string(gray_code)
 	converted_value.text = "%d -> %f" % [decoded_value, shader_motion_value]
 
+func _get_slot_color(frames:SpriteFrames, slot_index:int, adjacent:bool = false) -> Texture2D:
+	var frame_index:int = slot_index * 2
+	frame_index += int(adjacent)
+	return frames.get_frame_texture("default", frame_index)
+
 func show_slot(pixels:SpriteFrames, slot_idx:int):
-	var frame_idx = slot_idx*2
-	var square_texture = pixels.get_frame("default", frame_idx)
-	var square_adjacent_texture = pixels.get_frame("default", frame_idx+1)
+	var square_texture = _get_slot_color(pixels, slot_idx)
+	var square_adjacent_texture = _get_slot_color(pixels, slot_idx, true)
 	if square_texture == null or square_adjacent_texture == null:
 		printerr(
-			"[%s] [ShaderMotion Slot Analyzer] Check your frames [%d,%d], mate !"
-			% [name, frame_idx, frame_idx+1])
+			"[%s] [ShaderMotion Slot Analyzer] No frames for slot %d !"
+			% [name, slot_idx])
 		return
 
 	slot_value_label.text = str(slot_idx)

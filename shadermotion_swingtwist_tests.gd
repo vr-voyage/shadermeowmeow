@@ -97,8 +97,6 @@ func _parse_json_transform(json_object:Dictionary) -> UnityTransform:
 
 	return unity_transform
 
-
-
 func _is_method_analysis(parsed_json:Dictionary) -> bool:
 	var valid_json:bool = parsed_json.has_all(method_analysis_json_format.keys())
 	if not valid_json:
@@ -114,8 +112,19 @@ func _method_analysis_io_content(io_object:Dictionary):
 	var content:Dictionary = io_object["content"]
 
 	match(typeof(content)):
-		TYPE_FLOAT, TYPE_STRING, TYPE_NIL:
+		TYPE_FLOAT, TYPE_NIL:
 			return content
+		TYPE_STRING:
+			match(content):
+				# Ugh...
+				"@NaN":
+					return NAN
+				"@Infinity":
+					return INF
+				"@-Infinity":
+					return -INF
+				_:
+					return content
 		TYPE_DICTIONARY:
 			return _parse_json_object(content)
 		_:
@@ -198,18 +207,22 @@ func _ready():
 		printerr("%s is not a MethodAnalysis JSON file." % results_json_filepath)
 		return
 
-	var scaled_swing_twist:Vector3 = _method_analysis_get_input(
-		parsed_json["execution"][0],
-		"scaledSwingTwist") as Vector3
-	var expected_rotation:Quaternion = _method_analysis_get_output(
-		parsed_json["execution"][0],
-		"rotation") as Quaternion
-	printerr(scaled_swing_twist)
+	for io_data in parsed_json["execution"]:
+		var scaled_swing_twist:Vector3 = _method_analysis_get_input(
+			io_data,
+			"scaledSwingTwist") as Vector3
+		var expected_rotation:Quaternion = _method_analysis_get_output(
+			io_data,
+			"rotation") as Quaternion
+		#printerr(scaled_swing_twist)
 
-	var our_rotation:Quaternion = ShaderMotionHelpers.swing_twist(scaled_swing_twist)
-	printerr(expected_rotation)
-	printerr(our_rotation)
-	printerr(expected_rotation.is_equal_approx(our_rotation))
+		var our_rotation:Quaternion = ShaderMotionHelpers.swing_twist(scaled_swing_twist)
+		var result:bool = expected_rotation.is_equal_approx(our_rotation)
+		if result == false:
+			printerr("Expected %s, Got %s" % [expected_rotation, our_rotation])
+			return
+	print("Success !")
+	process_mode = Node.PROCESS_MODE_DISABLED
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
