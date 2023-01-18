@@ -71,15 +71,18 @@ func _show_slot_samples(square_texture:Texture2D, square_adjacent_texture:Textur
 	square_adjacent_raw.show_color(square_adjacent_sample)
 	square_adjacent_converted.show_shadermotion_color(square_adjacent_sample)
 
-	var gray_code:PackedInt32Array = PackedInt32Array()
-	_vector3_add_to_int32_array(square_converted.get_bgr_gray_code(), gray_code)
-	_vector3_add_to_int32_array(square_adjacent_converted.get_bgr_gray_code(), gray_code)
-	var decoded_value:int = gray_code_decoder(gray_code)
-	shader_motion_value = shader_motion_gray_to_float(decoded_value)
+	shader_motion_value = ShaderMotionHLSLHelpers.shadermotion_decode_tiles(
+		[square_sample, square_adjacent_sample]
+	)
+	#var gray_code:PackedInt32Array = PackedInt32Array()
+	#_vector3_add_to_int32_array(square_converted.get_bgr_gray_code(), gray_code)
+	#_vector3_add_to_int32_array(square_adjacent_converted.get_bgr_gray_code(), gray_code)
+	#var decoded_value:int = gray_code_decoder(gray_code)
+	#shader_motion_value = shader_motion_gray_to_float(decoded_value)
 	shader_motion_swing_twist_value = shader_motion_swing_twist(shader_motion_value)
 
-	gray_value.text = _int32_array_to_string(gray_code)
-	converted_value.text = "%d -> %f" % [decoded_value, shader_motion_value]
+	#gray_value.text = _int32_array_to_string(gray_code)
+	converted_value.text = "%f" % [shader_motion_value]
 
 func _get_slot_color(frames:SpriteFrames, slot_index:int, adjacent:bool = false) -> Texture2D:
 	var frame_index:int = slot_index * 2
