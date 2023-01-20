@@ -13,7 +13,7 @@ extends Control
 
 var texture_slots:Array[Texture2D]
 var shader_motion_value:float = NAN
-var shader_motion_swing_twist_value:float = NAN
+var shader_motion_decoded_angle:float = NAN
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -79,7 +79,7 @@ func _show_slot_samples(square_texture:Texture2D, square_adjacent_texture:Textur
 	#_vector3_add_to_int32_array(square_adjacent_converted.get_bgr_gray_code(), gray_code)
 	#var decoded_value:int = gray_code_decoder(gray_code)
 	#shader_motion_value = shader_motion_gray_to_float(decoded_value)
-	shader_motion_swing_twist_value = shader_motion_swing_twist(shader_motion_value)
+	shader_motion_decoded_angle = shader_motion_gray_decoded_angle(shader_motion_value)
 
 	#gray_value.text = _int32_array_to_string(gray_code)
 	converted_value.text = "%f" % [shader_motion_value]
@@ -130,5 +130,5 @@ func gray_code_decoder(numbers:PackedInt32Array) -> int:
 func shader_motion_gray_to_float(gray_value:int) -> float:
 	return (gray_value / 364.0) - 1
 
-func shader_motion_swing_twist(decoded_float_value:float) -> float:
+func shader_motion_gray_decoded_angle(decoded_float_value:float) -> float:
 	return decoded_float_value * 180

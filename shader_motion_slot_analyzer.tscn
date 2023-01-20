@@ -22,7 +22,7 @@ square_adjacent_raw = NodePath("VBoxContainer/HBoxContainer/StandardColors/Pixel
 square_converted = NodePath("VBoxContainer/HBoxContainer/ConvertedData/Pixel0")
 square_adjacent_converted = NodePath("VBoxContainer/HBoxContainer/ConvertedData/Pixel1")
 gray_value = NodePath("VBoxContainer/HBoxContainer2/GrayValueLabel")
-converted_value = NodePath("VBoxContainer/HBoxContainer3/ConvertedValueLabel")
+converted_value = NodePath("VBoxContainer/HBoxContainer3/RepresentedAngle")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
 layout_mode = 2
@@ -77,7 +77,7 @@ layout_mode = 2
 
 [node name="Label2" type="Label" parent="VBoxContainer/HBoxContainer3"]
 layout_mode = 2
-text = "Converted  :"
+text = "Angle  :"
 
-[node name="ConvertedValueLabel" type="Label" parent="VBoxContainer/HBoxContainer3"]
+[node name="RepresentedAngle" type="Label" parent="VBoxContainer/HBoxContainer3"]
 layout_mode = 2
