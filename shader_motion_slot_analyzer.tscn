@@ -11,7 +11,7 @@ multichannel_signed_distance_field = true
 default_font = SubResource("SystemFont_ccbam")
 default_font_size = 16
 
-[node name="Control" type="VBoxContainer" node_paths=PackedStringArray("slot_value_label", "square_raw", "square_adjacent_raw", "square_converted", "square_adjacent_converted", "gray_value", "converted_value")]
+[node name="Control" type="VBoxContainer" node_paths=PackedStringArray("slot_value_label", "square_raw", "square_adjacent_raw", "square_converted", "square_adjacent_converted", "gray_value", "decoded_value_label", "converted_value")]
 offset_right = 420.0
 offset_bottom = 249.0
 theme = SubResource("Theme_mnakg")
@@ -22,6 +22,7 @@ square_adjacent_raw = NodePath("VBoxContainer/HBoxContainer/StandardColors/Pixel
 square_converted = NodePath("VBoxContainer/HBoxContainer/ConvertedData/Pixel0")
 square_adjacent_converted = NodePath("VBoxContainer/HBoxContainer/ConvertedData/Pixel1")
 gray_value = NodePath("VBoxContainer/HBoxContainer2/GrayValueLabel")
+decoded_value_label = NodePath("VBoxContainer/HBoxContainer5/DecodedValueLabel")
 converted_value = NodePath("VBoxContainer/HBoxContainer3/RepresentedAngle")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
@@ -72,12 +73,22 @@ text = "Gray Value :"
 [node name="GrayValueLabel" type="Label" parent="VBoxContainer/HBoxContainer2"]
 layout_mode = 2
 
+[node name="HBoxContainer5" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="Label2" type="Label" parent="VBoxContainer/HBoxContainer5"]
+layout_mode = 2
+text = "Decoded Value :"
+
+[node name="DecodedValueLabel" type="Label" parent="VBoxContainer/HBoxContainer5"]
+layout_mode = 2
+
 [node name="HBoxContainer3" type="HBoxContainer" parent="VBoxContainer"]
 layout_mode = 2
 
 [node name="Label2" type="Label" parent="VBoxContainer/HBoxContainer3"]
 layout_mode = 2
-text = "Angle  :"
+text = "Converted :"
 
 [node name="RepresentedAngle" type="Label" parent="VBoxContainer/HBoxContainer3"]
 layout_mode = 2

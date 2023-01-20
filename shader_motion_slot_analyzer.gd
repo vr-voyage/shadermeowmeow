@@ -9,6 +9,7 @@ extends Control
 @export var square_adjacent_converted:Control
 
 @export var gray_value:Label
+@export var decoded_value_label:Label
 @export var converted_value:Label
 
 var texture_slots:Array[Texture2D]
@@ -24,6 +25,7 @@ func _ready():
 		square_converted,
 		square_adjacent_converted,
 		gray_value,
+		decoded_value_label,
 		converted_value
 	]
 	for value in required_values:
@@ -82,7 +84,8 @@ func _show_slot_samples(square_texture:Texture2D, square_adjacent_texture:Textur
 	shader_motion_decoded_angle = shader_motion_gray_decoded_angle(shader_motion_value)
 
 	#gray_value.text = _int32_array_to_string(gray_code)
-	converted_value.text = "%f" % [shader_motion_value]
+	decoded_value_label.text = "%f" % [shader_motion_value]
+	converted_value.text = "%f" % [shader_motion_decoded_angle]
 
 func _get_slot_color(frames:SpriteFrames, slot_index:int, adjacent:bool = false) -> Texture2D:
 	var frame_index:int = slot_index * 2
