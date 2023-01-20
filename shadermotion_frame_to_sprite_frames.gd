@@ -9,23 +9,7 @@ extends Control
 
 @export var container:Container
 
-func shadermotion_tile_rect(tile_index:int, adjacent:int) -> Rect2:
-	var block_column:int = tile_index / tiles_per_column
-	var block_row:int = tile_index % tiles_per_column
-	var block_x:int = block_column * (tile_width * 2)
-	var block_y:int = block_row
-	var x:int = block_x if adjacent == 0 else block_x + tile_width
-	var y:int = block_y * tile_height
-	
-	var ret:Rect2 = Rect2(x, y, tile_width, tile_height)
-	printerr("Tile : %d - Rect : (%s)" % [tile_index, str(ret)])
-	return ret
 
-func get_shadermotion_tile(main_texture:Texture2D, tile_index:int, adjacent:bool) -> Texture2D:
-	var ret_texture = AtlasTexture.new()
-	ret_texture.atlas = main_texture
-	ret_texture.region = shadermotion_tile_rect(tile_index, int(adjacent))
-	return ret_texture
 
 func _debug_show_extracted_tiles(tile:Texture2D, tile_adjacent:Texture2D):
 	var hbox_container:HBoxContainer = HBoxContainer.new()
@@ -43,21 +27,11 @@ func _debug_show_extracted_tiles(tile:Texture2D, tile_adjacent:Texture2D):
 func _ready():
 	print("%d x %d" % [shadermotion_video_frame.get_width(), shadermotion_video_frame.get_height()])
 
-	var frames = SpriteFrames.new()
-	frames.add_animation("default")
-	var i:int = 0
-	for frame_block_name in ShaderMotionHelpers.block_tiles:
-		var frame_block:Array = ShaderMotionHelpers.block_tiles[frame_block_name]
-		for tile_index in frame_block:
-			var tile:Texture2D = get_shadermotion_tile(shadermotion_video_frame, tile_index, false)
-			var tile_adjacent:Texture2D = get_shadermotion_tile(shadermotion_video_frame, tile_index, true)
-			frames.add_frame("default", tile, i)
-			frames.add_frame("default", tile_adjacent, i+1)
-			i += 2
-			# _debug_show_extracted_tiles(tile, tile_adjacent)
+	var frames = ShaderMotionHelpers.get_shader_motion_tiles_from_texture(shadermotion_video_frame)
+	#_debug_show_extracted_tiles(tile, tile_adjacent)
 	ResourceSaver.save(
 		frames,
-		"res://tests/result_frames.tres",
+		"res://tests/result_frames_2.tres",
 		ResourceSaver.FLAG_BUNDLE_RESOURCES)
 
 

@@ -1,0 +1,88 @@
+[gd_scene load_steps=3 format=3 uid="uid://1cle4lgobxh2"]
+
+[ext_resource type="Script" path="res://shader_motion_mecanim_bone.gd" id="1_4mq7f"]
+[ext_resource type="PackedScene" uid="uid://brkw63r2v0mah" path="res://shader_motion_slot_analyzer.tscn" id="2_x30eh"]
+
+[node name="ShaderMotionMecanimBone" type="VBoxContainer" node_paths=PackedStringArray("tiles_analysis_container", "bone_name_label", "bone_swingtwist_label", "bone_swingtwist_signed_label", "bone_rotation_label", "bone_signs_label", "invalid_data_warning_label")]
+script = ExtResource("1_4mq7f")
+tile_analyzer_scene = ExtResource("2_x30eh")
+tiles_analysis_container = NodePath("TilesAnalysis")
+bone_name_label = NodePath("PanelContainer/MainInfos/MarginContainer/GridContainer/BoneNameData")
+bone_swingtwist_label = NodePath("PanelContainer/MainInfos/MarginContainer/GridContainer/SwingTwistData")
+bone_swingtwist_signed_label = NodePath("PanelContainer/MainInfos/MarginContainer/GridContainer/SignedTwistData")
+bone_rotation_label = NodePath("PanelContainer/MainInfos/MarginContainer/GridContainer/RotationData")
+bone_signs_label = NodePath("PanelContainer/MainInfos/MarginContainer/GridContainer/BoneSignData")
+invalid_data_warning_label = NodePath("PanelContainer/MainInfos/MarginContainer/GridContainer/INVALID")
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+layout_mode = 2
+
+[node name="MainInfos" type="VBoxContainer" parent="PanelContainer"]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer/MainInfos"]
+layout_mode = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 4
+
+[node name="GridContainer" type="GridContainer" parent="PanelContainer/MainInfos/MarginContainer"]
+layout_mode = 2
+columns = 2
+
+[node name="BoneNameLabel" type="Label" parent="PanelContainer/MainInfos/MarginContainer/GridContainer"]
+layout_mode = 2
+text = "Mecanim Bone :"
+horizontal_alignment = 2
+
+[node name="BoneNameData" type="Label" parent="PanelContainer/MainInfos/MarginContainer/GridContainer"]
+layout_mode = 2
+
+[node name="BoneSignLabel" type="Label" parent="PanelContainer/MainInfos/MarginContainer/GridContainer"]
+layout_mode = 2
+text = "Bone Signs :"
+horizontal_alignment = 2
+
+[node name="BoneSignData" type="Label" parent="PanelContainer/MainInfos/MarginContainer/GridContainer"]
+layout_mode = 2
+
+[node name="SwingTwistLabel" type="Label" parent="PanelContainer/MainInfos/MarginContainer/GridContainer"]
+layout_mode = 2
+text = "SwingTwist :"
+horizontal_alignment = 2
+
+[node name="SwingTwistData" type="Label" parent="PanelContainer/MainInfos/MarginContainer/GridContainer"]
+layout_mode = 2
+
+[node name="SignedTwistLabel" type="Label" parent="PanelContainer/MainInfos/MarginContainer/GridContainer"]
+layout_mode = 2
+text = "Signed :"
+horizontal_alignment = 2
+
+[node name="SignedTwistData" type="Label" parent="PanelContainer/MainInfos/MarginContainer/GridContainer"]
+layout_mode = 2
+
+[node name="RotationLabel" type="Label" parent="PanelContainer/MainInfos/MarginContainer/GridContainer"]
+layout_mode = 2
+text = "Rotation :"
+horizontal_alignment = 2
+
+[node name="RotationData" type="Label" parent="PanelContainer/MainInfos/MarginContainer/GridContainer"]
+layout_mode = 2
+text = "
+"
+horizontal_alignment = 2
+
+[node name="INVALID" type="Label" parent="PanelContainer/MainInfos/MarginContainer/GridContainer"]
+visible = false
+layout_mode = 2
+text = "INVALID DATA"
+
+[node name="INVALID2" type="Label" parent="PanelContainer/MainInfos/MarginContainer/GridContainer"]
+visible = false
+layout_mode = 2
+
+[node name="TilesAnalysis" type="VBoxContainer" parent="."]
+visible = false
+layout_mode = 2
+
+[connection signal="gui_input" from="PanelContainer" to="." method="_on_panel_input"]

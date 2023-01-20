@@ -60,6 +60,7 @@ static func _hlsl_lerp_vec2(a:Vector2, b:Vector2, weight:Vector2):
 	)
 
 static func log_func(method_name:String, variables:Dictionary):
+	return
 	print("[%s]" % [method_name])
 	for var_name in variables:
 		var current_variable = variables[var_name]

@@ -54,6 +54,8 @@ func show_shader_motion_block(pixels:SpriteFrames, block_name:String, block_rang
 	if use_swing_twist:
 		# FIXME
 		# This should not be done there
+		var swing_twist:Vector3 = _float_array_to_vector3(shader_motion_decoded_angles)
+		
 		var block_rotation:Quaternion = ShaderMotionHelpers.swing_twist(
 			_float_array_to_vector3(shader_motion_decoded_angles)
 		)

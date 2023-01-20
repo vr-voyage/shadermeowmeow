@@ -230,6 +230,64 @@ enum MecanimBodyBone
 	LastBone = 55
 }
 
+const mecanim_bone_tiles = {
+	MecanimBodyBone.Hips: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
+	MecanimBodyBone.LeftUpperLeg: [27, 28, 29],
+	MecanimBodyBone.RightUpperLeg: [30, 31, 32],
+	MecanimBodyBone.LeftLowerLeg: [33, 34, 35],
+	MecanimBodyBone.RightLowerLeg: [36, 37, 38],
+	MecanimBodyBone.LeftFoot: [39, 40, 41],
+	MecanimBodyBone.RightFoot: [42, 43, 44],
+	MecanimBodyBone.Spine: [12, 13, 14],
+	MecanimBodyBone.Chest: [15, 16, 17],
+	MecanimBodyBone.Neck: [21, 22, 23],
+	MecanimBodyBone.Head: [24, 25, 26],
+	MecanimBodyBone.LeftShoulder: [45, 46, 47],
+	MecanimBodyBone.RightShoulder: [48, 49, 50],
+	MecanimBodyBone.LeftUpperArm: [51, 52, 53],
+	MecanimBodyBone.RightUpperArm: [54, 55, 56],
+	MecanimBodyBone.LeftLowerArm: [57, 58, 59],
+	MecanimBodyBone.RightLowerArm: [60, 61, 62],
+	MecanimBodyBone.LeftHand: [63, 64, 65],
+	MecanimBodyBone.RightHand: [66, 67, 68],
+	MecanimBodyBone.LeftToes: [-1, -1, 69],
+	MecanimBodyBone.RightToes: [-1, -1, 70],
+	MecanimBodyBone.LeftEye: [-1, 71, 72],
+	MecanimBodyBone.RightEye: [-1, 73, 74],
+	MecanimBodyBone.LeftThumbProximal: [-1, 90, 91],
+	MecanimBodyBone.LeftThumbIntermediate: [-1, -1, 92],
+	MecanimBodyBone.LeftThumbDistal: [-1, -1, 93],
+	MecanimBodyBone.LeftIndexProximal: [-1, 94, 95],
+	MecanimBodyBone.LeftIndexIntermediate: [-1, -1, 96],
+	MecanimBodyBone.LeftIndexDistal: [-1, -1, 97],
+	MecanimBodyBone.LeftMiddleProximal: [-1, 98, 99],
+	MecanimBodyBone.LeftMiddleIntermediate: [-1, -1, 100],
+	MecanimBodyBone.LeftMiddleDistal: [-1, -1, 101],
+	MecanimBodyBone.LeftRingProximal: [-1, 102, 103],
+	MecanimBodyBone.LeftRingIntermediate: [-1, -1, 104],
+	MecanimBodyBone.LeftRingDistal: [-1, -1, 105],
+	MecanimBodyBone.LeftLittleProximal: [-1, 106, 107],
+	MecanimBodyBone.LeftLittleIntermediate: [-1, -1, 108],
+	MecanimBodyBone.LeftLittleDistal: [-1, -1, 109],
+	MecanimBodyBone.RightThumbProximal: [-1, 110, 111],
+	MecanimBodyBone.RightThumbIntermediate: [-1, -1, 112],
+	MecanimBodyBone.RightThumbDistal: [-1, -1, 113],
+	MecanimBodyBone.RightIndexProximal: [-1, 114, 115],
+	MecanimBodyBone.RightIndexIntermediate: [-1, -1, 116],
+	MecanimBodyBone.RightIndexDistal: [-1, -1, 117],
+	MecanimBodyBone.RightMiddleProximal: [-1, 118, 119],
+	MecanimBodyBone.RightMiddleIntermediate: [-1, -1, 120],
+	MecanimBodyBone.RightMiddleDistal: [-1, -1, 121],
+	MecanimBodyBone.RightRingProximal: [-1, 122, 123],
+	MecanimBodyBone.RightRingIntermediate: [-1, -1, 124],
+	MecanimBodyBone.RightRingDistal: [-1, -1, 125],
+	MecanimBodyBone.RightLittleProximal: [-1, 126, 127],
+	MecanimBodyBone.RightLittleIntermediate: [-1, -1, 128],
+	MecanimBodyBone.RightLittleDistal: [-1, -1, 129],
+	MecanimBodyBone.UpperChest: [18, 19, 20]
+}
+
+
 const AnimatorMuscleName = [
   "Spine Front-Back",
   "Spine Left-Right",
@@ -815,6 +873,9 @@ const mecanim_bone_muscles = {
 	],
 }
 
+# This is just a random data dump from Unity.
+# These values might be extremely tied to the specific model
+# avatar Rig that was loaded in Unity.
 const human_axes = {
 	MecanimBodyBone.Hips: {
 		"pre_rotation": Quaternion(0.707107, 0, 0, 0.707107),
@@ -1125,7 +1186,7 @@ class HumanBodyPose:
 	var body_rotation:Quaternion = Quaternion.IDENTITY
 
 # ???
-static func swing_twist(euler_angles:Vector3):
+static func swing_twist(euler_angles:Vector3) -> Quaternion:
 	var only_yz = Vector3(0, euler_angles.y, euler_angles.z)
 	# ... Magic values, magic operations leading to magic data...
 	return (
@@ -1214,6 +1275,72 @@ func _test_swing_twist():
 		printerr("swing_twist(%s) -> %s (Unity: %s)" % [test_angle, our_result, unity_result])
 		printerr("Equal (roughly) ? %s" % str(our_result.is_equal_approx(unity_result)))
 	pass
+
+static func shadermotion_tile_rect(
+	tile_index:int, adjacent:int,
+	tiles_per_column:int = 45,
+	tile_width:int = 24,
+	tile_height:int = 24) -> Rect2:
+	var block_column:int = tile_index / tiles_per_column
+	var block_row:int = tile_index % tiles_per_column
+	var block_x:int = block_column * (tile_width * 2)
+	var block_y:int = block_row
+	var x:int = block_x if adjacent == 0 else block_x + tile_width
+	var y:int = block_y * tile_height
+	
+	var ret:Rect2 = Rect2(x, y, tile_width, tile_height)
+	printerr("Tile : %d - Rect : (%s)" % [tile_index, str(ret)])
+	return ret
+
+static func get_shadermotion_tile(
+	main_texture:Texture2D,
+	tile_index:int,
+	adjacent:bool,
+	tiles_per_column:int = 45,
+	tile_width:int = 24,
+	tile_height:int = 24
+) -> Texture2D:
+	var ret_texture = AtlasTexture.new()
+	ret_texture.atlas = main_texture
+	ret_texture.region = shadermotion_tile_rect(tile_index, int(adjacent))
+	return ret_texture
+
+static func get_shader_motion_tiles_from_texture(
+	from_texture:Texture2D,
+	tiles_per_column:int = 45,
+	tile_width:int = 24,
+	tile_height:int = 24
+) -> SpriteFrames:
+	var frames:SpriteFrames = SpriteFrames.new()
+	frames.add_animation("default")
+	var i:int = 0
+	for frame_block_name in ShaderMotionHelpers.block_tiles:
+		var frame_block:Array = ShaderMotionHelpers.block_tiles[frame_block_name]
+		for tile_index in frame_block:
+			var tile:Texture2D = get_shadermotion_tile(
+				from_texture, tile_index, false,
+				tiles_per_column, tile_width, tile_height)
+			var tile_adjacent:Texture2D = get_shadermotion_tile(
+				from_texture, tile_index, true,
+				tiles_per_column, tile_width, tile_height)
+			frames.add_frame("default", tile, i)
+			frames.add_frame("default", tile_adjacent, i+1)
+			i += 2
+	return frames
+
+static func get_shader_motion_tiles_part(
+	video_frame:Texture2D,
+	tiles_columns:int = 3,
+	tiles_per_column:int = 45,
+	tile_width:int = 24,
+	tile_height:int = 24
+) -> Texture2D:
+	var ret_texture:Texture2D = AtlasTexture.new()
+	ret_texture.atlas = video_frame
+	ret_texture.region = Rect2(
+		0, 0,
+		tile_width * tiles_columns * 2, tile_height * tiles_per_column)
+	return ret_texture
 
 func _ready():
 	var dict = JSON.parse_string("{ \"a\": null }")

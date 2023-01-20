@@ -1,0 +1,71 @@
+[gd_scene load_steps=6 format=3 uid="uid://nrlm01pak2vc"]
+
+[ext_resource type="Script" path="res://shadermotion_to_mecanim_bones.gd" id="1_1avus"]
+[ext_resource type="PackedScene" uid="uid://1cle4lgobxh2" path="res://shader_motion_mecanim_bone.tscn" id="2_p0flw"]
+[ext_resource type="SpriteFrames" uid="uid://ctrsjcyo2e08c" path="res://tests/result_frames.tres" id="3_au6fs"]
+[ext_resource type="Texture2D" uid="uid://be7old3qfpl64" path="res://tests/test_frame.png" id="3_pdbg6"]
+[ext_resource type="Texture2D" uid="uid://b22cjy74jq0r1" path="res://icons/share1.png" id="5_hb5hh"]
+
+[node name="Control" type="VBoxContainer" node_paths=PackedStringArray("shadermotion_frame_pixels_display", "analyzed_bones_list")]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_1avus")
+shadermotion_bone_analyzer = ExtResource("2_p0flw")
+shadermotion_frame_pixels_display = NodePath("HBoxContainer/TextureRect")
+analyzed_bones_list = NodePath("HBoxContainer/ScrollContainer/VBoxContainer")
+analyzed_frame = ExtResource("3_pdbg6")
+analyzed_pixels = ExtResource("3_au6fs")
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer"]
+custom_minimum_size = Vector2(0, 32)
+layout_mode = 2
+alignment = 1
+
+[node name="Label" type="Label" parent="PanelContainer/HBoxContainer"]
+layout_mode = 2
+text = "ShaderMeowMeow To Mecanim Bones"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="PanelContainer2" type="PanelContainer" parent="."]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer2"]
+layout_mode = 2
+alignment = 2
+
+[node name="ExportButton" type="TextureButton" parent="PanelContainer2/HBoxContainer"]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+texture_normal = ExtResource("5_hb5hh")
+texture_pressed = ExtResource("5_hb5hh")
+texture_hover = ExtResource("5_hb5hh")
+texture_disabled = ExtResource("5_hb5hh")
+texture_focused = ExtResource("5_hb5hh")
+ignore_texture_size = true
+stretch_mode = 0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="TextureRect" type="TextureRect" parent="HBoxContainer"]
+layout_mode = 2
+expand_mode = 3
+
+[node name="ScrollContainer" type="ScrollContainer" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[connection signal="pressed" from="PanelContainer2/HBoxContainer/ExportButton" to="." method="_on_export_button_pressed"]

@@ -6,6 +6,11 @@ extends Control
 var sampling:bool = false
 
 func _ready():
+	for bone_name in ShaderMotionHelpers.MecanimBodyBone:
+		print("MecanimBodyBone." + bone_name + ": ")
+
+	process_mode = Node.PROCESS_MODE_DISABLED
+	return
 	if color_rect == null or color_label == null:
 		printerr("TextureReadTestUI is not setup correctly")
 		process_mode = Node.PROCESS_MODE_DISABLED
@@ -31,4 +36,5 @@ func _input(event):
 		sample_at(sampling_position)
 
 func _process(delta):
+	
 	pass
