@@ -1342,6 +1342,83 @@ static func get_shader_motion_tiles_part(
 		tile_width * tiles_columns * 2, tile_height * tiles_per_column)
 	return ret_texture
 
+# This one rounds to even. Meaning that
+# 10.5f rounds to 10
+# 11.5f founds to 12
+static func _unity_roundi(value:float) -> int:
+	var rounded:int = roundi(value)
+	if abs(value - rounded) != 0.5:
+		return rounded
+	else:
+		return snappedi(value, 2)
+
+# ???
+# Basically a copy-paste adaptation of ShaderMotion
+# ShaderImpl.DecodeVideoFloat
+static func decode_video_float(
+	high:float,
+	low:float,
+	power:int
+) -> float:
+
+	var half_pow = (power - 1) / 2
+	high = high * half_pow + half_pow
+	low  = low  * half_pow + half_pow
+
+	var x = _unity_roundi(low)
+
+	var low_remainder = low - x
+	var y = min(low_remainder, 0)
+	var z = max(low_remainder, 0)
+	var rounded_high = _unity_roundi(high)
+
+	if (rounded_high & 1) != 0:
+		x = power - 1 - x
+		var minus_z = -z
+		var minus_y = -z
+		y = minus_z
+		z = minus_y
+
+	if x == 0:
+		y += min(0, high - rounded_high)
+	if x == power - 1:
+		z += max(0, high - rounded_high)
+
+	x += rounded_high * power;
+	x -= (power*power-1)/2;
+
+	y += 0.5;
+	z -= 0.5;
+
+	var max_y_z = max(abs(y), abs(z))
+
+	return (
+		(y + z)
+		/ max_y_z
+		* 0.5
+		+ x
+	) / half_pow;
+
+# ???
+# A copy-paste implementation of ShaderImpl.orthogonalize
+# Returns 2 vectors
+static func orthogonalize(u:Vector3, v:Vector3) -> PackedVector3Array:
+	var b:float = u.dot(v) * -2
+	var a:float = u.dot(u) + v.dot(v)
+
+	a += sqrt(abs(a * a - b * b))
+
+	var ret_u:Vector3 = a * u + b * v
+	ret_u *= (u.dot(ret_u) / ret_u.dot(ret_u))
+	var ret_v:Vector3 = a * v + b * u
+	ret_v *= (v.dot(ret_v) / ret_v.dot(ret_v))
+
+	var returned_vectors:PackedVector3Array = PackedVector3Array()
+	returned_vectors.append(ret_u)
+	returned_vectors.append(ret_v)
+
+	return returned_vectors
+
 func _ready():
 	var dict = JSON.parse_string("{ \"a\": null }")
 	
