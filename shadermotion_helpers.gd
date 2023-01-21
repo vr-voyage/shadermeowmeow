@@ -1212,7 +1212,7 @@ func _set_hips_position_rotation(pose:HumanBodyPose, hips_t:Vector3, hips_q:Quat
 			_muscle_from_bone(mecanim_bone, MuscleAxis.Z) * bone_scale[MuscleAxis.Z]
 		)
 
-		spread_q *= swing_twist(swing_twist_value)
+		spread_q *= ShaderMotionHelpers.swing_twist(swing_twist_value)
 
 	# In the original ShaderMotion, HumanPoser.cs uses
 	# Quaternion.LookRotation(Vector3.right, Vector3.forward) which
@@ -1270,7 +1270,7 @@ func _test_swing_twist():
 			float(csv_row[4]),
 			float(csv_row[5]),
 			float(csv_row[6]))
-		var our_result:Quaternion = swing_twist(test_angle)
+		var our_result:Quaternion = ShaderMotionHelpers.swing_twist(test_angle)
 		csv_row = file_data.get_csv_line()
 		printerr("swing_twist(%s) -> %s (Unity: %s)" % [test_angle, our_result, unity_result])
 		printerr("Equal (roughly) ? %s" % str(our_result.is_equal_approx(unity_result)))
@@ -1302,7 +1302,9 @@ static func get_shadermotion_tile(
 ) -> Texture2D:
 	var ret_texture = AtlasTexture.new()
 	ret_texture.atlas = main_texture
-	ret_texture.region = shadermotion_tile_rect(tile_index, int(adjacent))
+	ret_texture.region = shadermotion_tile_rect(
+		tile_index, int(adjacent),
+		tiles_per_column, tile_width, tile_height)
 	return ret_texture
 
 static func get_shader_motion_tiles_from_texture(
@@ -1420,8 +1422,8 @@ static func orthogonalize(u:Vector3, v:Vector3) -> PackedVector3Array:
 	return returned_vectors
 
 func _ready():
-	var dict = JSON.parse_string("{ \"a\": null }")
-	
+	# var dict = JSON.parse_string("{ \"a\": null }")
+	pass
 	#printerr(Quaternion(Basis.looking_at(Vector3.LEFT, Vector3.BACK)))
 	#_test_swing_twist()
 #	var quat_a = Quaternion(Vector3(1,0,0), deg_to_rad(30))

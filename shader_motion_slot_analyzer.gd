@@ -48,9 +48,9 @@ func _join_vector3_as_string(vec:Vector3, separator:String = "") -> String:
 	return separator.join([vec[0], vec[1], vec[2]])
 
 func _vector3_add_to_int32_array(vec:Vector3, int32_array:PackedInt32Array):
-	int32_array.append(vec.x)
-	int32_array.append(vec.y)
-	int32_array.append(vec.z)
+	int32_array.append(int(vec.x))
+	int32_array.append(int(vec.y))
+	int32_array.append(int(vec.z))
 
 func _int32_array_to_string(int32_array:PackedInt32Array, separator:String = "") -> String:
 	var strings = PackedStringArray()
@@ -110,7 +110,7 @@ func _base3_total(numbers:PackedInt32Array) -> int:
 	#printerr(_int32_array_to_string(numbers, ", "))
 	for i in range(0, len(numbers)):
 		var current_digit:int = numbers[i]
-		var value:int = current_digit * pow(3, exponent)
+		var value:int = int(current_digit * pow(3, exponent))
 		#printerr("%d : %d + %d (%d)" % [i, accumulator, value, current_digit])
 		accumulator += value
 		exponent -= 1
@@ -130,8 +130,8 @@ func gray_code_decoder(numbers:PackedInt32Array) -> int:
 			_flip_gray_code_array(numbers)
 	return _base3_total(numbers)
 
-func shader_motion_gray_to_float(gray_value:int) -> float:
-	return (gray_value / 364.0) - 1
+func shader_motion_gray_to_float(decoded_gray_value:int) -> float:
+	return (decoded_gray_value / 364.0) - 1
 
 func shader_motion_gray_decoded_angle(decoded_float_value:float) -> float:
 	return decoded_float_value * 180

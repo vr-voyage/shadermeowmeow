@@ -59,12 +59,12 @@ static func _hlsl_lerp_vec2(a:Vector2, b:Vector2, weight:Vector2):
 		lerpf(a.y, b.y, weight.y)
 	)
 
-static func log_func(method_name:String, variables:Dictionary):
+static func log_func(_method_name:String, _variables:Dictionary):
 	return
-	print("[%s]" % [method_name])
-	for var_name in variables:
-		var current_variable = variables[var_name]
-		print("\t%s : %s" % [var_name, str(current_variable)])
+	#print("[%s]" % [method_name])
+	#for var_name in variables:
+	#	var current_variable = variables[var_name]
+	#	print("\t%s : %s" % [var_name, str(current_variable)])
 
 static func _sm_gray_decoder_add(
 	state:Vector3,
@@ -220,8 +220,3 @@ static func shadermotion_decode_tiles(tiles:Array):
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	pass # Replace with function body.
-
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
-	pass

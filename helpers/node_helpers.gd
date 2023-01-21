@@ -7,11 +7,19 @@ class_name NodeHelpers
 const invalid_vector:Vector3 = Vector3(NAN, NAN, NAN)
 const invalid_quaternion:Quaternion = Quaternion(NAN, NAN, NAN, NAN)
 
-static func float_array_to_vector3(array:PackedFloat64Array):
+static func float_array_to_vector3(array:PackedFloat64Array) -> Vector3:
 	var ret:Vector3 = Vector3.ZERO
 	var n_components:int = min(len(array), 3)
 	for i in range(0, n_components):
 		ret[i] = array[i]
+	return ret
+
+static func float_array_to_packed_vector3(array:PackedFloat64Array) -> PackedVector3Array:
+	var i:int = 0
+	var ret:PackedVector3Array = PackedVector3Array()
+	while i < len(array):
+		ret.append(float_array_to_vector3(array.slice(i, i+3)))
+		i += 3
 	return ret
 
 static func remove_children_from(node:Node):

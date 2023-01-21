@@ -30,18 +30,12 @@ func _ready():
 	shadermotion_frame_pixels_display.texture = ShaderMotionHelpers.get_shader_motion_tiles_part(analyzed_frame)
 	pass # Replace with function body.
 
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
-	pass
-
-
-func append_vector3_to_strings(strings:PackedStringArray, vector:Vector3):
+func _add_vector3_field(strings:PackedStringArray, vector:Vector3):
 	strings.append(str(vector.x))
 	strings.append(str(vector.y))
 	strings.append(str(vector.z))
 
-func append_quaternion_to_strings(strings:PackedStringArray, quaternion:Quaternion):
+func _add_quaternion_field(strings:PackedStringArray, quaternion:Quaternion):
 	strings.append(str(quaternion.x))
 	strings.append(str(quaternion.y))
 	strings.append(str(quaternion.z))
@@ -72,8 +66,8 @@ func _export_content_to(tsv_filepath:String):
 			continue
 		current_record.clear()
 		current_record.append(analyzer.analyzed_bone_name)
-		append_vector3_to_strings(current_record, analyzer.computed_swing_twist)
-		append_quaternion_to_strings(current_record, analyzer.computed_rotation)
+		_add_vector3_field(current_record, analyzer.computed_swing_twist)
+		_add_quaternion_field(current_record, analyzer.computed_rotation)
 		records.append(_generate_record_from(current_record))
 
 	var tsv_content:String = "\n".join(records)
