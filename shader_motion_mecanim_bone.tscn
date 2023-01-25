@@ -3,20 +3,9 @@
 [ext_resource type="Script" path="res://shader_motion_mecanim_bone.gd" id="1_4mq7f"]
 [ext_resource type="PackedScene" uid="uid://brkw63r2v0mah" path="res://shader_motion_slot_analyzer.tscn" id="2_x30eh"]
 
-[node name="ShaderMotionMecanimBone" type="VBoxContainer" node_paths=PackedStringArray("tiles_analysis_container", "bone_name_label", "bone_swingtwist_label", "bone_swingtwist_signed_label", "bone_rotation_label", "bone_signs_label", "bone_hips_position_low_label", "bone_hips_position_high_label", "bone_hips_position_label", "bone_hips_scale_label", "invalid_data_warning_label")]
+[node name="ShaderMotionMecanimBone" type="VBoxContainer"]
 script = ExtResource("1_4mq7f")
 tile_analyzer_scene = ExtResource("2_x30eh")
-tiles_analysis_container = NodePath("TilesAnalysis")
-bone_name_label = NodePath("PanelContainer/MainInfos/MarginContainer/GridContainer/BoneNameData")
-bone_swingtwist_label = NodePath("PanelContainer/MainInfos/MarginContainer/GridContainer/SwingTwistData")
-bone_swingtwist_signed_label = NodePath("PanelContainer/MainInfos/MarginContainer/GridContainer/SignedTwistData")
-bone_rotation_label = NodePath("PanelContainer/MainInfos/MarginContainer/GridContainer/RotationData")
-bone_signs_label = NodePath("PanelContainer/MainInfos/MarginContainer/GridContainer/BoneSignData")
-bone_hips_position_low_label = NodePath("PanelContainer/MainInfos/MarginContainer/GridContainer/PositionLowData")
-bone_hips_position_high_label = NodePath("PanelContainer/MainInfos/MarginContainer/GridContainer/PositionHighData")
-bone_hips_position_label = NodePath("PanelContainer/MainInfos/MarginContainer/GridContainer/PositionData")
-bone_hips_scale_label = NodePath("PanelContainer/MainInfos/MarginContainer/GridContainer/ScaleData")
-invalid_data_warning_label = NodePath("PanelContainer/MainInfos/MarginContainer/GridContainer/INVALID")
 
 [node name="PanelContainer" type="PanelContainer" parent="."]
 layout_mode = 2

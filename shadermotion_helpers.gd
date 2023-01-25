@@ -883,8 +883,8 @@ const human_axes = {
 		"limit_sign": Vector3(1, 1, 1)
 	},
 	MecanimBodyBone.LeftUpperLeg: {
-		"pre_rotation": Quaternion(-0, 0, 0.895309, -0.445446),
-		"post_rotation": Quaternion(0.708897, 0.705312, 0, -0),
+		"pre_rotation": Quaternion(-1.538277e-7, 0, 0.895309, -0.445446),
+		"post_rotation": Quaternion(0.708897, 0.705312, 0, -9.173525e-8),
 		"limit_sign": Vector3(1, 1, 1)
 	},
 	MecanimBodyBone.RightUpperLeg: {
@@ -1193,14 +1193,23 @@ static func swing_twist(euler_angles:Vector3) -> Quaternion:
 		Quaternion(only_yz.normalized(), deg_to_rad(only_yz.length()))
 		* Quaternion(Vector3(1,0,0), deg_to_rad(euler_angles.x)))
 
-func _muscle_from_bone(mecanim_bone:MecanimBodyBone, muscle_axis:MuscleAxis):
+static func _muscle_from_bone(
+	mecanim_bone:MecanimBodyBone,
+	muscle_axis:MuscleAxis
+) -> float:
 	# FIXME
 	# Improves the readability here.
 	# The latest 0 retrieves the associated muscle.
 	# 1 would retrieve an associated weight.
 	return mecanim_bone_muscles[mecanim_bone][muscle_axis][0]
 
-func _set_hips_position_rotation(pose:HumanBodyPose, hips_t:Vector3, hips_q:Quaternion, human_scale:float):
+static func pose_set_hips_position_rotation(
+	pose_muscles:PackedFloat64Array,
+	hips_t:Vector3,
+	hips_q:Quaternion,
+	human_scale:float
+) -> Dictionary:
+
 	var spread_q = Quaternion.IDENTITY
 	for bone_and_scale in spread_mass_q:
 		var mecanim_bone:MecanimBodyBone = bone_and_scale[0]
@@ -1222,8 +1231,10 @@ func _set_hips_position_rotation(pose:HumanBodyPose, hips_t:Vector3, hips_q:Quat
 	
 	# t for ???
 	var t = Quaternion(Basis.looking_at(Vector3.LEFT, Vector3.BACK))
-	pose.body_position = hips_t / human_scale
-	pose.body_rotation = hips_q * (t * spread_q * t.inverse())
+	return {
+		"body_position": hips_t / human_scale,
+		"body_rotation": hips_q * (t * spread_q * t.inverse())
+	}
 
 # motion_data is supposed to contain motion information
 # in a data structure that can be referenced through mecanim bones indices.
@@ -1231,31 +1242,37 @@ func _set_hips_position_rotation(pose:HumanBodyPose, hips_t:Vector3, hips_q:Quat
 # swing_twists must be a data structure with swing/twists values
 # referenced by Mecanim Bones.
 # Meaning that swing_twists[MecanimBone.???] must not fail
-func set_bones_swing_twists(pose:HumanBodyPose, swing_twists):
+static func pose_set_bone_swing_twists(
+	pose_muscles:PackedFloat64Array,
+	swing_twists:Array
+):
 
-	pose.muscles.resize(MecanimMuscle.COUNT)
-	pose.muscles.fill(0)
-	for mecanim_bone in MecanimBodyBone:
+	pose_muscles.resize(MecanimMuscle.COUNT)
+	pose_muscles.fill(0)
+	for bone in MecanimBodyBone:
+		var bone_related_muscles:Array = mecanim_bone_muscles[bone]
+		var bone_related_swingtwist:Vector3 = swing_twists[bone].swing_twist
 		for axis in MuscleAxis:
-			var muscle_and_weight = mecanim_bone_muscles[mecanim_bone][axis]
+			var axis_info:Array = bone_related_muscles[axis]
 
-			var muscle:MecanimMuscle = muscle_and_weight[0]
-			var weight:float = muscle_and_weight[1]
+			var muscle:MecanimMuscle = axis_info[0]
+			var weight:float = axis_info[1]
 
-			if muscle >= 0:
-				pose.muscles[muscle] += swing_twists[mecanim_bone][axis] * weight
+			if muscle != MecanimMuscle.INVALID:
+				pose_muscles[muscle] += bone_related_swingtwist[axis] * weight
 
-	for mecanim_muscle in MecanimMuscle:
-		var muscle_value:float = pose.muscles[mecanim_muscle]
+	for muscle in MecanimMuscle:
+		var muscle_value:float = pose_muscles[muscle]
 
-		var muscle_limits:Array = mecanim_muscle_limits[mecanim_muscle]
-		var divider:float
-		if muscle_value >= 0:
-			divider = muscle_limits[MuscleMinMax.MAX]
+		var muscle_limits:Array[float] = mecanim_muscle_limits[muscle]
+		var muscle_limit_min:float = muscle_limits[0]
+		var muscle_limit_max:float = muscle_limits[1]
+		var current_muscle_value:float = pose_muscles[muscle]
+
+		if current_muscle_value >= 0:
+			pose_muscles[muscle] = current_muscle_value / muscle_limit_max
 		else:
-			divider = -muscle_limits[MuscleMinMax.MIN]
-
-		pose.muscles[mecanim_muscle] = muscle_value / divider
+			pose_muscles[muscle] = current_muscle_value / -muscle_limit_min
 
 func _test_swing_twist():
 	var file_data = FileAccess.open("res://tests/data/swing_twist_tests.csv", FileAccess.READ)
@@ -1421,8 +1438,107 @@ static func orthogonalize(u:Vector3, v:Vector3) -> PackedVector3Array:
 
 	return returned_vectors
 
+class HipsData:
+	var position:Vector3 = NodeHelpers.invalid_vector
+	var rotation:Quaternion = NodeHelpers.invalid_quaternion
+	var scale:float = NAN
+
+	func set_transform(
+		new_position:Vector3,
+		new_rotation:Quaternion,
+		new_scale:float
+	):
+		self.position = new_position
+		self.rotation = new_rotation
+		self.scale = new_scale
+
+	func meow():
+		return (
+			"Position : %s\nRotation : %s\nScale : %s"
+			% [str(position), str(rotation), str(scale)]
+		)
+
+class MotionData:
+	var swing_twist:Vector3 = NodeHelpers.invalid_vector
+	var computed_rotation:Quaternion = NodeHelpers.invalid_quaternion
+	var setup:bool = false
+
+	func set_motion_data(swing_twist_data:Vector3, rotation_data:Quaternion):
+		self.swing_twist = swing_twist_data
+		self.computed_rotation = rotation_data
+		self.setup = true
+
+func _shadermotion_apply_scale(
+	skeleton_root:Node3D,
+	hips_data:HipsData,
+	skeleton_human_scale:float,
+	human_scale:float
+) -> void:
+
+	if human_scale == 0:
+		return
+
+	var base_scale:float = human_scale if human_scale > 0 else hips_data.scale 
+	skeleton_root.scale = base_scale / skeleton_human_scale * Vector3.ONE
+	return
+
+func _shadermotion_compute_root_position(
+	skeleton_root:Node3D,
+	hips_data:HipsData,
+	skeleton_human_scale:float,
+) -> Vector3:
+
+	var applied_scale:float = hips_data.scale / skeleton_human_scale
+	var local_point:Vector3 = hips_data.position / applied_scale
+	return skeleton_root.to_global(local_point)
+
+func _shadermotion_compute_bone_rotation(
+	bone_data:Dictionary,
+	bone_motion:MotionData
+) -> Quaternion:
+	var pre_rotation:Quaternion = bone_data["pre_rotation"] as Quaternion
+	var post_rotation:Quaternion = bone_data["post_rotation"] as Quaternion
+
+	return pre_rotation * bone_motion.computed_rotation * (post_rotation.inverse())
+
+func _shadermotion_apply_human_pose():
+
+	var skeleton_root:Node3D = Node3D.new()
+	var hips_data:HipsData = HipsData.new()
+	var skeleton_human_scale:float = 0.749392
+
+	hips_data.set_transform(
+		Vector3(0.007864816, 1.035193, 0.1922859),
+		Quaternion(-0.0570919, 0.1531233, 0.007413568, 0.9865287),
+		0.8937339
+	)
+	_shadermotion_apply_scale(
+		skeleton_root,
+		hips_data,
+		skeleton_human_scale,
+		-1
+	)
+	printerr(skeleton_root.scale)
+	printerr(
+		_shadermotion_compute_root_position(
+			skeleton_root,
+			hips_data,
+			skeleton_human_scale
+		))
+
+	var test_motion_data:MotionData = MotionData.new()
+	test_motion_data.set_motion_data(
+		Vector3(NAN, NAN, NAN),
+		Quaternion(0.1278699, 0.0532079, 0.3149299, .9389554)
+	)
+	printerr(_shadermotion_compute_bone_rotation(
+		human_axes[MecanimBodyBone.LeftUpperLeg],
+		test_motion_data
+	))
+
 func _ready():
 	# var dict = JSON.parse_string("{ \"a\": null }")
+	_shadermotion_apply_human_pose()
 	pass
 	#printerr(Quaternion(Basis.looking_at(Vector3.LEFT, Vector3.BACK)))
 	#_test_swing_twist()

@@ -7,7 +7,7 @@
 
 [node name="Node2D" type="Node2D"]
 
-[node name="ShadermotionLeft0000000001" type="Sprite2D" parent="." node_paths=PackedStringArray("color_rect")]
+[node name="ShadermotionLeft0000000001" type="Sprite2D" parent="."]
 texture_filter = 1
 texture_repeat = 1
 position = Vector2(546, 7.00001)
@@ -17,7 +17,6 @@ centered = false
 hframes = 6
 vframes = 45
 script = ExtResource("2_44ugh")
-color_rect = NodePath("../ColorRect")
 
 [node name="Label" type="Label" parent="."]
 offset_left = 73.0

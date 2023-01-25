@@ -3,19 +3,13 @@
 [ext_resource type="Script" path="res://shader_motion_block_analyzer.gd" id="1_droai"]
 [ext_resource type="PackedScene" uid="uid://brkw63r2v0mah" path="res://shader_motion_slot_analyzer.tscn" id="2_0ctla"]
 
-[node name="Control" type="VBoxContainer" node_paths=PackedStringArray("block_name_label", "block_range_label", "block_value_label", "block_decoded_angle_label", "block_rotation_label", "slots_container")]
+[node name="Control" type="VBoxContainer"]
 anchors_preset = 10
 anchor_right = 1.0
 offset_bottom = 23.0
 grow_horizontal = 2
 script = ExtResource("1_droai")
-block_name_label = NodePath("PanelContainer/VBoxContainer/HBoxContainer/BlockName")
-block_range_label = NodePath("PanelContainer/VBoxContainer/HBoxContainer/BlockRange")
-block_value_label = NodePath("PanelContainer/VBoxContainer/BlockValue")
-block_decoded_angle_label = NodePath("PanelContainer/VBoxContainer/MultipliedValue")
-block_rotation_label = NodePath("PanelContainer/VBoxContainer/SwingTwistRotation")
 slot_analyzer_prefab = ExtResource("2_0ctla")
-slots_container = NodePath("VBoxContainer")
 
 [node name="PanelContainer" type="PanelContainer" parent="."]
 custom_minimum_size = Vector2(0, 32)

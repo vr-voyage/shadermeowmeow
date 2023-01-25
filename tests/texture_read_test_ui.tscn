@@ -3,15 +3,13 @@
 [ext_resource type="Texture2D" uid="uid://bo2ptbrulyxcn" path="res://shadermotion_left_0000000001.png" id="1_34byg"]
 [ext_resource type="Script" path="res://tests/texture_read_test_script.gd" id="1_djwia"]
 
-[node name="Control" type="HBoxContainer" node_paths=PackedStringArray("color_rect", "color_label")]
+[node name="Control" type="HBoxContainer"]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_djwia")
-color_rect = NodePath("VBoxContainer/HBoxContainer/ColorRect")
-color_label = NodePath("VBoxContainer/HBoxContainer/Label")
 
 [node name="TextureRect" type="TextureRect" parent="."]
 texture_filter = 1
