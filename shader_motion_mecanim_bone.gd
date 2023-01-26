@@ -1,6 +1,6 @@
 extends VBoxContainer
 
-@export var tile_analyzer_scene:PackedScene
+@export var tile_analyzer_scene:PackedScene 
 
 @export var tiles_analysis_container:Container
 

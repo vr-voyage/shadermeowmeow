@@ -1468,7 +1468,75 @@ class MotionData:
 		self.computed_rotation = rotation_data
 		self.setup = true
 
-func _shadermotion_apply_scale(
+class ParsedMotions:
+	var hips:HipsData = HipsData.new()
+	var swing_twists:Array[MotionData]
+
+	func _init():
+		var swing_twists_values:Array[MotionData] = Array()
+		swing_twists_values.resize(ShaderMotionHelpers.MecanimBodyBone.LastBone)
+
+		for bone in range(int(ShaderMotionHelpers.MecanimBodyBone.LastBone)):
+			swing_twists_values[bone] = MotionData.new()
+
+		self.swing_twists = swing_twists_values
+
+	func _add_vector3_field(strings:PackedStringArray, vector:Vector3):
+		strings.append(str(vector.x))
+		strings.append(str(vector.y))
+		strings.append(str(vector.z))
+
+	func _add_quaternion_field(strings:PackedStringArray, quaternion:Quaternion):
+		strings.append(str(quaternion.x))
+		strings.append(str(quaternion.y))
+		strings.append(str(quaternion.z))
+		strings.append(str(quaternion.w))
+
+	func _generate_record_from(fields:PackedStringArray) -> String:
+		return "\t".join(fields)
+
+	func export_to_tsv(tsv_filepath:String):
+		var records:PackedStringArray = PackedStringArray()
+		var header:PackedStringArray = PackedStringArray(
+			[
+				"Bone name",
+				"SwingTwist.x",
+				"SwingTwist.y",
+				"SwingTwist.z",
+				"Rotation.x",
+				"Rotation.y",
+				"Rotation.z",
+				"Rotation.w",
+				"Scale"
+			]
+		)
+		var bone_names = ShaderMotionHelpers.MecanimBodyBone.keys()
+
+
+		records.append(_generate_record_from(header))
+
+		var current_record:PackedStringArray = PackedStringArray()
+		for bone in range(int(ShaderMotionHelpers.MecanimBodyBone.LastBone)):
+
+			current_record.clear()
+			current_record.append(bone_names[bone])
+
+			if bone != ShaderMotionHelpers.MecanimBodyBone.Hips:
+				var bone_record:MotionData = swing_twists[bone]
+				_add_vector3_field(current_record, bone_record.swing_twist)
+				_add_quaternion_field(current_record, bone_record.computed_rotation)
+				current_record.append(str(NAN))
+			else:
+				_add_vector3_field(current_record, hips.position)
+				_add_quaternion_field(current_record, hips.rotation)
+				current_record.append(str(hips.scale))
+			records.append(_generate_record_from(current_record))
+
+		var tsv_content:String = "\n".join(records)
+		var tsv_file = FileAccess.open(tsv_filepath, FileAccess.WRITE)
+		tsv_file.store_string(tsv_content)
+
+static func _shadermotion_apply_scale(
 	skeleton_root:Node3D,
 	hips_data:HipsData,
 	skeleton_human_scale:float,
@@ -1482,63 +1550,77 @@ func _shadermotion_apply_scale(
 	skeleton_root.scale = base_scale / skeleton_human_scale * Vector3.ONE
 	return
 
-func _shadermotion_compute_root_position(
+static func _shadermotion_compute_hips_position(
 	skeleton_root:Node3D,
 	hips_data:HipsData,
-	skeleton_human_scale:float,
+	skeleton_human_scale:float
 ) -> Vector3:
 
 	var applied_scale:float = hips_data.scale / skeleton_human_scale
 	var local_point:Vector3 = hips_data.position / applied_scale
 	return skeleton_root.to_global(local_point)
 
-func _shadermotion_compute_bone_rotation(
+static func _shadermotion_compute_bone_rotation(
 	bone_data:Dictionary,
-	bone_motion:MotionData
+	motion_rotation:Quaternion
 ) -> Quaternion:
+
 	var pre_rotation:Quaternion = bone_data["pre_rotation"] as Quaternion
 	var post_rotation:Quaternion = bone_data["post_rotation"] as Quaternion
 
-	return pre_rotation * bone_motion.computed_rotation * (post_rotation.inverse())
+	return pre_rotation * motion_rotation * (post_rotation.inverse())
 
-func _shadermotion_apply_human_pose():
+static func _shadermotion_multiply_bone_rotation(
+	bone_data:Dictionary,
+	motion_rotation:Quaternion,
+	current_rotation:Quaternion
+) -> Quaternion:
+
+	var post_rotation:Quaternion = bone_data["post_rotation"] as Quaternion
+
+	return current_rotation * post_rotation * motion_rotation * (post_rotation.inverse())
+
+static func _shadermotion_apply_human_pose(
+	skeleton_bones:Array[Node3D],
+	skeleton_human_scale:float,
+	parsed_motions:ParsedMotions
+):
 
 	var skeleton_root:Node3D = Node3D.new()
-	var hips_data:HipsData = HipsData.new()
-	var skeleton_human_scale:float = 0.749392
 
-	hips_data.set_transform(
-		Vector3(0.007864816, 1.035193, 0.1922859),
-		Quaternion(-0.0570919, 0.1531233, 0.007413568, 0.9865287),
-		0.8937339
-	)
 	_shadermotion_apply_scale(
 		skeleton_root,
-		hips_data,
+		parsed_motions.hips,
 		skeleton_human_scale,
-		-1
-	)
-	printerr(skeleton_root.scale)
-	printerr(
-		_shadermotion_compute_root_position(
-			skeleton_root,
-			hips_data,
-			skeleton_human_scale
-		))
+		-1)
 
-	var test_motion_data:MotionData = MotionData.new()
-	test_motion_data.set_motion_data(
-		Vector3(NAN, NAN, NAN),
-		Quaternion(0.1278699, 0.0532079, 0.3149299, .9389554)
-	)
-	printerr(_shadermotion_compute_bone_rotation(
-		human_axes[MecanimBodyBone.LeftUpperLeg],
-		test_motion_data
-	))
+	printerr("Skeleton root scale : %s" % [str(skeleton_root.scale)])
+
+	var hips_position:Vector3 = _shadermotion_compute_hips_position(
+		skeleton_root,
+		parsed_motions.hips,
+		skeleton_human_scale)
+	skeleton_bones[MecanimBodyBone.Hips].position = hips_position
+
+	for bone in range(0, int(MecanimBodyBone.LastBone)):
+
+		var decoded_rotation:Quaternion = parsed_motions.swing_twists[bone].computed_rotation
+		if decoded_rotation == NodeHelpers.invalid_quaternion:
+			continue
+
+		var bone_rotation:Quaternion
+		if bone != MecanimBodyBone.UpperChest:
+			bone_rotation = _shadermotion_compute_bone_rotation(
+				human_axes[bone],
+				decoded_rotation)
+		else:
+			bone_rotation = _shadermotion_multiply_bone_rotation(
+				human_axes[bone],
+				decoded_rotation,
+				skeleton_bones[bone].quaternion)
+		skeleton_bones[bone].quaternion = bone_rotation
 
 func _ready():
-	# var dict = JSON.parse_string("{ \"a\": null }")
-	_shadermotion_apply_human_pose()
 	pass
 	#printerr(Quaternion(Basis.looking_at(Vector3.LEFT, Vector3.BACK)))
 	#_test_swing_twist()

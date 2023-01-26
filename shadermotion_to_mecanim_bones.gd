@@ -7,100 +7,21 @@ extends VBoxContainer
 @export var analyzed_frame:Texture2D
 @export var analyzed_pixels:SpriteFrames
 
-class HipsData:
-	var position:Vector3 = NodeHelpers.invalid_vector
-	var rotation:Quaternion = NodeHelpers.invalid_quaternion
-	var scale:float = NAN
+@export var bone_info_scene:PackedScene
+@export var result_bones_list:Container
 
-	func set_transform(
-		new_position:Vector3,
-		new_rotation:Quaternion,
-		new_scale:float
-	):
-		self.position = new_position
-		self.rotation = new_rotation
-		self.scale = new_scale
+var motions:ShaderMotionHelpers.ParsedMotions = ShaderMotionHelpers.ParsedMotions.new()
 
-class MotionData:
-	var swing_twist:Vector3 = NodeHelpers.invalid_vector
-	var computed_rotation:Quaternion = NodeHelpers.invalid_quaternion
-	var setup:bool = false
+func _generate_dummy_bones_array() -> Array[Node3D]:
+	var bones:Array[Node3D] = []
+	var bones_names = ShaderMotionHelpers.MecanimBodyBone.keys()
+	bones.resize(ShaderMotionHelpers.MecanimBodyBone.LastBone)
 
-	func set_motion_data(swing_twist_data:Vector3, rotation_data:Quaternion):
-		self.swing_twist = swing_twist_data
-		self.computed_rotation = rotation_data
-		self.setup = true
-
-class ParsedMotions:
-	var hips:HipsData = HipsData.new()
-	var swing_twists:Array[MotionData]
-
-	func _init():
-		var swing_twists_values:Array[MotionData] = Array()
-		swing_twists_values.resize(ShaderMotionHelpers.MecanimBodyBone.LastBone)
-
-		for bone in range(int(ShaderMotionHelpers.MecanimBodyBone.LastBone)):
-			swing_twists_values[bone] = MotionData.new()
-
-		self.swing_twists = swing_twists_values
-
-	func _add_vector3_field(strings:PackedStringArray, vector:Vector3):
-		strings.append(str(vector.x))
-		strings.append(str(vector.y))
-		strings.append(str(vector.z))
-
-	func _add_quaternion_field(strings:PackedStringArray, quaternion:Quaternion):
-		strings.append(str(quaternion.x))
-		strings.append(str(quaternion.y))
-		strings.append(str(quaternion.z))
-		strings.append(str(quaternion.w))
-
-	func _generate_record_from(fields:PackedStringArray) -> String:
-		return "\t".join(fields)
-
-	func export_to_tsv(tsv_filepath:String):
-		var records:PackedStringArray = PackedStringArray()
-		var header:PackedStringArray = PackedStringArray(
-			[
-				"Bone name",
-				"SwingTwist.x",
-				"SwingTwist.y",
-				"SwingTwist.z",
-				"Rotation.x",
-				"Rotation.y",
-				"Rotation.z",
-				"Rotation.w",
-				"Scale"
-			]
-		)
-		var bone_names = ShaderMotionHelpers.MecanimBodyBone.keys()
-
-
-		records.append(_generate_record_from(header))
-
-		var current_record:PackedStringArray = PackedStringArray()
-		for bone in range(int(ShaderMotionHelpers.MecanimBodyBone.LastBone)):
-
-			current_record.clear()
-			current_record.append(bone_names[bone])
-
-			if bone != ShaderMotionHelpers.MecanimBodyBone.Hips:
-				var bone_record:MotionData = swing_twists[bone]
-				_add_vector3_field(current_record, bone_record.swing_twist)
-				_add_quaternion_field(current_record, bone_record.computed_rotation)
-				current_record.append(str(NAN))
-			else:
-				_add_vector3_field(current_record, hips.position)
-				_add_quaternion_field(current_record, hips.rotation)
-				current_record.append(str(hips.scale))
-			records.append(_generate_record_from(current_record))
-
-		var tsv_content:String = "\n".join(records)
-		var tsv_file = FileAccess.open(tsv_filepath, FileAccess.WRITE)
-		tsv_file.store_string(tsv_content)
-		
-
-var motions:ParsedMotions = ParsedMotions.new()
+	for bone in range(0, int(ShaderMotionHelpers.MecanimBodyBone.LastBone)):
+		var bone_node:Node3D = Node3D.new()
+		bone_node.name = bones_names[bone]
+		bones[bone] = bone_node
+	return bones
 
 func analyse_pixels(shadermotion_pixels:SpriteFrames):
 	NodeHelpers.remove_children_from(analyzed_bones_list)
@@ -110,12 +31,12 @@ func analyse_pixels(shadermotion_pixels:SpriteFrames):
 		var analyzer = shadermotion_bone_analyzer.instantiate()
 		analyzed_bones_list.add_child(analyzer)
 		analyzer.analyze_bone_from(shadermotion_pixels, bone, mecanim_bone_names[bone])
-		if bone != ShaderMotionHelpers.MecanimBodyBone.Hips:
-			motions.swing_twists[bone].set_motion_data(
-				analyzer.computed_swing_twist,
-				analyzer.computed_rotation
-			)
-		else:
+		motions.swing_twists[bone].set_motion_data(
+			analyzer.computed_swing_twist,
+			analyzer.computed_rotation
+		)
+
+		if bone == ShaderMotionHelpers.MecanimBodyBone.Hips:
 			motions.hips.set_transform(
 				analyzer.computed_swing_twist,
 				analyzer.computed_rotation,
@@ -123,17 +44,32 @@ func analyse_pixels(shadermotion_pixels:SpriteFrames):
 			)
 
 	print(motions)
+	var skeleton_bones:Array[Node3D] = _generate_dummy_bones_array()
+	ShaderMotionHelpers._shadermotion_apply_human_pose(
+		skeleton_bones,
+		0.749392,
+		motions)
+	for bone in skeleton_bones:
+		var bone_info_panel = bone_info_scene.instantiate()
+		result_bones_list.add_child(bone_info_panel)
+		bone_info_panel.show_bone(bone)
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	NodeHelpers.stop_if_any_is_null(
+	var should_stop:bool = NodeHelpers.stop_if_any_is_null(
 		self,
 		[
 			shadermotion_bone_analyzer,
+			shadermotion_frame_pixels_display,
 			analyzed_bones_list,
-			analyzed_pixels
+			analyzed_pixels,
+			bone_info_scene,
+			result_bones_list
 		],
 		"ShaderMotion to Mecanim Bones")
+	if should_stop:
+		return
+
 	analyse_pixels(analyzed_pixels)
 	shadermotion_frame_pixels_display.texture = ShaderMotionHelpers.get_shader_motion_tiles_part(analyzed_frame)
 	pass # Replace with function body.
