@@ -1,10 +1,10 @@
-[gd_scene load_steps=6 format=3]
+[gd_scene load_steps=6 format=3 uid="uid://ce8d85cbrndk6"]
 
 [ext_resource type="Script" path="res://shader_motion/core/test_analyze_shader_motion_texture.gd" id="1_8qbsy"]
-[ext_resource type="Texture2D" uid="uid://bo2ptbrulyxcn" path="res://shader_motion/core/shadermotion_left_0000000001.png" id="1_kydr5"]
-[ext_resource type="SpriteFrames" uid="uid://ctrsjcyo2e08c" path="res://shader_motion/tests/result_frames.tres" id="2_7ktlh"]
 [ext_resource type="Script" path="res://shader_motion/core/shadermotion_slots_analyzer.gd" id="2_7ymwh"]
-[ext_resource type="PackedScene" path="res://shader_motion/core/shader_motion_block_analyzer.tscn" id="5_058gf"]
+[ext_resource type="SpriteFrames" uid="uid://cisjb06jp1kuo" path="res://shader_motion/frames/result_frames_2.tres" id="2_sm285"]
+[ext_resource type="Texture2D" uid="uid://be7old3qfpl64" path="res://shader_motion/tests/test_frame.png" id="3_83iqj"]
+[ext_resource type="PackedScene" uid="uid://ctsupgbd1c1jv" path="res://shader_motion/core/shader_motion_block_analyzer.tscn" id="5_058gf"]
 
 [node name="Control" type="HBoxContainer" node_paths=PackedStringArray("analyzer_node")]
 anchors_preset = 15
@@ -13,13 +13,13 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_8qbsy")
-analyzed_pixels = ExtResource("2_7ktlh")
+analyzed_pixels = ExtResource("2_sm285")
 analyzer_node = NodePath("ScrollContainer/VBoxContainer")
 
 [node name="TextureRect" type="TextureRect" parent="."]
 custom_minimum_size = Vector2(90, 0)
 layout_mode = 2
-texture = ExtResource("1_kydr5")
+texture = ExtResource("3_83iqj")
 expand_mode = 3
 stretch_mode = 4
 

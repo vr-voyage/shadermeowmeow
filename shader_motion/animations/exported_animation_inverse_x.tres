@@ -1,4 +1,4 @@
-[gd_resource type="Animation" format=3]
+[gd_resource type="Animation" format=3 uid="uid://hgcyokv78fn5"]
 
 [resource]
 tracks/0/type = "rotation_3d"

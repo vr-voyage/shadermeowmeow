@@ -1,4 +1,4 @@
-[gd_scene load_steps=2 format=3]
+[gd_scene load_steps=2 format=3 uid="uid://de8ehs4qpg4fw"]
 
 [ext_resource type="Script" path="res://shader_motion/core/shadermotion_helpers.gd" id="1_q1ajs"]
 

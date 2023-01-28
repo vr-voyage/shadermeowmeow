@@ -1,4 +1,4 @@
-[gd_scene load_steps=3 format=3]
+[gd_scene load_steps=3 format=3 uid="uid://cl1x561gtew3c"]
 
 [ext_resource type="Script" path="res://shader_motion/core/shader_motion_mecanim_bone.gd" id="1_4mq7f"]
 [ext_resource type="PackedScene" path="res://shader_motion/core/shader_motion_slot_analyzer.tscn" id="2_x30eh"]
