@@ -877,6 +877,8 @@ const mecanim_bone_muscles = {
 # These values might be extremely tied to the specific model
 # avatar Rig that was loaded in Unity.
 const human_axes = {
+	# Pre-rotation is the bicyle pose 
+	# Post-rotation fixes bone rolls.
 	MecanimBodyBone.Hips: {
 		"pre_rotation": Quaternion(0.707107, 0, 0, 0.707107),
 		"post_rotation": Quaternion(-0.03661, -0.706159, -0.03661, 0.706159),

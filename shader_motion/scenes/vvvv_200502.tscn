@@ -1,0 +1,16 @@
+[gd_scene load_steps=4 format=3 uid="uid://b24qwnk1vgpdl"]
+
+[ext_resource type="PackedScene" uid="uid://dftyyked4s8n2" path="res://shader_motion/SK_2A-7-4-VVVV_200502/VVVV_200502.blend" id="1_o5so4"]
+[ext_resource type="Animation" path="res://shader_motion/animations/exported_animation_inverse_x.tres" id="2_o3vkf"]
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_fgpmw"]
+_data = {
+"exported_animation_inverse_x": ExtResource("2_o3vkf")
+}
+
+[node name="VVVV_200502" instance=ExtResource("1_o5so4")]
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Armature" index="1"]
+libraries = {
+"": SubResource("AnimationLibrary_fgpmw")
+}

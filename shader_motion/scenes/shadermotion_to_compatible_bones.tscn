@@ -1,12 +1,12 @@
 [gd_scene load_steps=8 format=3 uid="uid://hda3ixj18bma"]
 
-[ext_resource type="Script" path="res://shader_motion/core/shadermotion_to_mecanim_bones.gd" id="1_7e4lo"]
-[ext_resource type="PackedScene" uid="uid://cl1x561gtew3c" path="res://shader_motion/core/shader_motion_mecanim_bone.tscn" id="2_ndqco"]
-[ext_resource type="Texture2D" uid="uid://cojek2d8v4mcg" path="res://shader_motion/frames/same_thing_as_atlas.png" id="3_0plc2"]
-[ext_resource type="SpriteFrames" uid="uid://d2ybu6xpy1bb1" path="res://shader_motion/frames/result_frames.tres" id="4_bo0ny"]
-[ext_resource type="PackedScene" uid="uid://drvc4hgivfhjb" path="res://shader_motion/core/show_bone_info.tscn" id="5_cagfr"]
-[ext_resource type="Texture2D" uid="uid://b22cjy74jq0r1" path="res://shader_motion/icons/share1.png" id="6_pvwik"]
-[ext_resource type="PackedScene" uid="uid://u3acb5eyisyg" path="res://shader_motion/core/dynamic_model_loading.tscn" id="7_b3wmm"]
+[ext_resource type="Script" path="res://shader_motion/core/shadermotion_to_mecanim_bones.gd" id="1_jgy0w"]
+[ext_resource type="PackedScene" uid="uid://cl1x561gtew3c" path="res://shader_motion/core/shader_motion_mecanim_bone.tscn" id="2_abqa5"]
+[ext_resource type="Texture2D" uid="uid://cojek2d8v4mcg" path="res://shader_motion/frames/same_thing_as_atlas.png" id="3_1wswx"]
+[ext_resource type="SpriteFrames" uid="uid://d2ybu6xpy1bb1" path="res://shader_motion/frames/result_frames.tres" id="4_5bp7i"]
+[ext_resource type="PackedScene" uid="uid://drvc4hgivfhjb" path="res://shader_motion/core/show_bone_info.tscn" id="5_oa7xw"]
+[ext_resource type="Texture2D" uid="uid://b22cjy74jq0r1" path="res://shader_motion/icons/share1.png" id="6_and1e"]
+[ext_resource type="PackedScene" uid="uid://u3acb5eyisyg" path="res://shader_motion/core/dynamic_model_loading.tscn" id="7_0fcp4"]
 
 [node name="Control" type="VBoxContainer" node_paths=PackedStringArray("shadermotion_frame_pixels_display", "analyzed_bones_list", "result_bones_list")]
 anchors_preset = 15
@@ -14,13 +14,13 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("1_7e4lo")
-shadermotion_bone_analyzer = ExtResource("2_ndqco")
+script = ExtResource("1_jgy0w")
+shadermotion_bone_analyzer = ExtResource("2_abqa5")
 shadermotion_frame_pixels_display = NodePath("HBoxContainer/TextureRect")
 analyzed_bones_list = NodePath("HBoxContainer/Control/ScrollContainer/VBoxContainer")
-analyzed_frame = ExtResource("3_0plc2")
-analyzed_pixels = ExtResource("4_bo0ny")
-bone_info_scene = ExtResource("5_cagfr")
+analyzed_frame = ExtResource("3_1wswx")
+analyzed_pixels = ExtResource("4_5bp7i")
+bone_info_scene = ExtResource("5_oa7xw")
 result_bones_list = NodePath("HBoxContainer/Control2/ScrollContainer2/ComputedBonesList")
 skeleton_root_path = "%Skeleton3D"
 
@@ -48,11 +48,11 @@ alignment = 2
 [node name="ExportButton" type="TextureButton" parent="PanelContainer2/HBoxContainer"]
 custom_minimum_size = Vector2(32, 32)
 layout_mode = 2
-texture_normal = ExtResource("6_pvwik")
-texture_pressed = ExtResource("6_pvwik")
-texture_hover = ExtResource("6_pvwik")
-texture_disabled = ExtResource("6_pvwik")
-texture_focused = ExtResource("6_pvwik")
+texture_normal = ExtResource("6_and1e")
+texture_pressed = ExtResource("6_and1e")
+texture_hover = ExtResource("6_and1e")
+texture_disabled = ExtResource("6_and1e")
+texture_focused = ExtResource("6_and1e")
 ignore_texture_size = true
 stretch_mode = 0
 
@@ -109,6 +109,10 @@ handle_input_locally = false
 size = Vector2i(380, 576)
 render_target_update_mode = 4
 
-[node name="Node3D" parent="HBoxContainer/SubViewportContainer/SubViewport" instance=ExtResource("7_b3wmm")]
+[node name="Node3D" parent="HBoxContainer/SubViewportContainer/SubViewport" instance=ExtResource("7_0fcp4")]
+
+[node name="Node3D" type="Node3D" parent="."]
+transform = Transform3D(6.12303e-17, 0, -1, 0, 1, 0, 1, 0, 6.12303e-17, 0, 0, 0)
+rotation_edit_mode = 1
 
 [connection signal="pressed" from="PanelContainer2/HBoxContainer/ExportButton" to="." method="_on_export_button_pressed"]

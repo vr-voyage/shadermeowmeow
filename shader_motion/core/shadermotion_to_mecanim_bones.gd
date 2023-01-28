@@ -101,7 +101,6 @@ func _ready():
 
 	analyse_pixels(analyzed_pixels)
 	shadermotion_frame_pixels_display.texture = ShaderMotionHelpers.get_shader_motion_tiles_part(analyzed_frame)
-	pass  # Replace with function body.
 
 
 func _on_export_button_pressed():
