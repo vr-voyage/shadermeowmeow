@@ -1,9 +1,9 @@
-[gd_scene load_steps=8 format=3 uid="uid://nrlm01pak2vc"]
+[gd_scene load_steps=8 format=3 uid="uid://brkglcpmvkagm"]
 
 [ext_resource type="Script" path="res://shadermotion_to_mecanim_bones.gd" id="1_7e4lo"]
 [ext_resource type="PackedScene" uid="uid://1cle4lgobxh2" path="res://shader_motion_mecanim_bone.tscn" id="2_ndqco"]
 [ext_resource type="Texture2D" uid="uid://enrwnlowaidp" path="res://three_vrm_girl/art/shadermotion/Screenshot 2023-01-27 233123.png" id="3_wwgaq"]
-[ext_resource type="SpriteFrames" uid="uid://btqs3kq2xc161" path="res://shader_motion/frames/result_frames_2.tres" id="4_tj26p"]
+[ext_resource type="SpriteFrames" uid="uid://btqs3kq2xc161" path="res://result_frames_2.tres" id="4_hnaw1"]
 [ext_resource type="PackedScene" uid="uid://c684p5xdqpk4l" path="res://show_bone_info.tscn" id="5_cagfr"]
 [ext_resource type="Texture2D" uid="uid://b22cjy74jq0r1" path="res://icons/share1.png" id="6_pvwik"]
 [ext_resource type="PackedScene" uid="uid://g2iqt25by7kp" path="res://tests/dynamic_model_loading.tscn" id="7_b3wmm"]
@@ -19,7 +19,7 @@ shadermotion_bone_analyzer = ExtResource("2_ndqco")
 shadermotion_frame_pixels_display = NodePath("HBoxContainer/TextureRect")
 analyzed_bones_list = NodePath("HBoxContainer/Control/ScrollContainer/VBoxContainer")
 analyzed_frame = ExtResource("3_wwgaq")
-analyzed_pixels = ExtResource("4_tj26p")
+analyzed_pixels = ExtResource("4_hnaw1")
 bone_info_scene = ExtResource("5_cagfr")
 result_bones_list = NodePath("HBoxContainer/Control2/ScrollContainer2/ComputedBonesList")
 skeleton_root_path = "%Skeleton3D"

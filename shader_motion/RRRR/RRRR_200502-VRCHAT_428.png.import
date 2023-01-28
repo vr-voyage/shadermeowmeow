@@ -2,8 +2,8 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dipvolas6c5mo"
-path.s3tc="res://.godot/imported/NonRetargeted_428.png-f8c5fd5c942131946bbd1c182c46abcd.s3tc.ctex"
+uid="uid://l8elffo4oqy6"
+path.s3tc="res://.godot/imported/RRRR_200502-VRCHAT_428.png-13171b3f192cbf3d88890d1a8fe5fff4.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://model/RRRR/NonRetargeted_428.png"
-dest_files=["res://.godot/imported/NonRetargeted_428.png-f8c5fd5c942131946bbd1c182c46abcd.s3tc.ctex"]
+source_file="res://shader_motion/RRRR/RRRR_200502-VRCHAT_428.png"
+dest_files=["res://.godot/imported/RRRR_200502-VRCHAT_428.png-13171b3f192cbf3d88890d1a8fe5fff4.s3tc.ctex"]
 
 [params]
 

@@ -1,5 +1,0 @@
-[gd_scene load_steps=2 format=3 uid="uid://bgwo0e482kl1c"]
-
-[ext_resource type="PackedScene" uid="uid://bd7kbw6bw62cm" path="res://model/RRRR/RRRR_200502-VRCHAT.glb" id="1_dnt84"]
-
-[node name="RRRR_200502-VRCHAT" instance=ExtResource("1_dnt84")]

@@ -3,13 +3,13 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://bjjcidikvy81q"
-path="res://.godot/imported/NonRetargeted.glb-c3e46ed47dbeac325d41d1d2963a210e.scn"
+uid="uid://iyxqi6wvqiau"
+path="res://.godot/imported/hamsterosaurus-nomesh.escn-366d14ba70466148f321d69348bc7376.scn"
 
 [deps]
 
-source_file="res://model/RRRR/NonRetargeted.glb"
-dest_files=["res://.godot/imported/NonRetargeted.glb-c3e46ed47dbeac325d41d1d2963a210e.scn"]
+source_file="res://shader_motion/RRRR/hamsterosaurus-nomesh.escn"
+dest_files=["res://.godot/imported/hamsterosaurus-nomesh.escn-366d14ba70466148f321d69348bc7376.scn"]
 
 [params]
 
@@ -28,3 +28,4 @@ animation/fps=30
 animation/trimming=false
 import_script/path=""
 _subresources={}
+meshes/handle_gltf_embedded_images=1

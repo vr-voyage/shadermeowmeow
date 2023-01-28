@@ -4,12 +4,12 @@ importer="scene"
 importer_version=1
 type="PackedScene"
 uid="uid://bd7kbw6bw62cm"
-path="res://.godot/imported/RRRR_200502-VRCHAT.glb-a23a020c7b4a39c5980303ab9ce8e064.scn"
+path="res://.godot/imported/RRRR_200502-VRCHAT.glb-cee315a8da0417315466c81bb6bd3d65.scn"
 
 [deps]
 
-source_file="res://model/RRRR/RRRR_200502-VRCHAT.glb"
-dest_files=["res://.godot/imported/RRRR_200502-VRCHAT.glb-a23a020c7b4a39c5980303ab9ce8e064.scn"]
+source_file="res://shader_motion/RRRR/RRRR_200502-VRCHAT.glb"
+dest_files=["res://.godot/imported/RRRR_200502-VRCHAT.glb-cee315a8da0417315466c81bb6bd3d65.scn"]
 
 [params]
 
@@ -36,3 +36,4 @@ _subresources={
 }
 }
 }
+meshes/handle_gltf_embedded_images=1

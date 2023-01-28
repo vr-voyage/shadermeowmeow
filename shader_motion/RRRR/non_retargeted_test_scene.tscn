@@ -1,6 +1,6 @@
-[gd_scene load_steps=5 format=3 uid="uid://c8k55di4x5c5s"]
+[gd_scene load_steps=5 format=3]
 
-[ext_resource type="PackedScene" uid="uid://djau6kyx7tqrh" path="res://model/RRRR/NonRetargeted.glb" id="1_5uqqe"]
+[ext_resource type="PackedScene" uid="uid://bjjcidikvy81q" path="res://shader_motion/RRRR/NonRetargeted.glb" id="1_5uqqe"]
 [ext_resource type="Animation" uid="uid://sqv16kugxo3j" path="res://tests/exported_animation.tres" id="2_leo2f"]
 [ext_resource type="Animation" uid="uid://b4mvk30lt31qf" path="res://tests/exported_animation_inverse_z.tres" id="3_6mxmx"]
 

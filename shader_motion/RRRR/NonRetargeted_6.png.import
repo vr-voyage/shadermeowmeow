@@ -2,8 +2,8 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bh2pry45epai3"
-path.s3tc="res://.godot/imported/NonRetargeted_217.png-8cfcd8f821752d2b235b3ec845817597.s3tc.ctex"
+uid="uid://dfvq3vft6my4x"
+path.s3tc="res://.godot/imported/NonRetargeted_6.png-d0c327d51c7f2ecc5299f8ddb61b2a49.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://model/RRRR/NonRetargeted_217.png"
-dest_files=["res://.godot/imported/NonRetargeted_217.png-8cfcd8f821752d2b235b3ec845817597.s3tc.ctex"]
+source_file="res://shader_motion/RRRR/NonRetargeted_6.png"
+dest_files=["res://.godot/imported/NonRetargeted_6.png-d0c327d51c7f2ecc5299f8ddb61b2a49.s3tc.ctex"]
 
 [params]
 
