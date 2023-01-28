@@ -3,22 +3,22 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://bo2ptbrulyxcn"
-path="res://.godot/imported/shadermotion_left_0000000001.png-bbfbd5029c3335bfe7fbebd6822e7838.ctex"
+path="res://.godot/imported/shadermotion_left_0000000001.png-1cb0468aa2cf9e07312f24e82b546c32.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://shadermotion_left_0000000001.png"
-dest_files=["res://.godot/imported/shadermotion_left_0000000001.png-bbfbd5029c3335bfe7fbebd6822e7838.ctex"]
+source_file="res://shader_motion/core/shadermotion_left_0000000001.png"
+dest_files=["res://.godot/imported/shadermotion_left_0000000001.png-1cb0468aa2cf9e07312f24e82b546c32.ctex"]
 
 [params]
 
 compress/mode=0
+compress/high_quality=false
 compress/lossy_quality=0.7
 compress/hdr_compression=1
-compress/bptc_ldr=0
 compress/normal_map=0
 compress/channel_pack=0
 mipmaps/generate=false

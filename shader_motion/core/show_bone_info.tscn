@@ -1,6 +1,6 @@
-[gd_scene load_steps=2 format=3 uid="uid://c684p5xdqpk4l"]
+[gd_scene load_steps=2 format=3]
 
-[ext_resource type="Script" path="res://show_bone_info.gd" id="1_dm1br"]
+[ext_resource type="Script" path="res://shader_motion/core/show_bone_info.gd" id="1_dm1br"]
 
 [node name="PanelContainer" type="PanelContainer" node_paths=PackedStringArray("ui_name", "ui_position", "ui_rotation")]
 script = ExtResource("1_dm1br")

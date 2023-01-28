@@ -1,7 +1,7 @@
-[gd_scene load_steps=3 format=3 uid="uid://bmp3gayxoxfmt"]
+[gd_scene load_steps=3 format=3]
 
-[ext_resource type="Script" path="res://shader_motion_block_analyzer.gd" id="1_droai"]
-[ext_resource type="PackedScene" uid="uid://brkw63r2v0mah" path="res://shader_motion_slot_analyzer.tscn" id="2_0ctla"]
+[ext_resource type="Script" path="res://shader_motion/core/shader_motion_block_analyzer.gd" id="1_droai"]
+[ext_resource type="PackedScene" path="res://shader_motion/core/shader_motion_slot_analyzer.tscn" id="2_0ctla"]
 
 [node name="Control" type="VBoxContainer"]
 anchors_preset = 10

@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3]
 
-[ext_resource type="Script" path="res://test_threed.gd" id="1_wnb5m"]
+[ext_resource type="Script" path="res://shader_motion/core/test_threed.gd" id="1_wnb5m"]
 [ext_resource type="PackedScene" uid="uid://bd7kbw6bw62cm" path="res://shader_motion/RRRR/RRRR_200502-VRCHAT.glb" id="2_h2vug"]
 
 [node name="Node3D" type="Node3D"]

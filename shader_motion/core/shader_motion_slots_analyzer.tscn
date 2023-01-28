@@ -1,10 +1,10 @@
-[gd_scene load_steps=6 format=3 uid="uid://cy5h11hbosl2c"]
+[gd_scene load_steps=6 format=3]
 
-[ext_resource type="Script" path="res://test_analyze_shader_motion_texture.gd" id="1_8qbsy"]
-[ext_resource type="Texture2D" uid="uid://bo2ptbrulyxcn" path="res://shadermotion_left_0000000001.png" id="1_kydr5"]
-[ext_resource type="SpriteFrames" uid="uid://ctrsjcyo2e08c" path="res://tests/result_frames.tres" id="2_7ktlh"]
-[ext_resource type="Script" path="res://shadermotion_slots_analyzer.gd" id="2_7ymwh"]
-[ext_resource type="PackedScene" uid="uid://bmp3gayxoxfmt" path="res://shader_motion_block_analyzer.tscn" id="5_058gf"]
+[ext_resource type="Script" path="res://shader_motion/core/test_analyze_shader_motion_texture.gd" id="1_8qbsy"]
+[ext_resource type="Texture2D" uid="uid://bo2ptbrulyxcn" path="res://shader_motion/core/shadermotion_left_0000000001.png" id="1_kydr5"]
+[ext_resource type="SpriteFrames" uid="uid://ctrsjcyo2e08c" path="res://shader_motion/tests/result_frames.tres" id="2_7ktlh"]
+[ext_resource type="Script" path="res://shader_motion/core/shadermotion_slots_analyzer.gd" id="2_7ymwh"]
+[ext_resource type="PackedScene" path="res://shader_motion/core/shader_motion_block_analyzer.tscn" id="5_058gf"]
 
 [node name="Control" type="HBoxContainer" node_paths=PackedStringArray("analyzer_node")]
 anchors_preset = 15

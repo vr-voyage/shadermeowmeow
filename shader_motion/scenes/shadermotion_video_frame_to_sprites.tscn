@@ -1,7 +1,7 @@
-[gd_scene load_steps=3 format=3 uid="uid://bi5ih8lwgc7lv"]
+[gd_scene load_steps=3 format=3]
 
-[ext_resource type="Script" path="res://shadermotion_frame_to_sprite_frames.gd" id="1_nt4eb"]
-[ext_resource type="Texture2D" uid="uid://be7old3qfpl64" path="res://tests/test_frame.png" id="2_n32gl"]
+[ext_resource type="Script" path="res://shader_motion/core/shadermotion_frame_to_sprite_frames.gd" id="1_nt4eb"]
+[ext_resource type="Texture2D" uid="uid://be7old3qfpl64" path="res://shader_motion/tests/test_frame.png" id="2_n32gl"]
 
 [node name="Control" type="ScrollContainer"]
 anchors_preset = 15

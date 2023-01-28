@@ -3,12 +3,12 @@
 importer="font_data_dynamic"
 type="FontFile"
 uid="uid://bipgxieek5mc6"
-path="res://.godot/imported/Banquise-Regular.otf-c535a15bc7d1a3a83ec77781dd5eaf47.fontdata"
+path="res://.godot/imported/Banquise-Regular.otf-f2b6fa678ab02bf2fb591becd8e9c79f.fontdata"
 
 [deps]
 
-source_file="res://Banquise-Regular.otf"
-dest_files=["res://.godot/imported/Banquise-Regular.otf-c535a15bc7d1a3a83ec77781dd5eaf47.fontdata"]
+source_file="res://shader_motion/core/Banquise-Regular.otf"
+dest_files=["res://.godot/imported/Banquise-Regular.otf-f2b6fa678ab02bf2fb591becd8e9c79f.fontdata"]
 
 [params]
 

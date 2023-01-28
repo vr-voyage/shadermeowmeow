@@ -3,22 +3,22 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://b22cjy74jq0r1"
-path="res://.godot/imported/share1.png-43b956f40b35016c6794830106625254.ctex"
+path="res://.godot/imported/share1.png-66cb0d54455d524436f6ed1bda446f2a.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://icons/share1.png"
-dest_files=["res://.godot/imported/share1.png-43b956f40b35016c6794830106625254.ctex"]
+source_file="res://shader_motion/icons/share1.png"
+dest_files=["res://.godot/imported/share1.png-66cb0d54455d524436f6ed1bda446f2a.ctex"]
 
 [params]
 
 compress/mode=0
+compress/high_quality=false
 compress/lossy_quality=0.7
 compress/hdr_compression=1
-compress/bptc_ldr=0
 compress/normal_map=0
 compress/channel_pack=0
 mipmaps/generate=false

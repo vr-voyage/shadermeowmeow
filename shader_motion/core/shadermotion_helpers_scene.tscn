@@ -1,6 +1,6 @@
-[gd_scene load_steps=2 format=3 uid="uid://bhd80ilu462wc"]
+[gd_scene load_steps=2 format=3]
 
-[ext_resource type="Script" path="res://shadermotion_helpers.gd" id="1_q1ajs"]
+[ext_resource type="Script" path="res://shader_motion/core/shadermotion_helpers.gd" id="1_q1ajs"]
 
 [node name="Control" type="Control"]
 layout_mode = 3

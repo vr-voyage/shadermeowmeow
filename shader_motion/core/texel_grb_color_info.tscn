@@ -1,6 +1,6 @@
-[gd_scene load_steps=2 format=3 uid="uid://c1icpunxqnvq2"]
+[gd_scene load_steps=2 format=3]
 
-[ext_resource type="Script" path="res://texel_grb_color_info.gd" id="1_alrhd"]
+[ext_resource type="Script" path="res://shader_motion/core/texel_grb_color_info.gd" id="1_alrhd"]
 
 [node name="ColorPanel" type="VBoxContainer" node_paths=PackedStringArray("color_rect", "spinbox_r", "spinbox_g", "spinbox_b")]
 script = ExtResource("1_alrhd")
