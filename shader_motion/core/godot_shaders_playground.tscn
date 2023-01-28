@@ -1,10 +1,11 @@
-[gd_scene load_steps=5 format=3]
+[gd_scene load_steps=5 format=3 uid="uid://dcmqt20qy1sls"]
 
 [ext_resource type="Shader" path="res://shader_motion/tests/random.gdshader" id="1_16qu1"]
 [ext_resource type="Script" path="res://shader_motion/core/godot_shaders_playground.gd" id="1_vadao"]
 [ext_resource type="Texture2D" path="res://shader_motion/frames/pouip-1617.dds" id="2_e7apj"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_tmm55"]
+render_priority = 0
 shader = ExtResource("1_16qu1")
 
 [node name="Node2D" type="Node2D"]

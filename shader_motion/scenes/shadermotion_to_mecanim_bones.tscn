@@ -1,12 +1,12 @@
-[gd_scene load_steps=8 format=3]
+[gd_scene load_steps=8 format=3 uid="uid://hda3ixj18bma"]
 
 [ext_resource type="Script" path="res://shader_motion/core/shadermotion_to_mecanim_bones.gd" id="1_7e4lo"]
 [ext_resource type="PackedScene" uid="uid://cl1x561gtew3c" path="res://shader_motion/core/shader_motion_mecanim_bone.tscn" id="2_ndqco"]
 [ext_resource type="Texture2D" uid="uid://cojek2d8v4mcg" path="res://shader_motion/frames/same_thing_as_atlas.png" id="3_0plc2"]
-[ext_resource type="SpriteFrames" uid="uid://cisjb06jp1kuo" path="res://shader_motion/frames/result_frames_2.tres" id="4_tj26p"]
-[ext_resource type="PackedScene" path="res://shader_motion/core/show_bone_info.tscn" id="5_cagfr"]
+[ext_resource type="SpriteFrames" uid="uid://d2ybu6xpy1bb1" path="res://shader_motion/frames/result_frames.tres" id="4_bo0ny"]
+[ext_resource type="PackedScene" uid="uid://drvc4hgivfhjb" path="res://shader_motion/core/show_bone_info.tscn" id="5_cagfr"]
 [ext_resource type="Texture2D" uid="uid://b22cjy74jq0r1" path="res://shader_motion/icons/share1.png" id="6_pvwik"]
-[ext_resource type="PackedScene" path="res://shader_motion/core/dynamic_model_loading.tscn" id="7_b3wmm"]
+[ext_resource type="PackedScene" uid="uid://u3acb5eyisyg" path="res://shader_motion/core/dynamic_model_loading.tscn" id="7_b3wmm"]
 
 [node name="Control" type="VBoxContainer" node_paths=PackedStringArray("shadermotion_frame_pixels_display", "analyzed_bones_list", "result_bones_list")]
 anchors_preset = 15
@@ -19,7 +19,7 @@ shadermotion_bone_analyzer = ExtResource("2_ndqco")
 shadermotion_frame_pixels_display = NodePath("HBoxContainer/TextureRect")
 analyzed_bones_list = NodePath("HBoxContainer/Control/ScrollContainer/VBoxContainer")
 analyzed_frame = ExtResource("3_0plc2")
-analyzed_pixels = ExtResource("4_tj26p")
+analyzed_pixels = ExtResource("4_bo0ny")
 bone_info_scene = ExtResource("5_cagfr")
 result_bones_list = NodePath("HBoxContainer/Control2/ScrollContainer2/ComputedBonesList")
 skeleton_root_path = "%Skeleton3D"

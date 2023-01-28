@@ -29,4 +29,4 @@ func _ready():
 
 	var frames = ShaderMotionHelpers.get_shader_motion_tiles_from_texture(shadermotion_video_frame)
 	#_debug_show_extracted_tiles(tile, tile_adjacent)
-	ResourceSaver.save(frames, "res://shader_motion/frames/result_frames_2.tres", ResourceSaver.FLAG_BUNDLE_RESOURCES)
+	ResourceSaver.save(frames, "res://shader_motion/frames/result_frames.tres", ResourceSaver.FLAG_BUNDLE_RESOURCES)
