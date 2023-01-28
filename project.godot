@@ -11,10 +11,6 @@ config_version=5
 [application]
 
 config/name="ShaderMeowMeow"
-run/main_scene="res://shadermotion_to_mecanim_bones.tscn"
+run/main_scene="res://shader_motion/scenes/shadermotion_to_mecanim_bones.tscn"
 config/features=PackedStringArray("4.0", "Double Precision", "Forward Plus")
 config/icon="res://icon.svg"
-
-[editor]
-
-export/convert_text_resources_to_binary=true

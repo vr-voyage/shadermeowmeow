@@ -20,7 +20,8 @@ analyzer_node = NodePath("ScrollContainer/VBoxContainer")
 custom_minimum_size = Vector2(90, 0)
 layout_mode = 2
 texture = ExtResource("1_kydr5")
-stretch_mode = 5
+expand_mode = 3
+stretch_mode = 4
 
 [node name="ScrollContainer" type="ScrollContainer" parent="."]
 layout_mode = 2

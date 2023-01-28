@@ -87,7 +87,7 @@ func analyse_pixels(shadermotion_pixels:SpriteFrames):
 		animation.track_set_interpolation_type(current_index, Animation.INTERPOLATION_CUBIC)
 		
 	#add_track
-	ResourceSaver.save(animation, "res://tests/exported_animation_inverse_x.tres")
+	ResourceSaver.save(animation, "res://shader_motion/animations//exported_animation_inverse_x.tres")
 
 var skeleton_bones:Array[Node3D] = _generate_dummy_bones_array()
 

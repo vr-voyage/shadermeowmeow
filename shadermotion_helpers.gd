@@ -1622,18 +1622,3 @@ static func _shadermotion_apply_human_pose(
 				skeleton_bones[bone].quaternion)
 		skeleton_bones[bone].quaternion = bone_rotation
 
-func _ready():
-	pass
-	#printerr(Quaternion(Basis.looking_at(Vector3.LEFT, Vector3.BACK)))
-	#_test_swing_twist()
-#	var quat_a = Quaternion(Vector3(1,0,0), deg_to_rad(30))
-#	print(quat_a)
-
-#	printerr(len(MecanimMuscle))
-#	var a = Vector3(0,1,2)
-#	var b = a
-#	b[0] = 15
-#	printerr(a)
-#	printerr(b)
-
-

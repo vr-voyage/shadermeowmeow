@@ -31,10 +31,5 @@ func _ready():
 	#_debug_show_extracted_tiles(tile, tile_adjacent)
 	ResourceSaver.save(
 		frames,
-		"res://tests/result_frames_2.tres",
+		"res://shader_motion/frames/result_frames_2.tres",
 		ResourceSaver.FLAG_BUNDLE_RESOURCES)
-
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
-	pass
