@@ -6,7 +6,7 @@
 [ext_resource type="SpriteFrames" uid="uid://cisjb06jp1kuo" path="res://shader_motion/frames/result_frames_2.tres" id="4_tj26p"]
 [ext_resource type="PackedScene" path="res://shader_motion/core/show_bone_info.tscn" id="5_cagfr"]
 [ext_resource type="Texture2D" uid="uid://b22cjy74jq0r1" path="res://shader_motion/icons/share1.png" id="6_pvwik"]
-[ext_resource type="PackedScene" path="res://shader_motion/tests/dynamic_model_loading.tscn" id="7_b3wmm"]
+[ext_resource type="PackedScene" path="res://shader_motion/core/dynamic_model_loading.tscn" id="7_b3wmm"]
 
 [node name="Control" type="VBoxContainer" node_paths=PackedStringArray("shadermotion_frame_pixels_display", "analyzed_bones_list", "result_bones_list")]
 anchors_preset = 15

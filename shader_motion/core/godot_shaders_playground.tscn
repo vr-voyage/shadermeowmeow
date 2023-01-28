@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=3]
 
 [ext_resource type="Shader" path="res://shader_motion/tests/random.gdshader" id="1_16qu1"]
-[ext_resource type="Script" path="res://shader_motion/tests/godot_shaders_playground.gd" id="1_vadao"]
+[ext_resource type="Script" path="res://shader_motion/core/godot_shaders_playground.gd" id="1_vadao"]
 [ext_resource type="Texture2D" path="res://shader_motion/frames/pouip-1617.dds" id="2_e7apj"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_tmm55"]
