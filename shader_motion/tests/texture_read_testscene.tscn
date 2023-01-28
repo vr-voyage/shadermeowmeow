@@ -1,9 +1,9 @@
 [gd_scene load_steps=5 format=3]
 
-[ext_resource type="Texture2D" uid="uid://bo2ptbrulyxcn" path="res://shader_motion/core/shadermotion_left_0000000001.png" id="1_kx4hy"]
+[ext_resource type="Texture2D" uid="uid://bo2ptbrulyxcn" path="res://shader_motion/frames/shadermotion_left_0000000001.png" id="1_kx4hy"]
 [ext_resource type="Script" path="res://shader_motion/tests/texture_read_test_script.gd" id="2_44ugh"]
 [ext_resource type="SpriteFrames" path="res://shader_motion/tests/test_shadermotion_frame.tres" id="3_4lufg"]
-[ext_resource type="Texture2D" uid="uid://cojek2d8v4mcg" path="res://shader_motion/core/same_thing_as_atlas.png" id="3_njupn"]
+[ext_resource type="Texture2D" uid="uid://cojek2d8v4mcg" path="res://shader_motion/frames/same_thing_as_atlas.png" id="3_njupn"]
 
 [node name="Node2D" type="Node2D"]
 

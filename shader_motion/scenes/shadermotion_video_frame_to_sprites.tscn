@@ -1,7 +1,7 @@
-[gd_scene load_steps=3 format=3 uid="uid://c7fk1bt5dwp3a"]
+[gd_scene load_steps=3 format=3]
 
 [ext_resource type="Script" path="res://shader_motion/core/shadermotion_frame_to_sprite_frames.gd" id="1_nt4eb"]
-[ext_resource type="Texture2D" uid="uid://cojek2d8v4mcg" path="res://shader_motion/core/same_thing_as_atlas.png" id="2_gvi7r"]
+[ext_resource type="Texture2D" uid="uid://cojek2d8v4mcg" path="res://shader_motion/frames/same_thing_as_atlas.png" id="2_gvi7r"]
 
 [node name="Control" type="ScrollContainer"]
 anchors_preset = 15

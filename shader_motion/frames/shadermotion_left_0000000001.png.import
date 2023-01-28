@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://bo2ptbrulyxcn"
-path="res://.godot/imported/shadermotion_left_0000000001.png-1cb0468aa2cf9e07312f24e82b546c32.ctex"
+path="res://.godot/imported/shadermotion_left_0000000001.png-bf321999caf58198c2c983e0df92c993.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://shader_motion/core/shadermotion_left_0000000001.png"
-dest_files=["res://.godot/imported/shadermotion_left_0000000001.png-1cb0468aa2cf9e07312f24e82b546c32.ctex"]
+source_file="res://shader_motion/frames/shadermotion_left_0000000001.png"
+dest_files=["res://.godot/imported/shadermotion_left_0000000001.png-bf321999caf58198c2c983e0df92c993.ctex"]
 
 [params]
 

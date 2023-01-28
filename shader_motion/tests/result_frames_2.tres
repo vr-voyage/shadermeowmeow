@@ -1,4 +1,4 @@
-[gd_resource type="SpriteFrames" load_steps=268 format=3]
+[gd_resource type="SpriteFrames" load_steps=268 format=3 uid="uid://cqb4kf0mw670h"]
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_v5qk8"]
 load_path = "res://.godot/imported/test_frame.png-d1481153c540a75b7655e329d309f406.ctex"
