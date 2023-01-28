@@ -22,7 +22,7 @@ analyzed_frame = ExtResource("3_1wswx")
 analyzed_pixels = ExtResource("4_5bp7i")
 bone_info_scene = ExtResource("5_oa7xw")
 result_bones_list = NodePath("HBoxContainer/Control2/ScrollContainer2/ComputedBonesList")
-skeleton_root_path = "%Skeleton3D"
+skeleton_root_path = "%GeneralSkeleton"
 
 [node name="PanelContainer" type="PanelContainer" parent="."]
 layout_mode = 2

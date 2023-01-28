@@ -60,12 +60,7 @@ func analyse_pixels(shadermotion_pixels: SpriteFrames):
 		var unity_bone_rotation: Quaternion = skeleton_bones[bone].quaternion
 		if unity_bone_rotation == NodeHelpers.invalid_quaternion:
 			continue
-
-		var basis: Basis = Basis.FLIP_Z
-		#var godot_rotation:Quaternion = unity_bone_rotation
 		var godot_rotation: Quaternion = Quaternion(Basis.FLIP_X.inverse() * Basis(unity_bone_rotation) * Basis.FLIP_X)
-
-		#var bone_rotation = Basis(unity_bone_rotation).scaled(Vector3(-1,1,-1)).get_rotation_quaternion()
 		var bone_name: String = bone_names[bone]
 		var animation_path: NodePath = NodePath("%s:%s" % [skeleton_root_path, bone_name])
 
@@ -76,7 +71,7 @@ func analyse_pixels(shadermotion_pixels: SpriteFrames):
 		animation.track_set_interpolation_type(current_index, Animation.INTERPOLATION_CUBIC)
 
 	#add_track
-	ResourceSaver.save(animation, "res://shader_motion/animations//exported_animation_inverse_x.tres")
+	ResourceSaver.save(animation, "res://shader_motion/animations//exported_animation.tres")
 
 
 var skeleton_bones: Array[Node3D] = _generate_dummy_bones_array()
