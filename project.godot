@@ -14,3 +14,11 @@ config/name="ShaderMeowMeow"
 run/main_scene="res://shader_motion/scenes/shadermotion_to_compatible_bones.tscn"
 config/features=PackedStringArray("4.0", "Double Precision", "Forward Plus")
 config/icon="res://icon.svg"
+
+[display]
+
+window/size/viewport_width=1920
+window/size/viewport_height=1080
+window/size/resizable=false
+window/stretch/mode="canvas_items"
+window/stretch/aspect="expand"

@@ -57,10 +57,10 @@ func analyse_pixels(shadermotion_pixels: SpriteFrames):
 	var bone_names = ShaderMotionHelpers.MecanimBodyBone.keys()
 
 	for bone in range(0, int(ShaderMotionHelpers.MecanimBodyBone.LastBone)):
-		var unity_bone_rotation: Quaternion = skeleton_bones[bone].quaternion
+		var unity_bone_rotation: Quaternion = skeleton_bones[bone].quaternion.normalized()
 		if unity_bone_rotation == NodeHelpers.invalid_quaternion:
 			continue
-		var godot_rotation: Quaternion = Quaternion(Basis.FLIP_X.inverse() * Basis(unity_bone_rotation) * Basis.FLIP_X)
+		var godot_rotation: Quaternion = (Basis.FLIP_X.inverse() * Basis(unity_bone_rotation) * Basis.FLIP_X).get_rotation_quaternion()
 		var bone_name: String = bone_names[bone]
 		var animation_path: NodePath = NodePath("%s:%s" % [skeleton_root_path, bone_name])
 
