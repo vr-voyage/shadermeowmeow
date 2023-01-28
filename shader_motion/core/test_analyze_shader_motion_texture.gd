@@ -1,7 +1,8 @@
 extends HBoxContainer
 
-@export var analyzed_pixels : SpriteFrames
-@export var analyzer_node : Control
+@export var analyzed_pixels: SpriteFrames
+@export var analyzer_node: Control
+
 
 func _ready():
 	if analyzer_node == null or analyzed_pixels == null:
