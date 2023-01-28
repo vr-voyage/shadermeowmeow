@@ -877,6 +877,16 @@ const mecanim_bone_muscles = {
 # These values might be extremely tied to the specific model
 # avatar Rig that was loaded in Unity.
 const human_axes = {
+#	hips is a bit special.
+#	but hips has
+#	bone.rotation * postQ == rotationMatrix * preQ
+#
+#	Normally.
+#	bone.localRotation * postQ == preQ * SwingTwist(sign * degrees)
+#
+#	https://gitlab.com/lox9973/ShaderMotion/-/blob/master/Script/Common/HumanAxes.cs#L12
+#	https://gitlab.com/lox9973/ShaderMotion/-/blob/master/Script/Common/Skeleton.cs#L43
+
 	MecanimBodyBone.Hips: {
 		"pre_rotation": Quaternion(0.707107, 0, 0, 0.707107),
 		"post_rotation": Quaternion(-0.03661, -0.706159, -0.03661, 0.706159),
