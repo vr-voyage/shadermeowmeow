@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://shader_motion/core/shadermotion_to_mecanim_bones.gd" id="1_jgy0w"]
 [ext_resource type="PackedScene" uid="uid://cl1x561gtew3c" path="res://shader_motion/core/shader_motion_mecanim_bone.tscn" id="2_abqa5"]
-[ext_resource type="Texture2D" uid="uid://cojek2d8v4mcg" path="res://shader_motion/frames/same_thing_as_atlas.png" id="3_1wswx"]
+[ext_resource type="Texture2D" uid="uid://hwwlnwh7x817" path="res://shader_motion/frames/test_frame.png" id="3_6touc"]
 [ext_resource type="SpriteFrames" uid="uid://d2ybu6xpy1bb1" path="res://shader_motion/frames/result_frames.tres" id="4_5bp7i"]
 [ext_resource type="PackedScene" uid="uid://drvc4hgivfhjb" path="res://shader_motion/core/show_bone_info.tscn" id="5_oa7xw"]
 [ext_resource type="Texture2D" uid="uid://b22cjy74jq0r1" path="res://shader_motion/icons/share1.png" id="6_and1e"]
@@ -18,7 +18,7 @@ script = ExtResource("1_jgy0w")
 shadermotion_bone_analyzer = ExtResource("2_abqa5")
 shadermotion_frame_pixels_display = NodePath("HBoxContainer/TextureRect")
 analyzed_bones_list = NodePath("HBoxContainer/Control/ScrollContainer/VBoxContainer")
-analyzed_frame = ExtResource("3_1wswx")
+analyzed_frame = ExtResource("3_6touc")
 analyzed_pixels = ExtResource("4_5bp7i")
 bone_info_scene = ExtResource("5_oa7xw")
 result_bones_list = NodePath("HBoxContainer/Control2/ScrollContainer2/ComputedBonesList")

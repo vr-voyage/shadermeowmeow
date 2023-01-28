@@ -1,12 +1,11 @@
 [gd_scene load_steps=273 format=3 uid="uid://c2q78ur0w5dyr"]
 
 [ext_resource type="Script" path="res://shader_motion/core/test_analyze_shader_motion_texture.gd" id="1_2ncn2"]
-[ext_resource type="Texture2D" uid="uid://be7old3qfpl64" path="res://shader_motion/frames/test_frame.png" id="3_qrfhj"]
+[ext_resource type="Texture2D" uid="uid://bo2ptbrulyxcn" path="res://shader_motion/frames/shadermotion_left_0000000001.png" id="2_037j2"]
 [ext_resource type="Script" path="res://shader_motion/core/shadermotion_slots_analyzer.gd" id="4_t6llf"]
 [ext_resource type="PackedScene" uid="uid://ctsupgbd1c1jv" path="res://shader_motion/core/shader_motion_block_analyzer.tscn" id="5_r78ee"]
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_h8v76"]
-load_path = "res://.godot/imported/test_frame.png-852732f368e34dbd0b319ac181ad4431.ctex"
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_eco61"]
 atlas = SubResource("CompressedTexture2D_h8v76")
@@ -1891,7 +1890,7 @@ analyzer_node = NodePath("ScrollContainer/VBoxContainer")
 [node name="TextureRect" type="TextureRect" parent="."]
 custom_minimum_size = Vector2(90, 0)
 layout_mode = 2
-texture = ExtResource("3_qrfhj")
+texture = ExtResource("2_037j2")
 expand_mode = 3
 stretch_mode = 4
 
