@@ -1,9 +1,9 @@
-[gd_scene load_steps=273 format=3 uid="uid://c2q78ur0w5dyr"]
+[gd_scene load_steps=273 format=3]
 
 [ext_resource type="Script" path="res://shader_motion/core/test_analyze_shader_motion_texture.gd" id="1_2ncn2"]
-[ext_resource type="Texture2D" uid="uid://bo2ptbrulyxcn" path="res://shader_motion/frames/shadermotion_left_0000000001.png" id="2_037j2"]
+[ext_resource type="Texture2D" path="res://shader_motion/frames/shadermotion_left_0000000001.png" id="2_037j2"]
 [ext_resource type="Script" path="res://shader_motion/core/shadermotion_slots_analyzer.gd" id="4_t6llf"]
-[ext_resource type="PackedScene" uid="uid://ctsupgbd1c1jv" path="res://shader_motion/core/shader_motion_block_analyzer.tscn" id="5_r78ee"]
+[ext_resource type="PackedScene" path="res://shader_motion/scenes/shader_motion_block_analyzer.tscn" id="5_r78ee"]
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_h8v76"]
 

@@ -1,7 +1,7 @@
-[gd_scene load_steps=3 format=3 uid="uid://cl1x561gtew3c"]
+[gd_scene load_steps=3 format=3]
 
 [ext_resource type="Script" path="res://shader_motion/core/shader_motion_mecanim_bone.gd" id="1_4mq7f"]
-[ext_resource type="PackedScene" uid="uid://c5tytvk5n83nl" path="res://shader_motion/core/shader_motion_slot_analyzer.tscn" id="2_x30eh"]
+[ext_resource type="PackedScene" uid="uid://c5tytvk5n83nl" path="res://shader_motion/shader_motion_slot_analyzer.tscn" id="2_x30eh"]
 
 [node name="ShaderMotionMecanimBone" type="VBoxContainer" node_paths=PackedStringArray("tiles_analysis_container", "bone_name_label", "bone_swingtwist_label", "bone_swingtwist_signed_label", "bone_rotation_label", "bone_signs_label", "bone_hips_position_low_label", "bone_hips_position_high_label", "bone_hips_position_label", "bone_hips_scale_label", "invalid_data_warning_label")]
 script = ExtResource("1_4mq7f")
