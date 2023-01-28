@@ -886,6 +886,9 @@ const human_axes = {
 #
 #	https://gitlab.com/lox9973/ShaderMotion/-/blob/master/Script/Common/HumanAxes.cs#L12
 #	https://gitlab.com/lox9973/ShaderMotion/-/blob/master/Script/Common/Skeleton.cs#L43
+#
+# Post is bone roll orientation
+# Pre is converting to bicycle pose
 
 	MecanimBodyBone.Hips: {
 		"pre_rotation": Quaternion(0.707107, 0, 0, 0.707107),
