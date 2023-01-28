@@ -1,6 +1,15 @@
-[gd_scene load_steps=2 format=3 uid="uid://cvjkau3bhnrwv"]
+[gd_scene load_steps=3 format=3 uid="uid://cvjkau3bhnrwv"]
 
 [ext_resource type="Script" path="res://test_threed.gd" id="1_wnb5m"]
+[ext_resource type="PackedScene" uid="uid://d07prygon86gc" path="res://model/RRRR/RRRR_200502-VRCHAT.glb" id="2_h2vug"]
 
 [node name="Node3D" type="Node3D"]
 script = ExtResource("1_wnb5m")
+
+[node name="RRRR_200502-VRCHAT" parent="." instance=ExtResource("2_h2vug")]
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.15657, 1.05036)
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.817034, 0.576589, 0, -0.576589, 0.817034, 0, 1.49635, 1.18276)

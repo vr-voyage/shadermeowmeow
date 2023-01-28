@@ -10,6 +10,9 @@ extends VBoxContainer
 @export var bone_info_scene:PackedScene
 @export var result_bones_list:Container
 
+@export var skeleton_root_path:String
+@export var animated_node_path:NodePath
+
 var motions:ShaderMotionHelpers.ParsedMotions = ShaderMotionHelpers.ParsedMotions.new()
 
 func _generate_dummy_bones_array() -> Array[Node3D]:
@@ -22,6 +25,8 @@ func _generate_dummy_bones_array() -> Array[Node3D]:
 		bone_node.name = bones_names[bone]
 		bones[bone] = bone_node
 	return bones
+
+
 
 func analyse_pixels(shadermotion_pixels:SpriteFrames):
 	NodeHelpers.remove_children_from(analyzed_bones_list)
@@ -45,14 +50,46 @@ func analyse_pixels(shadermotion_pixels:SpriteFrames):
 
 	print(motions)
 	var skeleton_bones:Array[Node3D] = _generate_dummy_bones_array()
+	var precomputed_skeleton_human_scale:float = 0.749392
 	ShaderMotionHelpers._shadermotion_apply_human_pose(
 		skeleton_bones,
-		0.749392,
+		precomputed_skeleton_human_scale,
 		motions)
 	for bone in skeleton_bones:
 		var bone_info_panel = bone_info_scene.instantiate()
 		result_bones_list.add_child(bone_info_panel)
 		bone_info_panel.show_bone(bone)
+
+	var animation:Animation = Animation.new()
+
+	var bone_names = ShaderMotionHelpers.MecanimBodyBone.keys()
+	
+	for bone in range(0, int(ShaderMotionHelpers.MecanimBodyBone.LastBone)):
+		var unity_bone_rotation:Quaternion = skeleton_bones[bone].quaternion
+		if unity_bone_rotation == NodeHelpers.invalid_quaternion:
+			continue
+
+		var basis:Basis = Basis.FLIP_Z
+		#var godot_rotation:Quaternion = unity_bone_rotation
+		var godot_rotation:Quaternion = Quaternion(
+			Basis.FLIP_X.inverse()
+			* Basis(unity_bone_rotation)
+			* Basis.FLIP_X)
+
+		#var bone_rotation = Basis(unity_bone_rotation).scaled(Vector3(-1,1,-1)).get_rotation_quaternion()
+		var bone_name:String = bone_names[bone]
+		var animation_path:NodePath = NodePath("%s:%s" % [skeleton_root_path, bone_name])
+
+		var current_index:int = animation.get_track_count()
+		animation.add_track(Animation.TYPE_ROTATION_3D)
+		animation.track_set_path(current_index, animation_path)
+		animation.rotation_track_insert_key(current_index, 0, godot_rotation)
+		animation.track_set_interpolation_type(current_index, Animation.INTERPOLATION_CUBIC)
+		
+	#add_track
+	ResourceSaver.save(animation, "res://tests/exported_animation_inverse_x.tres")
+
+var skeleton_bones:Array[Node3D] = _generate_dummy_bones_array()
 
 # Called when the node enters the scene tree for the first time.
 func _ready():

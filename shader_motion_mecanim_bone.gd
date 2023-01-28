@@ -162,6 +162,7 @@ func _unity_look_rotation(
 	var forward_normalized = forward_vector.normalized()
 	var vector_a:Vector3 = forward_normalized.normalized() # Yes, it does it twice
 	var vector_b:Vector3 = up_vector.cross(forward_normalized).normalized()
+	#var vector_b:Vector3 = forward_normalized.cross(up_vector).normalized()
 	var vector_c:Vector3 = vector_a.cross(vector_b)
 
 	var bx_cy_az:float = vector_b.x + vector_c.y + vector_a.z
@@ -212,7 +213,7 @@ func _compute_hips_motion(vectors:PackedVector3Array):
 		forward_vector = _unity_vector_forward
 
 	var look_rotation:Quaternion = _unity_look_rotation(forward_vector, up_vector)
-	
+
 	#var motion = {
 	#	"position": decoded_position * position_scale,
 	#	"rotation": look_rotation,

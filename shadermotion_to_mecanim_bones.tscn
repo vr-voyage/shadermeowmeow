@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://nrlm01pak2vc"]
+[gd_scene load_steps=8 format=3 uid="uid://nrlm01pak2vc"]
 
 [ext_resource type="Script" path="res://shadermotion_to_mecanim_bones.gd" id="1_1avus"]
 [ext_resource type="PackedScene" uid="uid://1cle4lgobxh2" path="res://shader_motion_mecanim_bone.tscn" id="2_p0flw"]
@@ -6,6 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://be7old3qfpl64" path="res://tests/test_frame.png" id="3_pdbg6"]
 [ext_resource type="Texture2D" uid="uid://b22cjy74jq0r1" path="res://icons/share1.png" id="5_hb5hh"]
 [ext_resource type="PackedScene" uid="uid://c684p5xdqpk4l" path="res://show_bone_info.tscn" id="6_443ku"]
+[ext_resource type="PackedScene" uid="uid://g2iqt25by7kp" path="res://tests/dynamic_model_loading.tscn" id="7_p7t7c"]
 
 [node name="Control" type="VBoxContainer" node_paths=PackedStringArray("shadermotion_frame_pixels_display", "analyzed_bones_list", "result_bones_list")]
 anchors_preset = 15
@@ -21,6 +22,7 @@ analyzed_frame = ExtResource("3_pdbg6")
 analyzed_pixels = ExtResource("3_au6fs")
 bone_info_scene = ExtResource("6_443ku")
 result_bones_list = NodePath("HBoxContainer/Control2/ScrollContainer2/ComputedBonesList")
+skeleton_root_path = "%Skeleton3D"
 
 [node name="PanelContainer" type="PanelContainer" parent="."]
 layout_mode = 2
@@ -95,5 +97,18 @@ size_flags_horizontal = 3
 
 [node name="ComputedBonesList" type="VBoxContainer" parent="HBoxContainer/Control2/ScrollContainer2"]
 layout_mode = 2
+
+[node name="SubViewportContainer" type="SubViewportContainer" parent="HBoxContainer"]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+stretch = true
+
+[node name="SubViewport" type="SubViewport" parent="HBoxContainer/SubViewportContainer"]
+handle_input_locally = false
+size = Vector2i(380, 576)
+render_target_update_mode = 4
+
+[node name="Node3D" parent="HBoxContainer/SubViewportContainer/SubViewport" instance=ExtResource("7_p7t7c")]
 
 [connection signal="pressed" from="PanelContainer2/HBoxContainer/ExportButton" to="." method="_on_export_button_pressed"]

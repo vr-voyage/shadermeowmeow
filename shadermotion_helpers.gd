@@ -1600,6 +1600,8 @@ static func _shadermotion_apply_human_pose(
 		skeleton_root,
 		parsed_motions.hips,
 		skeleton_human_scale)
+
+	printerr(hips_position)
 	skeleton_bones[MecanimBodyBone.Hips].position = hips_position
 
 	for bone in range(0, int(MecanimBodyBone.LastBone)):

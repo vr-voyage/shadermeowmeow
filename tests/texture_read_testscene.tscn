@@ -37,7 +37,7 @@ position = Vector2(523, 97)
 texture = ExtResource("1_kx4hy")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
-frames = ExtResource("3_4lufg")
+sprite_frames = ExtResource("3_4lufg")
 
 [node name="TextureRect" type="TextureRect" parent="."]
 offset_top = 102.0

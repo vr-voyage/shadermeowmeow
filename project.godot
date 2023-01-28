@@ -8,34 +8,6 @@
 
 config_version=5
 
-_global_script_classes=[{
-"base": "Node",
-"class": &"NodeHelpers",
-"language": &"GDScript",
-"path": "res://helpers/node_helpers.gd"
-}, {
-"base": "Node",
-"class": &"ShaderMotionHLSLHelpers",
-"language": &"GDScript",
-"path": "res://hlsl_shadermotion_helpers.gd"
-}, {
-"base": "Control",
-"class": &"ShaderMotionHelpers",
-"language": &"GDScript",
-"path": "res://shadermotion_helpers.gd"
-}, {
-"base": "VBoxContainer",
-"class": &"ShowTexelGRB",
-"language": &"GDScript",
-"path": "res://texel_grb_color_info.gd"
-}]
-_global_script_class_icons={
-"NodeHelpers": "",
-"ShaderMotionHLSLHelpers": "",
-"ShaderMotionHelpers": "",
-"ShowTexelGRB": ""
-}
-
 [application]
 
 config/name="ShaderMeowMeow"
