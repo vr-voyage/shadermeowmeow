@@ -1,6 +1,6 @@
-[gd_scene load_steps=5 format=3]
+[gd_scene load_steps=5 format=3 uid="uid://c5tytvk5n83nl"]
 
-[ext_resource type="PackedScene" uid="uid://dmd04wp8xr1md" path="res://shader_motion/scenes/texel_grb_color_info.tscn" id="1_nxlyc"]
+[ext_resource type="PackedScene" uid="uid://dmd04wp8xr1md" path="res://shader_motion/core/texel_grb_color_info.tscn" id="1_nxlyc"]
 [ext_resource type="Script" path="res://shader_motion/core/shader_motion_slot_analyzer.gd" id="1_w8feu"]
 
 [sub_resource type="SystemFont" id="SystemFont_ccbam"]
