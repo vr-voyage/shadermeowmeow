@@ -1,0 +1,97 @@
+　　■まぶた関連
+・eye_close　　　　両目閉じ/主に瞬きに
+・eyeL_close　　　左目閉じ
+・eyeR_close　　　右目閉じ
+・eye_smile　　　　笑顔目閉じ/笑顔などに
+・eyeL_smile　　　笑顔左目のみ/左ウインクなどに
+・eyeR_smile　　　笑顔右目のみ/右ウインクなどに
+・eyeeff1_on　　　(＞ ＜)の表情
+・eyelids_1～6　　睫毛が伸びる。数字の場所によって伸びる場所が変化
+・eye_2　　　　 　ツリ目になります
+　　　　　　　　　　※アニメーションオーバーライドで目を他の表情にする際は、
+　　　　　　　　　　　こちらの数値を一緒に0にしないと見た目が崩れる
+　　　　　　　　　　　また、両目前提なので、片目閉じ系との組み合わせは苦手
+
+　　■口関連
+・mouth_normal　　とりあえず入ってます
+・mouth_a　　　　「あ」の口、他の口と組み合わせると見た目が崩れることがあります
+・mouth_i　　　　「い」の口、他の口と組み合わせると見た目が崩れることがあります
+・mouth_u　　　　「う」の口、他の口と組み合わせると見た目が崩れることがあります
+・mouth_e　　　　「え」の口、他の口と組み合わせると見た目が崩れることがあります
+・mouth_o　　　　「お」の口、他の口と組み合わせると見た目が崩れることがあります
+・mouth_delta　　　△の口になる
+・mouth_tongue　　「あ」の状態で舌を出します/ぺろぺろしたいときに
+・mouth_smile　　　口閉じスマイル
+・mouth_cat_smile　口閉じスマイルのω版
+・mouth_laugh　　　笑顔笑い
+・mouth_goodsmile　より大きく口を開けた笑顔笑い
+・mouth_cat_laugh　笑顔笑いのω版
+・mouth_laugh2　　 にひひ笑い
+・mouth_bad_laugh　片頬を吊り上げるようなあくどい笑い
+・mouth_bad　　　　むっとした口
+・mouth_sulky　　　むっとして頬を膨らませる
+・mouth_surprise　「えぇぇ…」な口
+・mouth_trouble　　「はわわ」な口
+・mouth_angry　　　怒って声を出す口
+・mouth_scared　　　ｶﾞｸﾌﾞﾙな波線閉じ口
+・mouth_tremble　　ｶﾞｸﾌﾞﾙな波線少し開け口
+・mouth_scream　　　ｶﾞｸﾌﾞﾙで叫んでいる口
+・mouth_shout　　　叫び口/一番大きく開いている
+・voice_a　　　　「あ」の口、口の動きが弱いですが、口の表情と組み合わせしやすい
+・voice_i　　　　「い」の口、口の動きが弱いですが、口の表情と組み合わせしやすい
+・voice_u　　　　「う」の口、口の動きが弱いですが、口の表情と組み合わせしやすい
+・voice_e　　　　「え」の口、口の動きが弱いですが、口の表情と組み合わせしやすい
+・voice_o　　　　「お」の口、口の動きが弱いですが、口の表情と組み合わせしやすい
+
+　　■歯関連
+・toothU_lost　　 上の歯をなくす/特定の口の時に歯を見せないようにするなど
+・toothD_lost　　 下の歯をなくす/特定の口の時に歯を見せないようにするなど
+・tooth_toge　　　ギザ歯になります/キャラ付けなどに(常時設定用)
+・tooth_catL　　　左上の八重歯ができます/キャラ付けなどに(常時設定用)
+・tooth_catR　　　右上の八重歯ができます/キャラ付けなどに(常時設定用)
+
+　　■眉毛関連
+・brow_thick　　　眉毛が太くなります/キャラ付けなどに(常時設定用)
+・brow_short　　　眉毛が短くなります/キャラ付けなどに(常時設定用)
+・brow_angry　　　怒り眉
+・brow_straight　 真っすぐ眉
+・brow_rough　　　波打った眉/とても困った時とかに
+・brow_cry　　　 「ハ」の形になる
+・brow_down　　　　両眉の位置が下がる
+・brow_weak　　　「んもー」な感じの眉
+・browL_overdown　左眉だけ下げる
+・browR_overdown　右眉だけ下げる
+
+　　■体系関連　　体系系は主に常時設定用です。組み合わせによる体系変化が可能
+・breast_maternal　　メロンパンが大きくなる　<<LC版ではオミット>>
+・hair_long　　　　　後ろ髪が伸びる　シヴィー、ヨツル、フォーシーに搭載　<<LC版ではオミット>>
+・hair_short　　　　 後ろ髪が短くなる　シヴィーのみ　<<LC版ではオミット>>
+
+　　■特殊表情関連
+・eye_small　　　　 通常の瞳が縦細くなる
+・eye_small　　　　 通常の瞳が小さくなる
+・eye_star　　　　　瞳に十字星を表示
+・eye_star_anime　　十字星の大きさが変化。「eye_star」時に使用して十字星のアニメーションを作れる
+・eye_heart　　　　 瞳にハートを表示
+・eye_heart_anime　 ハートの大きさが変化。「eye_heart」時に使用してハートのアニメーションを作れる
+・eye_despair　　　 うつろな瞳になる
+・eye_panic　　　　 アウトラインの強い白塗りの瞳になる
+・eye_panic_anime1　白塗りの瞳のアウトラインが変化。「eye_panic」時に使用してワナワナした瞳を作れる
+・eye_panic_anime2　白塗りの瞳のアウトラインが変化。「eye_panic」時に使用してワナワナした瞳を作れる
+・eye_confusion　　 渦巻の瞳になる
+・highlight_lost　　目からハイライトが消える
+・cheek_on　　　　　紅潮する赤面　<<LC版ではオミット>>
+・blue_on　　　　　 血の引く青面　<<LC版ではオミット>>
+・tears01_on　　　　目頭に涙　<<LC版ではオミット>>
+・tears02_on　　　　目尻に涙　<<LC版ではオミット>>
+・sweat1L_on　　　　左顎下に汗　<<LC版ではオミット>>
+・sweat1R_on　　　　右顎下に汗　<<LC版ではオミット>>
+・sweat2L_on　　　　左頬に汗　<<LC版ではオミット>>
+・sweat2R_on　　　　右頬に汗　<<LC版ではオミット>>
+・sweat3L_on　　　　左額に汗　<<LC版ではオミット>>
+・sweat3R_on　　　　右額に汗　<<LC版ではオミット>>
+
+　　■その他
+・rrrr_tops_front　 ヨツルの胸元が閉じる
+・rrrr_tops_arm　　 ヨツルの上着の袖の長さが短くなる
+・rrrr_bag　　　　　ヨツルのカバンが大きくなる
