@@ -4,12 +4,12 @@ importer="scene"
 importer_version=1
 type="PackedScene"
 uid="uid://bjjcidikvy81q"
-path="res://.godot/imported/NonRetargeted.glb-c51b7ee286e3adcc268f88dd13f008d5.scn"
+path="res://.godot/imported/NonRetargeted.glb-7eb13b180ac7807da8578115bedcfe94.scn"
 
 [deps]
 
-source_file="res://shader_motion/RRRR/NonRetargeted.glb"
-dest_files=["res://.godot/imported/NonRetargeted.glb-c51b7ee286e3adcc268f88dd13f008d5.scn"]
+source_file="res://shader_motion/SK_RRRR/NonRetargeted.glb"
+dest_files=["res://.godot/imported/NonRetargeted.glb-7eb13b180ac7807da8578115bedcfe94.scn"]
 
 [params]
 

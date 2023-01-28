@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=3]
 
-[ext_resource type="PackedScene" uid="uid://bd7kbw6bw62cm" path="res://shader_motion/RRRR/RRRR_200502-VRCHAT.glb" id="1_fxp07"]
-[ext_resource type="Texture2D" uid="uid://bfbqjmjd8fait" path="res://shader_motion/RRRR/RRRR_200502-VRCHAT_6.png" id="2_wsmjw"]
+[ext_resource type="PackedScene" uid="uid://bd7kbw6bw62cm" path="res://shader_motion/SK_RRRR/RRRR_200502-VRCHAT.glb" id="1_fxp07"]
+[ext_resource type="Texture2D" uid="uid://bfbqjmjd8fait" path="res://shader_motion/SK_RRRR/RRRR_200502-VRCHAT_6.png" id="2_wsmjw"]
 
 [sub_resource type="ORMMaterial3D" id="ORMMaterial3D_hbhb8"]
 shading_mode = 0

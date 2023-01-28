@@ -4,12 +4,12 @@ importer="scene"
 importer_version=1
 type="PackedScene"
 uid="uid://bd7kbw6bw62cm"
-path="res://.godot/imported/RRRR_200502-VRCHAT.glb-cee315a8da0417315466c81bb6bd3d65.scn"
+path="res://.godot/imported/RRRR_200502-VRCHAT.glb-4a6a2aeb5d0aa66f35b223970907ca9f.scn"
 
 [deps]
 
-source_file="res://shader_motion/RRRR/RRRR_200502-VRCHAT.glb"
-dest_files=["res://.godot/imported/RRRR_200502-VRCHAT.glb-cee315a8da0417315466c81bb6bd3d65.scn"]
+source_file="res://shader_motion/SK_RRRR/RRRR_200502-VRCHAT.glb"
+dest_files=["res://.godot/imported/RRRR_200502-VRCHAT.glb-4a6a2aeb5d0aa66f35b223970907ca9f.scn"]
 
 [params]
 
