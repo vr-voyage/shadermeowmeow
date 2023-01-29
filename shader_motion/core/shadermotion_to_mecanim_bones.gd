@@ -115,4 +115,3 @@ func calc_frame() -> void:
 		if current_index == -1:
 			continue
 		animation.rotation_track_insert_key(current_index, animation_name.to_float(), godot_rotation)
-	ResourceSaver.save(animation, "res://shader_motion/animations/exported_animation.res")
