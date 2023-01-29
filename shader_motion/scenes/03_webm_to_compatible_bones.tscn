@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://shader_motion/core/shadermotion_to_mecanim_bones.gd" id="1_qyk67"]
 [ext_resource type="PackedScene" path="res://shader_motion/core/shader_motion_mecanim_bone.tscn" id="2_nmkby"]
-[ext_resource type="SpriteFrames" uid="uid://cg616li8qc32y" path="res://shader_motion/frames/result_frames.res" id="3_mboax"]
+[ext_resource type="SpriteFrames" path="res://shader_motion/frames/result_frames.res" id="3_aq7yd"]
 [ext_resource type="PackedScene" path="res://shader_motion/core/show_bone_info.tscn" id="5_dc03k"]
 [ext_resource type="Texture2D" uid="uid://b22cjy74jq0r1" path="res://shader_motion/icons/share1.png" id="6_ajo63"]
 [ext_resource type="VideoStream" path="res://shader_motion/presentation_webm/[Vket2021] Shadermotion ： Presentation (EN) [FN0nvPv3A-c].webm" id="7_57u33"]
@@ -18,7 +18,7 @@ script = ExtResource("1_qyk67")
 shadermotion_bone_analyzer = ExtResource("2_nmkby")
 shadermotion_frame_pixels_display = NodePath("HBoxContainer/TextureRect")
 analyzed_bones_list = NodePath("HBoxContainer/Control/ScrollContainer/VBoxContainer")
-analyzed_pixels = ExtResource("3_mboax")
+analyzed_pixels = ExtResource("3_aq7yd")
 bone_info_scene = ExtResource("5_dc03k")
 result_bones_list = NodePath("HBoxContainer/Control2/ScrollContainer2/ComputedBonesList")
 skeleton_root_path = "%GeneralSkeleton"

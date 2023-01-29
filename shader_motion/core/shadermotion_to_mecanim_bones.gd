@@ -4,7 +4,6 @@ extends VBoxContainer
 @export var shadermotion_frame_pixels_display: TextureRect
 
 @export var analyzed_bones_list: Container
-@export var analyzed_frame: Texture2D
 @export var analyzed_pixels: SpriteFrames
 
 @export var bone_info_scene: PackedScene
@@ -113,9 +112,3 @@ func calc_frame() -> void:
 			continue
 		animation.rotation_track_insert_key(current_index, animation_name.to_float(), godot_rotation)
 	ResourceSaver.save(animation, "res://shader_motion/animations/exported_animation.res")
-#	shadermotion_frame_pixels_display.texture = ShaderMotionHelpers.get_shader_motion_tiles_part(analyzed_frame)
-
-#func _on_export_button_pressed():
-#	var filepath: String = "user://export_%d.tsv" % [int(Time.get_unix_time_from_system())]
-#	motions.export_to_tsv(filepath)
-#	OS.shell_open(ProjectSettings.globalize_path(filepath))
