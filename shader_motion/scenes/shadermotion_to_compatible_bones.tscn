@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://shader_motion/core/shadermotion_to_mecanim_bones.gd" id="1_jgy0w"]
 [ext_resource type="PackedScene" path="res://shader_motion/core/shader_motion_mecanim_bone.tscn" id="2_abqa5"]
-[ext_resource type="Texture2D" uid="uid://flwclppxphtv" path="res://shader_motion/presentation_frames/shadermotion_0000004798.png" id="3_i3jhk"]
+[ext_resource type="Texture2D" uid="uid://flwclppxphtv" path="res://shader_motion/frames/shadermotion_0000004798.png" id="3_i3jhk"]
 [ext_resource type="SpriteFrames" uid="uid://d2ybu6xpy1bb1" path="res://shader_motion/frames/result_frames.tres" id="4_5bp7i"]
 [ext_resource type="PackedScene" path="res://shader_motion/core/show_bone_info.tscn" id="5_oa7xw"]
 [ext_resource type="Texture2D" uid="uid://b22cjy74jq0r1" path="res://shader_motion/icons/share1.png" id="6_and1e"]
@@ -106,7 +106,7 @@ stretch = true
 
 [node name="SubViewport" type="SubViewport" parent="HBoxContainer/SubViewportContainer"]
 handle_input_locally = false
-size = Vector2i(380, 576)
+size = Vector2i(300, 0)
 render_target_update_mode = 4
 
 [node name="Node3D" parent="HBoxContainer/SubViewportContainer/SubViewport" instance=ExtResource("7_0fcp4")]
