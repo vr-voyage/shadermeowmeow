@@ -78,6 +78,8 @@ func _process(delta):
 		
 func calc_frame() -> void:
 	if not animation_names.size():
+		ResourceSaver.save(animation, "res://shader_motion/animations/exported_animation.res")
+		get_tree().quit()
 		return
 	var animation_name = animation_names[0]
 	animation_names.pop_front()
