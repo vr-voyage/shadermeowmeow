@@ -12,4 +12,7 @@ func _ready():
 func show_bone(bone: Node3D):
 	ui_name.text = bone.name
 	ui_position.text = str(bone.position)
-	ui_rotation.text = str(bone.quaternion)
+	if bone.quaternion.is_finite():
+		ui_rotation.text = str(bone.quaternion)
+	else:
+		ui_rotation.text = ""

@@ -1217,7 +1217,7 @@ static func _muscle_from_bone(
 	return mecanim_bone_muscles[mecanim_bone][muscle_axis][0]
 
 static func pose_set_hips_position_rotation(
-	pose_muscles:PackedFloat64Array,
+	_pose_muscles:PackedFloat64Array,
 	hips_t:Vector3,
 	hips_q:Quaternion,
 	human_scale:float
@@ -1275,7 +1275,7 @@ static func pose_set_bone_swing_twists(
 				pose_muscles[muscle] += bone_related_swingtwist[axis] * weight
 
 	for muscle in MecanimMuscle:
-		var muscle_value:float = pose_muscles[muscle]
+#		var muscle_value:float = pose_muscles[muscle]
 
 		var muscle_limits:Array[float] = mecanim_muscle_limits[muscle]
 		var muscle_limit_min:float = muscle_limits[0]
@@ -1311,7 +1311,7 @@ static func shadermotion_tile_rect(
 	tiles_per_column:int = 45,
 	tile_width:int = 24,
 	tile_height:int = 24) -> Rect2:
-	var block_column:int = tile_index / tiles_per_column
+	var block_column:int = round(tile_index / tiles_per_column)
 	var block_row:int = tile_index % tiles_per_column
 	var block_x:int = block_column * (tile_width * 2)
 	var block_y:int = block_row
@@ -1345,10 +1345,9 @@ static func get_shader_motion_tiles_from_texture(
 	tile_width:int = 24,
 	tile_height:int = 24
 ) -> void:
-	if frames == null:
-		return
 	var frame_name = String.num(time)
-	frames.add_animation(frame_name)
+	if not frames.has_animation(frame_name):
+		frames.add_animation(frame_name)
 	var i:int = 0
 	for frame_block_name in ShaderMotionHelpers.block_tiles:
 		var frame_block:Array = ShaderMotionHelpers.block_tiles[frame_block_name]

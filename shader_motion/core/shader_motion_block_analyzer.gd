@@ -30,8 +30,8 @@ func show_shader_motion_block(pixels: SpriteFrames, block_name: String, block_ra
 	if pixels == null or block_range == null:
 		printerr("%s [ShaderMotion Slots Analyzer] Passed null data to show_shadermotion_block" % name)
 		return
-
-	var n_slots = pixels.get_frame_count("default") / 2
+	var animation_name = "0"
+	var n_slots = pixels.get_frame_count(animation_name) / 2
 	for slot_index in block_range:
 		if slot_index >= n_slots:
 			printerr(
@@ -41,7 +41,6 @@ func show_shader_motion_block(pixels: SpriteFrames, block_name: String, block_ra
 				)
 			)
 			return
-
 	NodeHelpers.remove_children_from(slots_container)
 	var shader_motion_values: PackedFloat64Array = PackedFloat64Array()
 	var shader_motion_decoded_angles: PackedFloat64Array = PackedFloat64Array()

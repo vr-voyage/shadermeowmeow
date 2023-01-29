@@ -26,7 +26,7 @@ func _generate_dummy_bones_array() -> Array[Node3D]:
 
 var skeleton_bones: Array[Node3D] = _generate_dummy_bones_array()
 
-var animation_names : PackedStringArray
+var animation_names : Array[String]
 
 var animation : Animation = Animation.new()
 
@@ -48,9 +48,11 @@ func _ready():
 		return
 
 	NodeHelpers.remove_children_from(analyzed_bones_list)
-	animation_names = analyzed_pixels.get_animation_names()
-	if not animation_names.size() > 1:
+	var current_animation_names = analyzed_pixels.get_animation_names()
+	if not current_animation_names.size() > 1:
 		return
+	for animation in current_animation_names:
+		animation_names.push_back(animation)
 	animation.length = animation_names[animation_names.size() - 2].to_float()
 	print(animation.length)
 	
@@ -76,7 +78,7 @@ func _process(delta):
 		
 func calc_frame() -> void:
 	var animation_name = animation_names[0]
-	animation_names.remove_at(0)
+	animation_names.pop_front()
 	var motions: ShaderMotionHelpers.ParsedMotions = ShaderMotionHelpers.ParsedMotions.new()
 	var mecanim_bone_names = ShaderMotionHelpers.MecanimBodyBone.keys()
 	var bone_names = ShaderMotionHelpers.MecanimBodyBone.keys()
