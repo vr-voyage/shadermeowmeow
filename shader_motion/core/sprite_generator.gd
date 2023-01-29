@@ -9,7 +9,7 @@ func _enter_tree():
 
 func _process(_delta):
 	var texture : Texture2D = get_video_texture()
-	ShaderMotionHelpers.get_shader_motion_tiles_from_texture(texture.duplicate(), frames, stream_position)
-	if stream_position > 10:
+	ShaderMotionHelpers.get_shader_motion_tiles_from_texture(texture.get_image(), frames, stream_position)
+	if stream_position > 2:
 		ResourceSaver.save(frames, "res://shader_motion/frames/result_frames.res")
 		get_tree().quit()

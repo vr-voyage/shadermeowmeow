@@ -1323,22 +1323,24 @@ static func shadermotion_tile_rect(
 	return ret
 
 static func get_shadermotion_tile(
-	main_texture:Texture2D,
+	main_texture:Image,
 	tile_index:int,
 	adjacent:bool,
 	tiles_per_column:int = 45,
 	tile_width:int = 24,
 	tile_height:int = 24
 ) -> Texture2D:
-	var ret_texture = AtlasTexture.new()
-	ret_texture.atlas = main_texture
-	ret_texture.region = shadermotion_tile_rect(
+	var region : Rect2 = shadermotion_tile_rect(
 		tile_index, int(adjacent),
 		tiles_per_column, tile_width, tile_height)
+	var ret_texture = ImageTexture.new()
+	var image = main_texture.get_region(region)
+	image.resize(1, 1, Image.INTERPOLATE_LANCZOS)
+	ret_texture.set_image(image)
 	return ret_texture
 
 static func get_shader_motion_tiles_from_texture(
-	from_texture:Texture2D,
+	from_texture:Image,
 	frames : SpriteFrames,
 	time : float,
 	tiles_per_column:int = 45,

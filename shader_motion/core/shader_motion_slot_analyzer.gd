@@ -72,7 +72,7 @@ func _show_slot_samples(square_texture: Texture2D, square_adjacent_texture: Text
 	var square_adjacent_sample = _sample_pixel_color_at_middle(square_adjacent_texture)
 
 	if square_sample == bad_color or square_adjacent_sample == bad_color:
-		printerr("[%s] [ShaderMotion Slot Analyzer] Could not sample the texture :C" % name)
+#		printerr("[%s] [ShaderMotion Slot Analyzer] Could not sample the texture :C" % name)Could not sample the texture :C
 		return
 
 	square_raw.show_color(square_sample)
