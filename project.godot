@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="ShaderMeowMeow"
-run/main_scene="res://shader_motion/scenes/shadermotion_to_compatible_bones.tscn"
+run/main_scene="res://shader_motion/scenes/00_webm_player.tscn"
 config/features=PackedStringArray("4.0", "Double Precision", "Forward Plus")
 config/icon="res://icon.svg"
 

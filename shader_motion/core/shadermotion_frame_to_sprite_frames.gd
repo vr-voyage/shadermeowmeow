@@ -27,6 +27,6 @@ func _debug_show_extracted_tiles(tile: Texture2D, tile_adjacent: Texture2D):
 func _ready():
 	print("%d x %d" % [shadermotion_video_frame.get_width(), shadermotion_video_frame.get_height()])
 
-	var frames = ShaderMotionHelpers.get_shader_motion_tiles_from_texture(shadermotion_video_frame)
+	var frames = ShaderMotionHelpers.get_shader_motion_tiles_from_texture(shadermotion_video_frame, 0)
 	#_debug_show_extracted_tiles(tile, tile_adjacent)
 	ResourceSaver.save(frames, "res://shader_motion/frames/result_frames.tres", ResourceSaver.FLAG_BUNDLE_RESOURCES)

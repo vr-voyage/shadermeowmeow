@@ -1,12 +1,12 @@
-[gd_scene load_steps=8 format=3 uid="uid://hda3ixj18bma"]
+[gd_scene load_steps=8 format=3 uid="uid://c8q8rbaul3msj"]
 
-[ext_resource type="Script" path="res://shader_motion/core/shadermotion_to_mecanim_bones.gd" id="1_jgy0w"]
-[ext_resource type="PackedScene" path="res://shader_motion/core/shader_motion_mecanim_bone.tscn" id="2_abqa5"]
-[ext_resource type="Texture2D" uid="uid://flwclppxphtv" path="res://shader_motion/frames/shadermotion_0000004798.png" id="3_i3jhk"]
-[ext_resource type="SpriteFrames" uid="uid://d2ybu6xpy1bb1" path="res://shader_motion/frames/result_frames.tres" id="4_5bp7i"]
-[ext_resource type="PackedScene" path="res://shader_motion/core/show_bone_info.tscn" id="5_oa7xw"]
-[ext_resource type="Texture2D" uid="uid://b22cjy74jq0r1" path="res://shader_motion/icons/share1.png" id="6_and1e"]
-[ext_resource type="PackedScene" path="res://shader_motion/core/dynamic_model_loading.tscn" id="7_0fcp4"]
+[ext_resource type="Script" path="res://shader_motion/core/shadermotion_to_mecanim_bones.gd" id="1_qyk67"]
+[ext_resource type="PackedScene" path="res://shader_motion/core/shader_motion_mecanim_bone.tscn" id="2_nmkby"]
+[ext_resource type="SpriteFrames" uid="uid://cg616li8qc32y" path="res://shader_motion/frames/result_frames.res" id="3_mboax"]
+[ext_resource type="PackedScene" path="res://shader_motion/core/show_bone_info.tscn" id="5_dc03k"]
+[ext_resource type="Texture2D" uid="uid://b22cjy74jq0r1" path="res://shader_motion/icons/share1.png" id="6_ajo63"]
+[ext_resource type="VideoStream" path="res://shader_motion/presentation_webm/[Vket2021] Shadermotion ： Presentation (EN) [FN0nvPv3A-c].webm" id="7_57u33"]
+[ext_resource type="PackedScene" path="res://shader_motion/core/dynamic_model_loading.tscn" id="7_fejit"]
 
 [node name="Control" type="VBoxContainer" node_paths=PackedStringArray("shadermotion_frame_pixels_display", "analyzed_bones_list", "result_bones_list")]
 anchors_preset = 15
@@ -14,13 +14,12 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("1_jgy0w")
-shadermotion_bone_analyzer = ExtResource("2_abqa5")
+script = ExtResource("1_qyk67")
+shadermotion_bone_analyzer = ExtResource("2_nmkby")
 shadermotion_frame_pixels_display = NodePath("HBoxContainer/TextureRect")
 analyzed_bones_list = NodePath("HBoxContainer/Control/ScrollContainer/VBoxContainer")
-analyzed_frame = ExtResource("3_i3jhk")
-analyzed_pixels = ExtResource("4_5bp7i")
-bone_info_scene = ExtResource("5_oa7xw")
+analyzed_pixels = ExtResource("3_mboax")
+bone_info_scene = ExtResource("5_dc03k")
 result_bones_list = NodePath("HBoxContainer/Control2/ScrollContainer2/ComputedBonesList")
 skeleton_root_path = "%GeneralSkeleton"
 
@@ -38,6 +37,23 @@ text = "ShaderMeowMeow To Mecanim Bones"
 horizontal_alignment = 1
 vertical_alignment = 1
 
+[node name="webm_player" type="Control" parent="."]
+custom_minimum_size = Vector2(1920, 1080)
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="VideoStreamPlayer" type="VideoStreamPlayer" parent="webm_player"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+stream = ExtResource("7_57u33")
+volume_db = -80.0
+autoplay = true
+playing = true
+
 [node name="PanelContainer2" type="PanelContainer" parent="."]
 layout_mode = 2
 
@@ -48,11 +64,11 @@ alignment = 2
 [node name="ExportButton" type="TextureButton" parent="PanelContainer2/HBoxContainer"]
 custom_minimum_size = Vector2(32, 32)
 layout_mode = 2
-texture_normal = ExtResource("6_and1e")
-texture_pressed = ExtResource("6_and1e")
-texture_hover = ExtResource("6_and1e")
-texture_disabled = ExtResource("6_and1e")
-texture_focused = ExtResource("6_and1e")
+texture_normal = ExtResource("6_ajo63")
+texture_pressed = ExtResource("6_ajo63")
+texture_hover = ExtResource("6_ajo63")
+texture_disabled = ExtResource("6_ajo63")
+texture_focused = ExtResource("6_ajo63")
 ignore_texture_size = true
 stretch_mode = 0
 
@@ -106,10 +122,10 @@ stretch = true
 
 [node name="SubViewport" type="SubViewport" parent="HBoxContainer/SubViewportContainer"]
 handle_input_locally = false
-size = Vector2i(300, 0)
+size = Vector2i(636, 0)
 render_target_update_mode = 4
 
-[node name="Node3D" parent="HBoxContainer/SubViewportContainer/SubViewport" instance=ExtResource("7_0fcp4")]
+[node name="Node3D" parent="HBoxContainer/SubViewportContainer/SubViewport" instance=ExtResource("7_fejit")]
 
 [node name="Node3D" type="Node3D" parent="."]
 transform = Transform3D(6.12303e-17, 0, -1, 0, 1, 0, 1, 0, 6.12303e-17, 0, 0, 0)

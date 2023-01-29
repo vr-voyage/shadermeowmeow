@@ -1,0 +1,20 @@
+[gd_scene load_steps=3 format=3 uid="uid://d1wu4bbx2wftv"]
+
+[ext_resource type="Script" path="res://shader_motion/core/shadermotion_frame_to_sprite_frames.gd" id="1_qcf11"]
+[ext_resource type="Texture2D" uid="uid://flwclppxphtv" path="res://shader_motion/frames/shadermotion_0000004798.png" id="2_l17n5"]
+
+[node name="Control" type="ScrollContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_qcf11")
+shadermotion_video_frame = ExtResource("2_l17n5")
+total_tiles = 135
+tiles_per_column = 45
+tile_width = 24
+tile_height = 24
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 2

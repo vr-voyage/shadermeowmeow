@@ -1,6 +1,8 @@
 extends VideoStreamPlayer
 
+func _ready():
+	Engine.time_scale = 1.0 / 10
 
 func _process(delta):
-	var texture : Texture = get_video_texture()
-	print("Tick and Dimensions in texture: %s %s" % [Time.get_ticks_msec(), texture.get_size()]) 
+	print("Tick and Dimensions in texture: %s %s" % [stream_position, get_video_texture().get_size()])
+	ResourceSaver.save(get_video_texture(), "res://shader_motion/shadermotion_the_devouring_frames/frame_%f.png" % stream_position)

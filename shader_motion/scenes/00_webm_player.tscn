@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://b0hrdkeupe2t6"]
 
-[ext_resource type="VideoStream" path="res://shader_motion/presentation_webm/[Vket2021] Shadermotion ： Presentation (EN) [FN0nvPv3A-c].webm" id="1_pxixx"]
-[ext_resource type="Script" path="res://shader_motion/core/video_stream_extractor.gd" id="2_lqdya"]
+[ext_resource type="VideoStream" path="res://shader_motion/presentation_webm/[Vket2021] Shadermotion ： Presentation (EN) [FN0nvPv3A-c].webm" id="1_ctew5"]
+[ext_resource type="Script" path="res://shader_motion/core/sprite_generator.gd" id="2_6ndsn"]
 
 [node name="webm_player" type="Control"]
 custom_minimum_size = Vector2(1920, 1080)
@@ -21,7 +21,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-stream = ExtResource("1_pxixx")
+stream = ExtResource("1_ctew5")
 volume_db = -80.0
 autoplay = true
-script = ExtResource("2_lqdya")
+script = ExtResource("2_6ndsn")

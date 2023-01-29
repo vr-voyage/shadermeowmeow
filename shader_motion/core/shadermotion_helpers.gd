@@ -1319,7 +1319,7 @@ static func shadermotion_tile_rect(
 	var y:int = block_y * tile_height
 	
 	var ret:Rect2 = Rect2(x, y, tile_width, tile_height)
-	printerr("Tile : %d - Rect : (%s)" % [tile_index, str(ret)])
+#	printerr("Tile : %d - Rect : (%s)" % [tile_index, str(ret)])
 	return ret
 
 static func get_shadermotion_tile(
@@ -1339,12 +1339,16 @@ static func get_shadermotion_tile(
 
 static func get_shader_motion_tiles_from_texture(
 	from_texture:Texture2D,
+	frames : SpriteFrames,
+	time : float,
 	tiles_per_column:int = 45,
 	tile_width:int = 24,
 	tile_height:int = 24
-) -> SpriteFrames:
-	var frames:SpriteFrames = SpriteFrames.new()
-	frames.add_animation("default")
+) -> void:
+	if frames == null:
+		return
+	var frame_name = String.num(time)
+	frames.add_animation(frame_name)
 	var i:int = 0
 	for frame_block_name in ShaderMotionHelpers.block_tiles:
 		var frame_block:Array = ShaderMotionHelpers.block_tiles[frame_block_name]
@@ -1355,10 +1359,9 @@ static func get_shader_motion_tiles_from_texture(
 			var tile_adjacent:Texture2D = get_shadermotion_tile(
 				from_texture, tile_index, true,
 				tiles_per_column, tile_width, tile_height)
-			frames.add_frame("default", tile, i)
-			frames.add_frame("default", tile_adjacent, i+1)
+			frames.add_frame(frame_name, tile, i)
+			frames.add_frame(frame_name, tile_adjacent, i+1)
 			i += 2
-	return frames
 
 static func get_shader_motion_tiles_part(
 	video_frame:Texture2D,
