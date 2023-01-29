@@ -4,7 +4,7 @@ extends VBoxContainer
 @export var shadermotion_frame_pixels_display: TextureRect
 
 @export var analyzed_bones_list: Container
-@export var analyzed_pixels: SpriteFrames = load("res://shader_motion/frames/result_frames.res")
+@export var analyzed_pixels: TileFrames = load("res://shader_motion/frames/result_frames.res")
 
 @export var bone_info_scene: PackedScene
 @export var result_bones_list: Container
@@ -26,7 +26,7 @@ func _generate_dummy_bones_array() -> Array[Node3D]:
 
 var skeleton_bones: Array[Node3D] = _generate_dummy_bones_array()
 
-var animation_names : Array[String]
+var animation_names : Array[float]
 
 var animation : Animation = Animation.new()
 
@@ -48,12 +48,11 @@ func _ready():
 		return
 
 	NodeHelpers.remove_children_from(analyzed_bones_list)
-	var current_animation_names = analyzed_pixels.get_animation_names()
-	if not current_animation_names.size() > 1:
-		return
+	var current_animation_names : Array = analyzed_pixels.tiles.keys()
+	current_animation_names.pop_back()
 	for animation in current_animation_names:
 		animation_names.push_back(animation)
-	animation.length = animation_names[animation_names.size() - 2].to_float()
+	animation.length = current_animation_names.back()
 	print(animation.length)
 	
 	var bone_names = ShaderMotionHelpers.MecanimBodyBone.keys()
@@ -81,7 +80,7 @@ func calc_frame() -> void:
 		ResourceSaver.save(animation, "res://shader_motion/animations/exported_animation.res")
 		get_tree().quit()
 		return
-	var animation_name = animation_names[0]
+	var animation_time = animation_names[0]
 	animation_names.pop_front()
 	var motions: ShaderMotionHelpers.ParsedMotions = ShaderMotionHelpers.ParsedMotions.new()
 	var mecanim_bone_names = ShaderMotionHelpers.MecanimBodyBone.keys()
@@ -89,14 +88,14 @@ func calc_frame() -> void:
 	for bone in range(0, int(ShaderMotionHelpers.MecanimBodyBone.LastBone)):
 		var analyzer = shadermotion_bone_analyzer.instantiate()
 		analyzed_bones_list.add_child(analyzer)
-		analyzer.analyze_bone_from(analyzed_pixels, animation_name, bone, mecanim_bone_names[bone])
+		analyzer.analyze_bone_from(analyzed_pixels, animation_time, bone, mecanim_bone_names[bone])
 		motions.swing_twists[bone].set_motion_data(analyzer.computed_swing_twist, analyzer.computed_rotation)
 
 		if bone == ShaderMotionHelpers.MecanimBodyBone.Hips:
 			motions.hips.set_transform(
 				analyzer.computed_swing_twist, analyzer.computed_rotation, analyzer.computed_scale
 			)
-	print(animation_name.to_float())
+	print(animation_time)
 	var skeleton_bones: Array[Node3D] = _generate_dummy_bones_array()
 	var precomputed_skeleton_human_scale: float = 0.749392
 	ShaderMotionHelpers._shadermotion_apply_human_pose(skeleton_bones, precomputed_skeleton_human_scale, motions)
@@ -116,4 +115,4 @@ func calc_frame() -> void:
 		var current_index: int = animation.find_track(animation_path, Animation.TYPE_ROTATION_3D)
 		if current_index == -1:
 			continue
-		animation.rotation_track_insert_key(current_index, animation_name.to_float(), godot_rotation)
+		animation.rotation_track_insert_key(current_index, animation_time, godot_rotation)

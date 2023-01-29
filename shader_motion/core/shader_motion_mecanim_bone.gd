@@ -222,7 +222,7 @@ func _compute_hips_bone_data(parsed_angles: PackedFloat64Array):
 	_compute_hips_motion(decoded_vectors)
 
 
-func _decode_tiles(pixels: SpriteFrames, animation_name, bone_tiles: Array, raw: bool = false) -> PackedFloat64Array:
+func _decode_tiles(pixels: TileFrames, animation_time : float, bone_tiles: Array, raw: bool = false) -> PackedFloat64Array:
 	var parsed_angles: PackedFloat64Array = PackedFloat64Array()
 	for shader_motion_tile in bone_tiles:
 		# -1 indices return 0
@@ -233,7 +233,7 @@ func _decode_tiles(pixels: SpriteFrames, animation_name, bone_tiles: Array, raw:
 		var analyzer_scene = tile_analyzer_scene.instantiate()
 		tiles_analysis_container.add_child(analyzer_scene)
 		# FIXME Find a better name...
-		analyzer_scene.show_slot(pixels, animation_name, shader_motion_tile)
+		analyzer_scene.show_slot(pixels, animation_time, shader_motion_tile)
 		if not raw:
 			parsed_angles.append(analyzer_scene.shader_motion_decoded_angle)
 		else:
@@ -242,7 +242,7 @@ func _decode_tiles(pixels: SpriteFrames, animation_name, bone_tiles: Array, raw:
 	return parsed_angles
 
 
-func analyze_bone_from(pixels: SpriteFrames, animation_name : String, bone: ShaderMotionHelpers.MecanimBodyBone, bone_name: String):
+func analyze_bone_from(pixels: TileFrames, animation_time : float, bone: ShaderMotionHelpers.MecanimBodyBone, bone_name: String):
 	if bone < ShaderMotionHelpers.MecanimBodyBone.Hips or bone >= ShaderMotionHelpers.MecanimBodyBone.LastBone:
 		printerr("Invalid bone %d" % [int(bone)])
 		return
@@ -260,7 +260,7 @@ func analyze_bone_from(pixels: SpriteFrames, animation_name : String, bone: Shad
 	analyzed_bone = bone
 	analyzed_bone_name = bone_name
 	var parsed_angles: PackedFloat64Array = _decode_tiles(
-		pixels, animation_name, bone_tiles, bone == ShaderMotionHelpers.MecanimBodyBone.Hips
+		pixels, animation_time, bone_tiles, bone == ShaderMotionHelpers.MecanimBodyBone.Hips
 	)
 
 	if bone != ShaderMotionHelpers.MecanimBodyBone.Hips:

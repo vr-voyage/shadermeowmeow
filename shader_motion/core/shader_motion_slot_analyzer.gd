@@ -40,8 +40,7 @@ func _ready():
 const bad_color: Color = Color(0, 0, 0, 0)
 
 
-func _sample_pixel_color_at_middle(texture: Texture2D) -> Color:
-	var image = texture.get_image()
+func _sample_pixel_color_at_middle(image: Image) -> Color:
 	if image == null:
 		printerr("[%s] [ShaderMotion Slot Analyzer] No image on your texture !" % name)
 		return bad_color
@@ -67,7 +66,7 @@ func _int32_array_to_string(int32_array: PackedInt32Array, separator: String = "
 	return separator.join(strings)
 
 
-func _show_slot_samples(square_texture: Texture2D, square_adjacent_texture: Texture2D):
+func _show_slot_samples(square_texture: Image, square_adjacent_texture: Image):
 	var square_sample = _sample_pixel_color_at_middle(square_texture)
 	var square_adjacent_sample = _sample_pixel_color_at_middle(square_adjacent_texture)
 
@@ -93,15 +92,15 @@ func _show_slot_samples(square_texture: Texture2D, square_adjacent_texture: Text
 	converted_value.text = "%f" % [shader_motion_decoded_angle]
 
 
-func _get_slot_color(frames: SpriteFrames, animation_name : String, slot_index: int, adjacent: bool = false) -> Texture2D:
+func _get_slot_color(frames: TileFrames, animation_time : float, slot_index: int, adjacent: bool = false) -> Image:
 	var frame_index: int = slot_index * 2
 	frame_index += int(adjacent)
-	return frames.get_frame_texture(animation_name, frame_index)
+	return frames.tiles[animation_time][frame_index]
 
 
-func show_slot(pixels: SpriteFrames, animation_name: String, slot_idx: int):
-	var square_texture = _get_slot_color(pixels, animation_name, slot_idx)
-	var square_adjacent_texture = _get_slot_color(pixels, animation_name, slot_idx, true)
+func show_slot(pixels: TileFrames, animation_time: float, slot_idx: int):
+	var square_texture = _get_slot_color(pixels, animation_time, slot_idx)
+	var square_adjacent_texture = _get_slot_color(pixels, animation_time, slot_idx, true)
 	if square_texture == null or square_adjacent_texture == null:
 		printerr("[%s] [ShaderMotion Slot Analyzer] No frames for slot %d !" % [name, slot_idx])
 		return

@@ -1,15 +1,17 @@
 extends VideoStreamPlayer
 
-var frames : SpriteFrames = null
+var frames : Dictionary
 
 func _enter_tree():
-	frames = SpriteFrames.new()
 	play()
 
-
+		
 func _process(_delta):
-	var texture : Texture2D = get_video_texture()
-	ShaderMotionHelpers.get_shader_motion_tiles_from_texture(texture.get_image(), frames, stream_position)
-	if stream_position > 2:
-		ResourceSaver.save(frames, "res://shader_motion/frames/result_frames.res")
+	var new_tiles : Dictionary = ShaderMotionHelpers.get_shader_motion_tiles_from_texture(get_video_texture().get_image(), stream_position)
+	frames.merge(new_tiles)
+	var tiles : TileFrames = TileFrames.new()
+	if stream_position > 10:
+		tiles.tiles = frames
+		print(stream_position)
+		ResourceSaver.save(tiles, "res://shader_motion/frames/result_frames.res")
 		get_tree().quit()
