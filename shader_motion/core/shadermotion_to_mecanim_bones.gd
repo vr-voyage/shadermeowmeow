@@ -4,7 +4,7 @@ extends VBoxContainer
 @export var shadermotion_frame_pixels_display: TextureRect
 
 @export var analyzed_bones_list: Container
-@export var analyzed_pixels: SpriteFrames
+@export var analyzed_pixels: SpriteFrames = load("res://shader_motion/frames/result_frames.res")
 
 @export var bone_info_scene: PackedScene
 @export var result_bones_list: Container

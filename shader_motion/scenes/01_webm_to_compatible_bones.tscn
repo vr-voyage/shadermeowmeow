@@ -1,12 +1,11 @@
-[gd_scene load_steps=8 format=3 uid="uid://c8q8rbaul3msj"]
+[gd_scene load_steps=7 format=3 uid="uid://c8q8rbaul3msj"]
 
-[ext_resource type="Script" path="res://shader_motion/core/shadermotion_to_mecanim_bones.gd" id="1_qyk67"]
-[ext_resource type="PackedScene" path="res://shader_motion/core/shader_motion_mecanim_bone.tscn" id="2_nmkby"]
-[ext_resource type="SpriteFrames" uid="uid://bqxc1ieam0crn" path="res://shader_motion/frames/result_frames.res" id="3_aq7yd"]
-[ext_resource type="PackedScene" path="res://shader_motion/core/show_bone_info.tscn" id="5_dc03k"]
-[ext_resource type="Texture2D" uid="uid://b22cjy74jq0r1" path="res://shader_motion/icons/share1.png" id="6_ajo63"]
-[ext_resource type="VideoStream" path="res://shader_motion/presentation_webm/[Vket2021] Shadermotion ： Presentation (EN) [FN0nvPv3A-c].webm" id="7_57u33"]
-[ext_resource type="PackedScene" path="res://shader_motion/core/dynamic_model_loading.tscn" id="7_fejit"]
+[ext_resource type="Script" path="res://shader_motion/core/shadermotion_to_mecanim_bones.gd" id="1_g13t8"]
+[ext_resource type="PackedScene" path="res://shader_motion/core/shader_motion_mecanim_bone.tscn" id="2_tblnc"]
+[ext_resource type="PackedScene" path="res://shader_motion/core/show_bone_info.tscn" id="4_n3rm5"]
+[ext_resource type="VideoStream" path="res://shader_motion/presentation_webm/[Vket2021] Shadermotion ： Presentation (EN) [FN0nvPv3A-c].webm" id="5_7ccxj"]
+[ext_resource type="Texture2D" uid="uid://b22cjy74jq0r1" path="res://shader_motion/icons/share1.png" id="6_2mg3l"]
+[ext_resource type="PackedScene" path="res://shader_motion/core/dynamic_model_loading.tscn" id="7_hmp8g"]
 
 [node name="Control" type="VBoxContainer" node_paths=PackedStringArray("shadermotion_frame_pixels_display", "analyzed_bones_list", "result_bones_list")]
 anchors_preset = 15
@@ -14,12 +13,11 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("1_qyk67")
-shadermotion_bone_analyzer = ExtResource("2_nmkby")
+script = ExtResource("1_g13t8")
+shadermotion_bone_analyzer = ExtResource("2_tblnc")
 shadermotion_frame_pixels_display = NodePath("HBoxContainer/TextureRect")
 analyzed_bones_list = NodePath("HBoxContainer/Control/ScrollContainer/VBoxContainer")
-analyzed_pixels = ExtResource("3_aq7yd")
-bone_info_scene = ExtResource("5_dc03k")
+bone_info_scene = ExtResource("4_n3rm5")
 result_bones_list = NodePath("HBoxContainer/Control2/ScrollContainer2/ComputedBonesList")
 skeleton_root_path = "%GeneralSkeleton"
 
@@ -49,7 +47,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-stream = ExtResource("7_57u33")
+stream = ExtResource("5_7ccxj")
 volume_db = -80.0
 autoplay = true
 playing = true
@@ -64,11 +62,11 @@ alignment = 2
 [node name="ExportButton" type="TextureButton" parent="PanelContainer2/HBoxContainer"]
 custom_minimum_size = Vector2(32, 32)
 layout_mode = 2
-texture_normal = ExtResource("6_ajo63")
-texture_pressed = ExtResource("6_ajo63")
-texture_hover = ExtResource("6_ajo63")
-texture_disabled = ExtResource("6_ajo63")
-texture_focused = ExtResource("6_ajo63")
+texture_normal = ExtResource("6_2mg3l")
+texture_pressed = ExtResource("6_2mg3l")
+texture_hover = ExtResource("6_2mg3l")
+texture_disabled = ExtResource("6_2mg3l")
+texture_focused = ExtResource("6_2mg3l")
 ignore_texture_size = true
 stretch_mode = 0
 
@@ -125,7 +123,7 @@ handle_input_locally = false
 size = Vector2i(636, 0)
 render_target_update_mode = 4
 
-[node name="Node3D" parent="HBoxContainer/SubViewportContainer/SubViewport" instance=ExtResource("7_fejit")]
+[node name="Node3D" parent="HBoxContainer/SubViewportContainer/SubViewport" instance=ExtResource("7_hmp8g")]
 
 [node name="Node3D" type="Node3D" parent="."]
 transform = Transform3D(6.12303e-17, 0, -1, 0, 1, 0, 1, 0, 6.12303e-17, 0, 0, 0)
