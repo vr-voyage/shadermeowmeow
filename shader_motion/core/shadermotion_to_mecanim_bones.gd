@@ -68,7 +68,7 @@ func _ready():
 		var current_index: int = animation.get_track_count()
 		animation.add_track(Animation.TYPE_ROTATION_3D)
 		animation.track_set_path(current_index, animation_path)
-		animation.track_set_interpolation_type(current_index, Animation.INTERPOLATION_CUBIC)
+		animation.track_set_interpolation_type(current_index, Animation.INTERPOLATION_LINEAR)
 	
 	print(animation_names)
 	
@@ -77,7 +77,6 @@ func _process(delta):
 		
 func calc_frame() -> void:
 	if not animation_names.size():
-		ResourceSaver.save(animation, "res://shader_motion/animations/exported_animation.res")
 		get_tree().quit()
 		return
 	var animation_time = animation_names[0]
@@ -116,3 +115,5 @@ func calc_frame() -> void:
 		if current_index == -1:
 			continue
 		animation.rotation_track_insert_key(current_index, animation_time, godot_rotation)
+
+	ResourceSaver.save(animation, "res://shader_motion/animations/exported_animation.tres")

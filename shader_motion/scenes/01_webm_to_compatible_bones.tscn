@@ -50,6 +50,7 @@ grow_vertical = 2
 stream = ExtResource("5_7ccxj")
 volume_db = -80.0
 autoplay = true
+playing = true
 
 [node name="PanelContainer2" type="PanelContainer" parent="."]
 layout_mode = 2
