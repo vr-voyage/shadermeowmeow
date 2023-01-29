@@ -77,6 +77,8 @@ func _process(delta):
 	calc_frame()
 		
 func calc_frame() -> void:
+	if not animation_names.size():
+		return
 	var animation_name = animation_names[0]
 	animation_names.pop_front()
 	var motions: ShaderMotionHelpers.ParsedMotions = ShaderMotionHelpers.ParsedMotions.new()
