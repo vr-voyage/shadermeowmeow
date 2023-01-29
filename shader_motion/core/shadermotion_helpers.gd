@@ -1343,7 +1343,6 @@ static func get_shader_motion_tiles_from_texture(
 	tile_width:int = 24,
 	tile_height:int = 24
 ) -> Dictionary:
-	var frame_name = String.num(time)
 	var tiles : Array[Image]
 	var i:int = 0
 	for frame_block_name in ShaderMotionHelpers.block_tiles:

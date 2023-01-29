@@ -58,9 +58,9 @@ func _ready():
 	var bone_names = ShaderMotionHelpers.MecanimBodyBone.keys()
 
 	for bone in range(0, int(ShaderMotionHelpers.MecanimBodyBone.LastBone)):
-		var unity_bone_rotation: Quaternion = skeleton_bones[bone].quaternion.normalized()
-		if unity_bone_rotation == NodeHelpers.invalid_quaternion:
+		if skeleton_bones[bone].quaternion == NodeHelpers.invalid_quaternion:
 			continue
+		var unity_bone_rotation: Quaternion = skeleton_bones[bone].quaternion
 		var godot_rotation: Quaternion = (Basis.FLIP_X.inverse() * Basis(unity_bone_rotation) * Basis.FLIP_X).get_rotation_quaternion()
 		var bone_name: String = bone_names[bone]
 		var animation_path: NodePath = NodePath("%s:%s" % [skeleton_root_path, bone_name])
@@ -69,7 +69,16 @@ func _ready():
 		animation.add_track(Animation.TYPE_ROTATION_3D)
 		animation.track_set_path(current_index, animation_path)
 		animation.track_set_interpolation_type(current_index, Animation.INTERPOLATION_LINEAR)
-	
+
+	var hips_bone = ShaderMotionHelpers.MecanimBodyBone.Hips
+	var bone_name: String = bone_names[hips_bone]
+	var animation_path: NodePath = NodePath("%s:%s" % [skeleton_root_path, bone_name])
+
+	var current_index: int = animation.get_track_count()
+	animation.add_track(Animation.TYPE_POSITION_3D)
+	animation.track_set_path(current_index, animation_path)
+	animation.track_set_interpolation_type(current_index, Animation.INTERPOLATION_LINEAR)
+
 	print(animation_names)
 	
 func _process(delta):
@@ -115,5 +124,15 @@ func calc_frame() -> void:
 		if current_index == -1:
 			continue
 		animation.rotation_track_insert_key(current_index, animation_time, godot_rotation)
+
+	var hips_bone = ShaderMotionHelpers.MecanimBodyBone.Hips
+	var bone_name: String = bone_names[hips_bone]
+	var animation_path: NodePath = NodePath("%s:%s" % [skeleton_root_path, bone_name])
+
+	var current_index: int = animation.find_track(animation_path, Animation.TYPE_POSITION_3D)
+	if current_index != -1:
+		var bone_position: Vector3 = skeleton_bones[hips_bone].position
+		bone_position.z = -bone_position.z
+		animation.position_track_insert_key(current_index, animation_time, bone_position)
 
 	ResourceSaver.save(animation, "res://shader_motion/animations/exported_animation.tres")
