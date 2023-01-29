@@ -1346,8 +1346,7 @@ static func get_shader_motion_tiles_from_texture(
 	tile_height:int = 24
 ) -> void:
 	var frame_name = String.num(time)
-	if not frames.has_animation(frame_name):
-		frames.add_animation(frame_name)
+	frames.add_animation(frame_name)
 	var i:int = 0
 	for frame_block_name in ShaderMotionHelpers.block_tiles:
 		var frame_block:Array = ShaderMotionHelpers.block_tiles[frame_block_name]
