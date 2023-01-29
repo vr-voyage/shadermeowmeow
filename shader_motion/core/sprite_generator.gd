@@ -1,9 +1,11 @@
 extends VideoStreamPlayer
 
-var frames : SpriteFrames = SpriteFrames.new()
+var frames : SpriteFrames = null
 
 func _enter_tree():
+	frames = SpriteFrames.new()
 	play()
+
 
 func _process(_delta):
 	var texture : Texture2D = get_video_texture()
