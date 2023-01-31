@@ -1,11 +1,11 @@
 [gd_scene load_steps=7 format=3 uid="uid://c8q8rbaul3msj"]
 
 [ext_resource type="Script" path="res://shader_motion/core/shadermotion_to_mecanim_bones.gd" id="1_g13t8"]
-[ext_resource type="PackedScene" path="res://shader_motion/core/shader_motion_mecanim_bone.tscn" id="2_tblnc"]
-[ext_resource type="PackedScene" path="res://shader_motion/core/show_bone_info.tscn" id="4_n3rm5"]
+[ext_resource type="PackedScene" uid="uid://cl1x561gtew3c" path="res://shader_motion/core/shader_motion_mecanim_bone.tscn" id="2_tblnc"]
+[ext_resource type="PackedScene" uid="uid://drvc4hgivfhjb" path="res://shader_motion/core/show_bone_info.tscn" id="4_n3rm5"]
 [ext_resource type="VideoStream" path="res://shader_motion/presentation_webm/[Vket2021] Shadermotion ： Presentation (EN) [FN0nvPv3A-c].webm" id="5_7ccxj"]
 [ext_resource type="Texture2D" uid="uid://b22cjy74jq0r1" path="res://shader_motion/icons/share1.png" id="6_2mg3l"]
-[ext_resource type="PackedScene" path="res://shader_motion/core/dynamic_model_loading.tscn" id="7_hmp8g"]
+[ext_resource type="PackedScene" uid="uid://u3acb5eyisyg" path="res://shader_motion/core/dynamic_model_loading.tscn" id="7_hmp8g"]
 
 [node name="Control" type="VBoxContainer" node_paths=PackedStringArray("shadermotion_frame_pixels_display", "analyzed_bones_list", "result_bones_list")]
 anchors_preset = 15
@@ -50,7 +50,6 @@ grow_vertical = 2
 stream = ExtResource("5_7ccxj")
 volume_db = -80.0
 autoplay = true
-playing = true
 
 [node name="PanelContainer2" type="PanelContainer" parent="."]
 layout_mode = 2

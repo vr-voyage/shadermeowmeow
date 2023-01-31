@@ -29,7 +29,9 @@ static func remove_children_from(node: Node):
 	var node_children: Array = node.get_children()
 	var current_index: int = len(node_children) - 1
 	while current_index >= 0:
-		node.remove_child(node_children[current_index])
+		var node_child = node_children[current_index]
+		node_child.queue_free()
+		#node.remove_child(node_child)
 		current_index -= 1
 
 

@@ -13,6 +13,9 @@ func _process(_delta):
 	var tiles : TileFrames = TileFrames.new()
 	tiles.tiles = frames
 	print(stream_position)
-	ResourceSaver.save(tiles, "res://shader_motion/frames/result_frames.res")
-	if stream_position < 2:
+
+	if stream_position >= 2:
+		printerr(stream_position)
+		ResourceSaver.save(tiles, "res://shader_motion/frames/result_frames.res")
 		get_tree().quit()
+		
