@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://bvs6xjrdksqv2"]
+[gd_scene load_steps=6 format=3 uid="uid://bh62baw18y1h"]
 
 [ext_resource type="PackedScene" uid="uid://cl1x561gtew3c" path="res://shader_motion/core/shader_motion_mecanim_bone.tscn" id="2_tblnc"]
 [ext_resource type="PackedScene" uid="uid://drvc4hgivfhjb" path="res://shader_motion/core/show_bone_info.tscn" id="4_n3rm5"]

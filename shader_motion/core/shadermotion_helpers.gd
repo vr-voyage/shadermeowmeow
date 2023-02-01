@@ -230,6 +230,11 @@ enum MecanimBodyBone
 	LastBone = 55
 }
 
+static func is_valid_mecanim_bone(
+	bone:MecanimBodyBone
+):
+	return bone >= MecanimBodyBone.Hips and bone < MecanimBodyBone.LastBone
+
 const mecanim_bone_tiles = {
 	MecanimBodyBone.Hips: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
 	MecanimBodyBone.LeftUpperLeg: [27, 28, 29],
@@ -286,7 +291,6 @@ const mecanim_bone_tiles = {
 	MecanimBodyBone.RightLittleDistal: [-1, -1, 129],
 	MecanimBodyBone.UpperChest: [18, 19, 20]
 }
-
 
 const AnimatorMuscleName = [
   "Spine Front-Back",
@@ -1372,15 +1376,7 @@ static func get_shader_motion_tiles_part(
 		tile_width * tiles_columns * 2, tile_height * tiles_per_column)
 	return ret_texture
 
-# This one rounds to even. Meaning that
-# 10.5f rounds to 10
-# 11.5f founds to 12
-static func _unity_roundi(value:float) -> int:
-	var rounded:int = roundi(value)
-	if abs(value - rounded) != 0.5:
-		return rounded
-	else:
-		return snappedi(value, 2)
+
 
 # ???
 # Basically a copy-paste adaptation of ShaderMotion
@@ -1395,12 +1391,12 @@ static func decode_video_float(
 	high = high * half_pow + half_pow
 	low  = low  * half_pow + half_pow
 
-	var x = _unity_roundi(low)
+	var x = UnityHelpers.roundi(low)
 
 	var low_remainder = low - x
 	var y = min(low_remainder, 0)
 	var z = max(low_remainder, 0)
-	var rounded_high = _unity_roundi(high)
+	var rounded_high = UnityHelpers.roundi(high)
 
 	if (rounded_high & 1) != 0:
 		x = power - 1 - x
@@ -1463,6 +1459,50 @@ class HipsData:
 		self.rotation = new_rotation
 		self.scale = new_scale
 
+	const _default_tile_radix: int = 3
+	const _default_tile_height: int = 1
+	const _default_tile_depth: int = 3
+	const _default_tile_width: int = 2
+	const _default_tile_pow: int = int(pow(
+		_default_tile_radix,
+		_default_tile_width
+		* _default_tile_height
+		* _default_tile_depth))
+	const position_scale: int = 2
+
+	func compute_from(
+		decoded_values:PackedFloat32Array,
+		tile_pow_value:int = _default_tile_pow
+	):
+		var vectors:PackedVector3Array = NodeHelpers.float32_array_to_packed_vector3(decoded_values)
+		if len(vectors) < 4:
+			printerr("Invalid Hips motion data !")
+			return
+
+		var position_high: Vector3 = vectors[0]
+		var position_low: Vector3 = vectors[1]
+
+		var decoded_position: Vector3 = Vector3(
+			ShaderMotionHelpers.decode_video_float(position_high.x, position_low.x, tile_pow_value),
+			ShaderMotionHelpers.decode_video_float(position_high.y, position_low.y, tile_pow_value),
+			ShaderMotionHelpers.decode_video_float(position_high.z, position_low.z, tile_pow_value)
+		)
+
+		var rotation_vectors: PackedVector3Array = ShaderMotionHelpers.orthogonalize(vectors[2], vectors[3])
+
+		var up_vector = rotation_vectors[0]
+		var forward_vector = rotation_vectors[1]
+
+		if not forward_vector.length() > 0:
+			up_vector = UnityHelpers.vector_up
+			forward_vector = UnityHelpers.vector_forward
+
+		var look_rotation: Quaternion = UnityHelpers.look_rotation(forward_vector, up_vector)
+
+		self.position = decoded_position * position_scale
+		self.rotation = look_rotation
+		self.scale = up_vector.length() / forward_vector.length()
+
 	func meow():
 		return (
 			"Position : %s\nRotation : %s\nScale : %s"
@@ -1479,6 +1519,17 @@ class MotionData:
 		self.computed_rotation = rotation_data
 		self.setup = true
 
+	func compute_from(bone:MecanimBodyBone, decoded_values:PackedFloat32Array):
+		var decoded_vector: Vector3 = NodeHelpers.float32_array_to_vector3(decoded_values)
+		var swing_twist_degrees: Vector3 = decoded_vector * 180
+		var bone_signs: Vector3 = ShaderMotionHelpers.human_axes[bone].limit_sign
+
+		var signed_swing_twist: Vector3 = swing_twist_degrees * bone_signs
+		var equivalent_rotation: Quaternion = ShaderMotionHelpers.swing_twist(signed_swing_twist)
+
+		self.swing_twist = signed_swing_twist
+		self.computed_rotation = equivalent_rotation
+
 class ParsedMotions:
 	var hips:HipsData = HipsData.new()
 	var swing_twists:Array[MotionData]
@@ -1491,6 +1542,62 @@ class ParsedMotions:
 			swing_twists_values[bone] = MotionData.new()
 
 		self.swing_twists = swing_twists_values
+
+	static func _decoded_values_from(
+		frame_tiles:Array,
+		bone:ShaderMotionHelpers.MecanimBodyBone,
+		get_slot_colors_method:Callable
+	) -> PackedFloat32Array:
+
+		var decoded_values:PackedFloat32Array = PackedFloat32Array()
+
+		if not ShaderMotionHelpers.mecanim_bone_tiles.has(bone):
+			printerr(
+				"[HipsData._decoded_values_from] ShaderMotion ignores bone %d"
+				% [bone])
+			return decoded_values
+
+		# FIXME Check if we should rename mecanim_body_tiles to mecanim_body_slots ?
+		var bone_related_slots:Array = ShaderMotionHelpers.mecanim_bone_tiles[bone]
+		for slot_index in bone_related_slots:
+			var slot_colors:Array[Color] = get_slot_colors_method.call(
+				frame_tiles, slot_index)
+			if slot_colors == null or len(slot_colors) < 2:
+				return PackedFloat32Array()
+
+			decoded_values.append(ShaderMotionHelpers.decode_slot_value(slot_colors))
+		return decoded_values
+
+	static func generate_from(
+		tiles_data,
+		tile_data_get_color_method:Callable
+	) -> ParsedMotions:
+
+		var parsed_motions:ParsedMotions = ParsedMotions.new()
+
+		parsed_motions.hips.compute_from(_decoded_values_from(
+			tiles_data,
+			ShaderMotionHelpers.MecanimBodyBone.Hips,
+			tile_data_get_color_method))
+
+		# Replicate values on MotionData to avoid corner cases everywhere
+		var hips_motion:MotionData = parsed_motions.swing_twists[ShaderMotionHelpers.MecanimBodyBone.Hips]
+		hips_motion.swing_twist = parsed_motions.hips.position
+		hips_motion.computed_rotation = parsed_motions.hips.rotation
+
+		for bone in range(1, int(ShaderMotionHelpers.MecanimBodyBone.LastBone)):
+
+			var decoded_values:PackedFloat32Array = _decoded_values_from(
+				tiles_data,
+				bone,
+				tile_data_get_color_method)
+			if decoded_values.is_empty():
+				printerr("[HipsData.generate_from] Ignoring bone %d" % [bone])
+				continue
+
+			parsed_motions.swing_twists[bone].compute_from(bone, decoded_values)
+
+		return parsed_motions
 
 	func _add_vector3_field(strings:PackedStringArray, vector:Vector3):
 		strings.append(str(vector.x))
@@ -1605,14 +1712,14 @@ static func _shadermotion_apply_human_pose(
 		skeleton_human_scale,
 		-1)
 
-	printerr("Skeleton root scale : %s" % [str(skeleton_root.scale)])
+	#printerr("Skeleton root scale : %s" % [str(skeleton_root.scale)])
 
 	var hips_position:Vector3 = _shadermotion_compute_hips_position(
 		skeleton_root,
 		parsed_motions.hips,
 		skeleton_human_scale)
 
-	printerr(hips_position)
+	#printerr(hips_position)
 	skeleton_bones[MecanimBodyBone.Hips].position = hips_position
 
 	for bone in range(0, int(MecanimBodyBone.LastBone)):
@@ -1632,4 +1739,13 @@ static func _shadermotion_apply_human_pose(
 				decoded_rotation,
 				skeleton_bones[bone].quaternion)
 		skeleton_bones[bone].quaternion = bone_rotation
+
+static func decoded_value_to_degrees(decoded_value:float):
+	return decoded_value * 180
+
+static func decode_slot_value(
+	tile_colors:Array[Color]
+) -> float:
+	return ShaderMotionHLSLHelpers.decode_tiles(tile_colors)
+
 
