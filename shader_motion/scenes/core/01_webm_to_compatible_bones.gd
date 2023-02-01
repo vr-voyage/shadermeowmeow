@@ -1,18 +1,10 @@
-[gd_scene load_steps=6 format=3 uid="uid://bh62baw18y1h"]
-
-[ext_resource type="PackedScene" uid="uid://cl1x561gtew3c" path="res://shader_motion/core/shader_motion_mecanim_bone.tscn" id="2_tblnc"]
-[ext_resource type="PackedScene" uid="uid://drvc4hgivfhjb" path="res://shader_motion/core/show_bone_info.tscn" id="4_n3rm5"]
-[ext_resource type="VideoStream" path="res://shader_motion/presentation_webm/[Vket2021] Shadermotion ： Presentation (EN) [FN0nvPv3A-c].webm" id="5_7ccxj"]
-[ext_resource type="Texture2D" uid="uid://b22cjy74jq0r1" path="res://shader_motion/icons/share1.png" id="6_2mg3l"]
-
-[sub_resource type="GDScript" id="GDScript_q2ump"]
-script/source = "extends VBoxContainer
+extends VBoxContainer
 
 @export var shadermotion_bone_analyzer: PackedScene
 @export var shadermotion_frame_pixels_display: TextureRect
 
 @export var analyzed_bones_list: Container
-@export var analyzed_pixels: TileFrames = load(\"res://shader_motion/frames/result_frames.res\")
+@export var analyzed_pixels: TileFrames = load("res://shader_motion/frames/result_frames.res")
 
 @export var bone_info_scene: PackedScene
 @export var result_bones_list: Container
@@ -51,7 +43,7 @@ func _enter_tree():
 			bone_info_scene,
 			result_bones_list
 		],
-		\"ShaderMotion to Mecanim Bones\"
+		"ShaderMotion to Mecanim Bones"
 	)
 	if should_stop:
 		return
@@ -72,7 +64,7 @@ func _enter_tree():
 		var unity_bone_rotation: Quaternion = skeleton_bones[bone].quaternion
 		var godot_rotation: Quaternion = (Basis.FLIP_X.inverse() * Basis(unity_bone_rotation) * Basis.FLIP_X).get_rotation_quaternion()
 		var bone_name: String = bone_names[bone]
-		var animation_path: NodePath = NodePath(\"%s:%s\" % [skeleton_root_path, bone_name])
+		var animation_path: NodePath = NodePath("%s:%s" % [skeleton_root_path, bone_name])
 
 		var current_index: int = animation.get_track_count()
 		animation.add_track(Animation.TYPE_ROTATION_3D)
@@ -81,7 +73,7 @@ func _enter_tree():
 
 	var hips_bone = ShaderMotionHelpers.MecanimBodyBone.Hips
 	var bone_name: String = bone_names[hips_bone]
-	var animation_path: NodePath = NodePath(\"%s:%s\" % [skeleton_root_path, bone_name])
+	var animation_path: NodePath = NodePath("%s:%s" % [skeleton_root_path, bone_name])
 
 	var current_index: int = animation.get_track_count()
 	animation.add_track(Animation.TYPE_POSITION_3D)
@@ -91,6 +83,8 @@ func _enter_tree():
 	print(animation_names)
 	
 	analyzer = shadermotion_bone_analyzer.instantiate()
+	
+	tree_exiting.connect(Callable(self, "_save_animation"))
 
 
 func _process(delta):
@@ -124,7 +118,7 @@ func calc_frame() -> void:
 			continue
 		var godot_rotation: Quaternion = (Basis.FLIP_X * Basis(unity_bone_rotation) * Basis.FLIP_X.inverse()).get_rotation_quaternion()
 		var bone_name: String = bone_names[bone]
-		var animation_path: NodePath = NodePath(\"%s:%s\" % [skeleton_root_path, bone_name])
+		var animation_path: NodePath = NodePath("%s:%s" % [skeleton_root_path, bone_name])
 
 		var current_index: int = animation.find_track(animation_path, Animation.TYPE_ROTATION_3D)
 		if current_index == -1:
@@ -133,7 +127,7 @@ func calc_frame() -> void:
 
 	var hips_bone = ShaderMotionHelpers.MecanimBodyBone.Hips
 	var bone_name: String = bone_names[hips_bone]
-	var animation_path: NodePath = NodePath(\"%s:%s\" % [skeleton_root_path, bone_name])
+	var animation_path: NodePath = NodePath("%s:%s" % [skeleton_root_path, bone_name])
 
 	var current_index: int = animation.find_track(animation_path, Animation.TYPE_POSITION_3D)
 	if current_index != -1:
@@ -141,115 +135,4 @@ func calc_frame() -> void:
 		bone_position.z = -bone_position.z
 		animation.position_track_insert_key(current_index, animation_time, bone_position)
 
-	ResourceSaver.save(animation, \"res://shader_motion/animations/exported_animation.tres\")
-"
-
-[node name="Control" type="VBoxContainer" node_paths=PackedStringArray("shadermotion_frame_pixels_display", "analyzed_bones_list", "result_bones_list")]
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-script = SubResource("GDScript_q2ump")
-shadermotion_bone_analyzer = ExtResource("2_tblnc")
-shadermotion_frame_pixels_display = NodePath("HBoxContainer/TextureRect")
-analyzed_bones_list = NodePath("HBoxContainer/Control/ScrollContainer/VBoxContainer")
-bone_info_scene = ExtResource("4_n3rm5")
-result_bones_list = NodePath("HBoxContainer/Control2/ScrollContainer2/ComputedBonesList")
-skeleton_root_path = "%GeneralSkeleton"
-
-[node name="PanelContainer" type="PanelContainer" parent="."]
-layout_mode = 2
-
-[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer"]
-custom_minimum_size = Vector2(0, 32)
-layout_mode = 2
-alignment = 1
-
-[node name="Label" type="Label" parent="PanelContainer/HBoxContainer"]
-layout_mode = 2
-text = "ShaderMeowMeow To Mecanim Bones"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="webm_player" type="Control" parent="."]
-custom_minimum_size = Vector2(1920, 1080)
-layout_mode = 2
-size_flags_vertical = 3
-
-[node name="VideoStreamPlayer" type="VideoStreamPlayer" parent="webm_player"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-stream = ExtResource("5_7ccxj")
-volume_db = -80.0
-autoplay = true
-
-[node name="PanelContainer2" type="PanelContainer" parent="."]
-layout_mode = 2
-
-[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer2"]
-layout_mode = 2
-alignment = 2
-
-[node name="ExportButton" type="TextureButton" parent="PanelContainer2/HBoxContainer"]
-custom_minimum_size = Vector2(32, 32)
-layout_mode = 2
-texture_normal = ExtResource("6_2mg3l")
-texture_pressed = ExtResource("6_2mg3l")
-texture_hover = ExtResource("6_2mg3l")
-texture_disabled = ExtResource("6_2mg3l")
-texture_focused = ExtResource("6_2mg3l")
-ignore_texture_size = true
-stretch_mode = 0
-
-[node name="HBoxContainer" type="HBoxContainer" parent="."]
-layout_mode = 2
-size_flags_vertical = 3
-
-[node name="TextureRect" type="TextureRect" parent="HBoxContainer"]
-layout_mode = 2
-expand_mode = 3
-
-[node name="Control" type="Control" parent="HBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="ScrollContainer" type="ScrollContainer" parent="HBoxContainer/Control"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-size_flags_horizontal = 3
-
-[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/Control/ScrollContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-
-[node name="Control2" type="Control" parent="HBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="ScrollContainer2" type="ScrollContainer" parent="HBoxContainer/Control2"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-size_flags_horizontal = 3
-
-[node name="ComputedBonesList" type="VBoxContainer" parent="HBoxContainer/Control2/ScrollContainer2"]
-layout_mode = 2
-
-[node name="Node3D" type="Node3D" parent="."]
-transform = Transform3D(6.12303e-17, 0, -1, 0, 1, 0, 1, 0, 6.12303e-17, 0, 0, 0)
-rotation_edit_mode = 1
-
-[connection signal="pressed" from="PanelContainer2/HBoxContainer/ExportButton" to="." method="_on_export_button_pressed"]
+	ResourceSaver.save(animation, "res://shader_motion/animations/exported_animation.tres")
