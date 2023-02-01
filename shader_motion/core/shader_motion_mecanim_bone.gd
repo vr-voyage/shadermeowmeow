@@ -94,7 +94,18 @@ func _compute_hips_motion(vectors: PackedVector3Array):
 	var up_vector = rotation_vectors[0]
 	var forward_vector = rotation_vectors[1]
 
-	var look_rotation: Quaternion = Quaternion(forward_vector, up_vector)
+	if not forward_vector.length() > 0:
+		up_vector = UnityHelpers.vector_up
+		forward_vector = UnityHelpers.vector_forward
+
+	var look_rotation: Quaternion = UnityHelpers.look_rotation(forward_vector, up_vector)
+
+	#var motion = {
+	#	"position": decoded_position * position_scale,
+	#	"rotation": look_rotation,
+	#	"scale": up_vector.length() / forward_vector.length()
+	#}
+	#print(motion)
 
 	shader_position_high = position_high
 	shader_position_low = position_low
