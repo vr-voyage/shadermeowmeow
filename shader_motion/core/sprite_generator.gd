@@ -3,7 +3,6 @@ extends VideoStreamPlayer
 var frames : Dictionary
 
 func _enter_tree():
-	playing = false
 	play()
 
 		
@@ -14,7 +13,7 @@ func _process(_delta):
 	tiles.tiles = frames
 	print(stream_position)
 
-	if stream_position >= 2:
+	if stream_position >= 30:
 		printerr(stream_position)
 		ResourceSaver.save(tiles, "res://shader_motion/frames/result_frames.res")
 		get_tree().quit()

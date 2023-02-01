@@ -1484,7 +1484,7 @@ class ParsedMotions:
 	var swing_twists:Array[MotionData]
 
 	func _init():
-		var swing_twists_values:Array[MotionData] = Array()
+		var swing_twists_values:Array[MotionData]
 		swing_twists_values.resize(ShaderMotionHelpers.MecanimBodyBone.LastBone)
 
 		for bone in range(int(ShaderMotionHelpers.MecanimBodyBone.LastBone)):

@@ -105,13 +105,8 @@ func calc_frame() -> void:
 			)
 		analyzer.queue_free()
 	print(animation_time)
-	#var skeleton_bones: Array[Node3D] = _generate_dummy_bones_array()
 	var precomputed_skeleton_human_scale: float = 0.749392
 	ShaderMotionHelpers._shadermotion_apply_human_pose(skeleton_bones, precomputed_skeleton_human_scale, motions)
-	#for bone in skeleton_bones:
-	#	var bone_info_panel = bone_info_scene.instantiate()
-	#	result_bones_list.add_child(bone_info_panel)
-	#	bone_info_panel.show_bone(bone)
 
 	for bone in range(0, int(ShaderMotionHelpers.MecanimBodyBone.LastBone)):
 		var unity_bone_rotation: Quaternion = skeleton_bones[bone].quaternion.normalized()
