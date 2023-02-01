@@ -129,6 +129,8 @@ func calc_frame() -> void:
 		var current_index: int = animation.find_track(animation_path, Animation.TYPE_ROTATION_3D)
 		if current_index == -1:
 			continue
+		if bone == ShaderMotionHelpers.MecanimBodyBone.Hips:
+			godot_rotation = godot_rotation * Basis.from_euler(Vector3(0, 0, -90)).get_rotation_quaternion()
 		animation.rotation_track_insert_key(current_index, animation_time, godot_rotation)
 
 	var hips_bone = ShaderMotionHelpers.MecanimBodyBone.Hips
