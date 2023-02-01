@@ -57,8 +57,6 @@ func _ready():
 	for bone in range(0, int(ShaderMotionHelpers.MecanimBodyBone.LastBone)):
 		if skeleton_bones[bone].quaternion == NodeHelpers.invalid_quaternion:
 			continue
-		var unity_bone_rotation: Quaternion = skeleton_bones[bone].quaternion
-		var godot_rotation: Quaternion = (Basis.FLIP_X.inverse() * Basis(unity_bone_rotation) * Basis.FLIP_X).get_rotation_quaternion()
 		var bone_name: String = bone_names[bone]
 		var animation_path: NodePath = NodePath("%s:%s" % [skeleton_root_path, bone_name])
 
@@ -108,14 +106,13 @@ func calc_frame() -> void:
 		var unity_bone_rotation: Quaternion = skeleton_bones[bone].quaternion.normalized()
 		if unity_bone_rotation == NodeHelpers.invalid_quaternion:
 			continue
-		var godot_rotation: Quaternion = (Basis.FLIP_X.inverse() * Basis(unity_bone_rotation) * Basis.FLIP_X).get_rotation_quaternion()
 		var bone_name: String = bone_names[bone]
 		var animation_path: NodePath = NodePath("%s:%s" % [skeleton_root_path, bone_name])
 
 		var current_index: int = animation.find_track(animation_path, Animation.TYPE_ROTATION_3D)
 		if current_index == -1:
 			continue
-		animation.rotation_track_insert_key(current_index, animation_time, godot_rotation)
+		animation.rotation_track_insert_key(current_index, animation_time, unity_bone_rotation)
 
 	var hips_bone = ShaderMotionHelpers.MecanimBodyBone.Hips
 	var bone_name: String = bone_names[hips_bone]
