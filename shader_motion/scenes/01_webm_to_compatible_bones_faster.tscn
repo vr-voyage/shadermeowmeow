@@ -1,0 +1,42 @@
+[gd_scene load_steps=3 format=3 uid="uid://drfiepqs1lfca"]
+
+[ext_resource type="Script" path="res://shader_motion/core/tile_frames_to_animation.gd" id="1_pslia"]
+[ext_resource type="VideoStream" path="res://shader_motion/presentation_webm/[Vket2021] Shadermotion ： Presentation (EN) [FN0nvPv3A-c].webm" id="4_nh70c"]
+
+[node name="Control" type="VBoxContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_pslia")
+skeleton_root_path = "%GeneralSkeleton"
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer"]
+custom_minimum_size = Vector2(0, 32)
+layout_mode = 2
+alignment = 1
+
+[node name="Label" type="Label" parent="PanelContainer/HBoxContainer"]
+layout_mode = 2
+text = "ShaderMeowMeow To Mecanim Bones"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="webm_player" type="Control" parent="."]
+custom_minimum_size = Vector2(1920, 1080)
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="VideoStreamPlayer" type="VideoStreamPlayer" parent="webm_player"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+stream = ExtResource("4_nh70c")
+volume_db = -80.0
