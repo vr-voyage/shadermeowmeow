@@ -29,6 +29,7 @@ var skeleton_bones: Array[Node3D] = _generate_dummy_bones_array()
 var animation_names : Array[float]
 
 var animation : Animation = Animation.new()
+var analyzer = null
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -81,9 +82,13 @@ func _ready():
 
 	print(animation_names)
 	
+	analyzer = shadermotion_bone_analyzer.instantiate()
+
+
 func _process(delta):
 	calc_frame()
-		
+
+
 func calc_frame() -> void:
 	if not animation_names.size():
 		get_tree().quit()
@@ -94,8 +99,6 @@ func calc_frame() -> void:
 	var mecanim_bone_names = ShaderMotionHelpers.MecanimBodyBone.keys()
 	var bone_names = ShaderMotionHelpers.MecanimBodyBone.keys()
 	for bone in range(0, int(ShaderMotionHelpers.MecanimBodyBone.LastBone)):
-		var analyzer = shadermotion_bone_analyzer.instantiate()
-		analyzed_bones_list.add_child(analyzer)
 		analyzer.analyze_bone_from(analyzed_pixels, animation_time, bone, mecanim_bone_names[bone])
 		motions.swing_twists[bone].set_motion_data(analyzer.computed_swing_twist, analyzer.computed_rotation)
 
@@ -103,21 +106,15 @@ func calc_frame() -> void:
 			motions.hips.set_transform(
 				analyzer.computed_swing_twist, analyzer.computed_rotation, analyzer.computed_scale
 			)
-		analyzer.queue_free()
 	print(animation_time)
-	#var skeleton_bones: Array[Node3D] = _generate_dummy_bones_array()
 	var precomputed_skeleton_human_scale: float = 0.749392
 	ShaderMotionHelpers._shadermotion_apply_human_pose(skeleton_bones, precomputed_skeleton_human_scale, motions)
-	#for bone in skeleton_bones:
-	#	var bone_info_panel = bone_info_scene.instantiate()
-	#	result_bones_list.add_child(bone_info_panel)
-	#	bone_info_panel.show_bone(bone)
 
 	for bone in range(0, int(ShaderMotionHelpers.MecanimBodyBone.LastBone)):
 		var unity_bone_rotation: Quaternion = skeleton_bones[bone].quaternion.normalized()
 		if unity_bone_rotation == NodeHelpers.invalid_quaternion:
 			continue
-		var godot_rotation: Quaternion = (Basis.FLIP_X.inverse() * Basis(unity_bone_rotation) * Basis.FLIP_X).get_rotation_quaternion()
+		var godot_rotation: Quaternion = (Basis.FLIP_X * Basis(unity_bone_rotation) * Basis.FLIP_X.inverse()).get_rotation_quaternion()
 		var bone_name: String = bone_names[bone]
 		var animation_path: NodePath = NodePath("%s:%s" % [skeleton_root_path, bone_name])
 
