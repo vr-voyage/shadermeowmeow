@@ -24,5 +24,4 @@ grow_vertical = 2
 stream = ExtResource("1_ctew5")
 volume_db = -80.0
 autoplay = true
-playing = true
 script = ExtResource("2_6ndsn")
