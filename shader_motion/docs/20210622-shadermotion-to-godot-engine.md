@@ -22,19 +22,7 @@ Convert ShaderMotion videos into webm VP9.
 ffmpeg -i "[Vket2021] Shadermotion ： Presentation (EN) [FN0nvPv3A-c].webm" "-filter:v" "fps=60" shadermotion_%10d.png
 ```
 
-Select the first frame.
-
-```
-ffmpeg -i "[Vket2021] Shadermotion ： Presentation (EN) [FN0nvPv3A-c].webm" "-filter:v" "fps=60,select=eq(n\,0)" shadermotion_%10d.png
-```
-
 See frame layout in `frame_layout.md`.
-
-Write a Blender Python script to read each frame and encode the result as a keyframe on a predefined armature which can then be exported to GLB.
-
-https://blender.stackexchange.com/questions/3527/how-to-read-pixels-of-a-video-from-python-api
-
-Support type A which is the Shader Motion strip video format and the type B which is the full-frame format.
 
 ## Positive Consequences <!-- optional -->
 
