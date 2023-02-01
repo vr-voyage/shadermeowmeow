@@ -47,25 +47,6 @@ func _compute_standard_bone_data(parsed_angles: PackedFloat64Array, bone: Shader
 	computed = true
 
 
-func _show_computed_data():
-	bone_name_label.text = "%s (%s)" % [analyzed_bone_name, str(analyzed_bone)]
-	if computed:
-		if analyzed_bone != ShaderMotionHelpers.MecanimBodyBone.Hips:
-			bone_swingtwist_label.text = str(decoded_swing_twist)
-			bone_swingtwist_signed_label.text = str(computed_swing_twist)
-			bone_signs_label.text = str(related_bone_signs)
-			bone_rotation_label.text = str(computed_rotation)
-		else:
-			var scene_tree: SceneTree = get_tree()
-			scene_tree.call_group("StandardBoneGroup", "set_visible", false)
-			scene_tree.call_group("HipsBoneGroup", "set_visible", true)
-			bone_hips_position_high_label.text = str(shader_position_high)
-			bone_hips_position_low_label.text = str(shader_position_low)
-			bone_hips_position_label.text = str(computed_swing_twist)
-			bone_rotation_label.text = str(computed_rotation)
-			bone_hips_scale_label.text = str(computed_scale)
-
-
 func _unity_look_rotation_case_a(
 	vector_a: Vector3, vector_b: Vector3, vector_c: Vector3, bx_cy_az: float
 ) -> Quaternion:
@@ -267,8 +248,6 @@ func analyze_bone_from(pixels: TileFrames, animation_time : float, bone: ShaderM
 		_compute_standard_bone_data(parsed_angles, bone)
 	else:
 		_compute_hips_bone_data(parsed_angles)
-
-	_show_computed_data()
 
 
 # Called when the node enters the scene tree for the first time.
