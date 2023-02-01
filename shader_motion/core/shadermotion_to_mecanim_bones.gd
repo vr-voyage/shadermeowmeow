@@ -12,10 +12,16 @@ extends VBoxContainer
 @export var skeleton_root_path: String
 @export var animated_node_path: NodePath
 
+var _cached_bones_names
+var skeleton_bones: Array[Node3D]
+var animation_names : Array[float]
+var animation : Animation = Animation.new()
 
-func _generate_dummy_bones_array() -> Array[Node3D]:
+var animation_rotation_tracks:Dictionary = Dictionary()
+var animation_position_tracks:Dictionary = Dictionary()
+
+func _generate_dummy_bones_array(bones_names) -> Array[Node3D]:
 	var bones: Array[Node3D] = []
-	var bones_names = ShaderMotionHelpers.MecanimBodyBone.keys()
 	bones.resize(ShaderMotionHelpers.MecanimBodyBone.LastBone)
 
 	for bone in range(0, int(ShaderMotionHelpers.MecanimBodyBone.LastBone)):
@@ -24,14 +30,47 @@ func _generate_dummy_bones_array() -> Array[Node3D]:
 		bones[bone] = bone_node
 	return bones
 
-var skeleton_bones: Array[Node3D] = _generate_dummy_bones_array()
+func _animation_path_for(
+	bone:ShaderMotionHelpers.MecanimBodyBone,
+	bone_names
+) -> NodePath:
+	return NodePath("%s:%s" % [str(skeleton_root_path), str(bone_names[bone])])
 
-var animation_names : Array[float]
+func _create_track_for(
+	bone:ShaderMotionHelpers.MecanimBodyBone,
+	base_animation:Animation,
+	animation_type:Animation.TrackType,
+	interpolation:Animation.InterpolationType
+) -> int:
+	var track_index:int = base_animation.add_track(animation_type)
+	base_animation.track_set_path(track_index, _animation_path_for(bone, _cached_bones_names))
+	base_animation.track_set_interpolation_type(track_index, animation_type)
+	return track_index
 
-var animation : Animation = Animation.new()
+
+func _prepare_animation_tracks(
+	base_animation:Animation,
+	bone_names
+):
+
+	for bone in range(0, int(ShaderMotionHelpers.MecanimBodyBone.LastBone)):
+		animation_rotation_tracks[bone] = _create_track_for(
+			bone,
+			base_animation,
+			Animation.TYPE_ROTATION_3D,
+			Animation.INTERPOLATION_LINEAR)
+
+	var hip_bone:ShaderMotionHelpers.MecanimBodyBone = ShaderMotionHelpers.MecanimBodyBone.Hips
+	animation_position_tracks[hip_bone] = _create_track_for(
+		hip_bone,
+		base_animation,
+		Animation.TYPE_POSITION_3D,
+		Animation.INTERPOLATION_LINEAR)
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	_cached_bones_names = ShaderMotionHelpers.MecanimBodyBone.keys()
+	skeleton_bones = _generate_dummy_bones_array(_cached_bones_names)
 	var should_stop: bool = NodeHelpers.stop_if_any_is_null(
 		self,
 		[
@@ -47,6 +86,8 @@ func _ready():
 	if should_stop:
 		return
 
+	_prepare_animation_tracks(animation, _cached_bones_names)
+
 	NodeHelpers.remove_children_from(analyzed_bones_list)
 	var current_animation_names : Array = analyzed_pixels.tiles.keys()
 	current_animation_names.pop_back()
@@ -54,33 +95,7 @@ func _ready():
 		animation_names.push_back(animation)
 	animation.length = current_animation_names.back()
 	print(animation.length)
-	
-	var bone_names = ShaderMotionHelpers.MecanimBodyBone.keys()
 
-	for bone in range(0, int(ShaderMotionHelpers.MecanimBodyBone.LastBone)):
-		if skeleton_bones[bone].quaternion == NodeHelpers.invalid_quaternion:
-			continue
-		var unity_bone_rotation: Quaternion = skeleton_bones[bone].quaternion
-		var godot_rotation: Quaternion = (Basis.FLIP_X.inverse() * Basis(unity_bone_rotation) * Basis.FLIP_X).get_rotation_quaternion()
-		var bone_name: String = bone_names[bone]
-		var animation_path: NodePath = NodePath("%s:%s" % [skeleton_root_path, bone_name])
-
-		var current_index: int = animation.get_track_count()
-		animation.add_track(Animation.TYPE_ROTATION_3D)
-		animation.track_set_path(current_index, animation_path)
-		animation.track_set_interpolation_type(current_index, Animation.INTERPOLATION_LINEAR)
-
-	var hips_bone = ShaderMotionHelpers.MecanimBodyBone.Hips
-	var bone_name: String = bone_names[hips_bone]
-	var animation_path: NodePath = NodePath("%s:%s" % [skeleton_root_path, bone_name])
-
-	var current_index: int = animation.get_track_count()
-	animation.add_track(Animation.TYPE_POSITION_3D)
-	animation.track_set_path(current_index, animation_path)
-	animation.track_set_interpolation_type(current_index, Animation.INTERPOLATION_LINEAR)
-
-	print(animation_names)
-	
 func _process(delta):
 	calc_frame()
 		
@@ -88,52 +103,40 @@ func calc_frame() -> void:
 	if not animation_names.size():
 		get_tree().quit()
 		return
-	var animation_time = animation_names[0]
-	animation_names.pop_front()
-	var motions: ShaderMotionHelpers.ParsedMotions = ShaderMotionHelpers.ParsedMotions.new()
+
 	var mecanim_bone_names = ShaderMotionHelpers.MecanimBodyBone.keys()
 	var bone_names = ShaderMotionHelpers.MecanimBodyBone.keys()
-	for bone in range(0, int(ShaderMotionHelpers.MecanimBodyBone.LastBone)):
-		var analyzer = shadermotion_bone_analyzer.instantiate()
-		analyzed_bones_list.add_child(analyzer)
-		analyzer.analyze_bone_from(analyzed_pixels, animation_time, bone, mecanim_bone_names[bone])
-		motions.swing_twists[bone].set_motion_data(analyzer.computed_swing_twist, analyzer.computed_rotation)
 
-		if bone == ShaderMotionHelpers.MecanimBodyBone.Hips:
-			motions.hips.set_transform(
-				analyzer.computed_swing_twist, analyzer.computed_rotation, analyzer.computed_scale
-			)
-		analyzer.queue_free()
-	print(animation_time)
-	#var skeleton_bones: Array[Node3D] = _generate_dummy_bones_array()
+	# FIXME TBD : Why not loop ?
+	var animation_time = animation_names.pop_front()
+	var motions: ShaderMotionHelpers.ParsedMotions = analyzed_pixels.get_motion_data_for(animation_time)
+
 	var precomputed_skeleton_human_scale: float = 0.749392
 	ShaderMotionHelpers._shadermotion_apply_human_pose(skeleton_bones, precomputed_skeleton_human_scale, motions)
-	#for bone in skeleton_bones:
-	#	var bone_info_panel = bone_info_scene.instantiate()
-	#	result_bones_list.add_child(bone_info_panel)
-	#	bone_info_panel.show_bone(bone)
 
 	for bone in range(0, int(ShaderMotionHelpers.MecanimBodyBone.LastBone)):
+		if not animation_rotation_tracks.has(bone):
+			printerr("Don't have a track for that, Jim.")
+			continue
+
+		# WARNING get_rotation_quaternion
 		var unity_bone_rotation: Quaternion = skeleton_bones[bone].quaternion.normalized()
 		if unity_bone_rotation == NodeHelpers.invalid_quaternion:
+			printerr("Invalid rotation for bone %d. Skipping" % [str(bone)])
 			continue
-		var godot_rotation: Quaternion = (Basis.FLIP_X.inverse() * Basis(unity_bone_rotation) * Basis.FLIP_X).get_rotation_quaternion()
-		var bone_name: String = bone_names[bone]
-		var animation_path: NodePath = NodePath("%s:%s" % [skeleton_root_path, bone_name])
 
-		var current_index: int = animation.find_track(animation_path, Animation.TYPE_ROTATION_3D)
-		if current_index == -1:
-			continue
-		animation.rotation_track_insert_key(current_index, animation_time, godot_rotation)
+		var godot_rotation: Quaternion = GodotHelpers.unity_rotation_to_godot(unity_bone_rotation)
+		#(Basis.FLIP_X.inverse() * Basis(unity_bone_rotation) * Basis.FLIP_X).get_rotation_quaternion()
+
+		var animation_track_index: int = animation_rotation_tracks[bone]
+	
+		animation.rotation_track_insert_key(
+			animation_track_index, animation_time, godot_rotation)
 
 	var hips_bone = ShaderMotionHelpers.MecanimBodyBone.Hips
-	var bone_name: String = bone_names[hips_bone]
-	var animation_path: NodePath = NodePath("%s:%s" % [skeleton_root_path, bone_name])
-
-	var current_index: int = animation.find_track(animation_path, Animation.TYPE_POSITION_3D)
-	if current_index != -1:
-		var bone_position: Vector3 = skeleton_bones[hips_bone].position
-		bone_position.z = -bone_position.z
-		animation.position_track_insert_key(current_index, animation_time, bone_position)
+	var hips_position_track_index:int = animation_position_tracks[hips_bone]
+	var bone_position: Vector3 = skeleton_bones[hips_bone].position
+	bone_position.z = -bone_position.z
+	animation.position_track_insert_key(hips_position_track_index, animation_time, bone_position)
 
 	ResourceSaver.save(animation, "res://shader_motion/animations/exported_animation.tres")

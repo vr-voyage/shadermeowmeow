@@ -143,7 +143,7 @@ static func _sm_gray_decoder_sum(state: Vector3) -> float:
 	return result
 
 
-static func shadermotion_decode_tiles(tiles: Array):
+static func decode_tiles(tiles: Array[Color]):
 	var state: Vector3 = Vector3(0, 0, 0)
 	for color in range(0, color_tile_len):
 		var current_color: Color = tiles[color]
