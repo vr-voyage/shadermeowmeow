@@ -1,9 +1,28 @@
-[gd_scene load_steps=2 format=3 uid="uid://drvc4hgivfhjb"]
+[gd_scene load_steps=2 format=3 uid="uid://v2vko5xq0m7g"]
 
-[ext_resource type="Script" path="res://shader_motion/core/show_bone_info.gd" id="1_dm1br"]
+[sub_resource type="GDScript" id="GDScript_8m4vw"]
+script/source = "extends Node
+
+@export var ui_name: Label
+@export var ui_position: Label
+@export var ui_rotation: Label
+
+
+func _ready():
+	NodeHelpers.stop_if_any_is_null(self, [ui_name, ui_position, ui_rotation], \"Show Bone Info\")
+
+
+func show_bone(bone: Node3D):
+	ui_name.text = bone.name
+	ui_position.text = str(bone.position)
+	if bone.quaternion.is_finite():
+		ui_rotation.text = str(bone.quaternion)
+	else:
+		ui_rotation.text = \"\"
+"
 
 [node name="PanelContainer" type="PanelContainer" node_paths=PackedStringArray("ui_name", "ui_position", "ui_rotation")]
-script = ExtResource("1_dm1br")
+script = SubResource("GDScript_8m4vw")
 ui_name = NodePath("MarginContainer/VBoxContainer/NameValue")
 ui_position = NodePath("MarginContainer/VBoxContainer/PositionValue")
 ui_rotation = NodePath("MarginContainer/VBoxContainer/RotationValue")

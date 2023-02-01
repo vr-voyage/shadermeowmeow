@@ -71,7 +71,6 @@ func _show_slot_samples(square_texture: Image, square_adjacent_texture: Image):
 	var square_adjacent_sample = _sample_pixel_color_at_middle(square_adjacent_texture)
 
 	if square_sample == bad_color or square_adjacent_sample == bad_color:
-#		printerr("[%s] [ShaderMotion Slot Analyzer] Could not sample the texture :C" % name)Could not sample the texture :C
 		return
 
 	square_raw.show_color(square_sample)
@@ -80,14 +79,9 @@ func _show_slot_samples(square_texture: Image, square_adjacent_texture: Image):
 	square_adjacent_converted.show_shadermotion_color(square_adjacent_sample)
 
 	shader_motion_value = ShaderMotionHLSLHelpers.shadermotion_decode_tiles([square_sample, square_adjacent_sample])
-	#var gray_code:PackedInt32Array = PackedInt32Array()
-	#_vector3_add_to_int32_array(square_converted.get_bgr_gray_code(), gray_code)
-	#_vector3_add_to_int32_array(square_adjacent_converted.get_bgr_gray_code(), gray_code)
-	#var decoded_value:int = gray_code_decoder(gray_code)
-	#shader_motion_value = shader_motion_gray_to_float(decoded_value)
 	shader_motion_decoded_angle = shader_motion_gray_decoded_angle(shader_motion_value)
 
-	#gray_value.text = _int32_array_to_string(gray_code)
+
 	decoded_value_label.text = "%f" % [shader_motion_value]
 	converted_value.text = "%f" % [shader_motion_decoded_angle]
 
@@ -112,11 +106,9 @@ func show_slot(pixels: TileFrames, animation_time: float, slot_idx: int):
 func _base3_total(numbers: PackedInt32Array) -> int:
 	var exponent = len(numbers) - 1
 	var accumulator = 0
-	#printerr(_int32_array_to_string(numbers, ", "))
 	for i in range(0, len(numbers)):
 		var current_digit: int = numbers[i]
 		var value: int = int(current_digit * pow(3, exponent))
-		#printerr("%d : %d + %d (%d)" % [i, accumulator, value, current_digit])
 		accumulator += value
 		exponent -= 1
 	return accumulator

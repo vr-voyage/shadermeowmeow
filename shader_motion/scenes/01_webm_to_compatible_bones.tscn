@@ -1,9 +1,6 @@
-[gd_scene load_steps=6 format=3 uid="uid://bvs6xjrdksqv2"]
+[gd_scene load_steps=5 format=3 uid="uid://bvs6xjrdksqv2"]
 
 [ext_resource type="PackedScene" uid="uid://cl1x561gtew3c" path="res://shader_motion/core/shader_motion_mecanim_bone.tscn" id="2_tblnc"]
-[ext_resource type="PackedScene" uid="uid://drvc4hgivfhjb" path="res://shader_motion/core/show_bone_info.tscn" id="4_n3rm5"]
-[ext_resource type="VideoStream" path="res://shader_motion/presentation_webm/[Vket2021] Shadermotion ： Presentation (EN) [FN0nvPv3A-c].webm" id="5_7ccxj"]
-[ext_resource type="Texture2D" uid="uid://b22cjy74jq0r1" path="res://shader_motion/icons/share1.png" id="6_2mg3l"]
 
 [sub_resource type="GDScript" id="GDScript_q2ump"]
 script/source = "extends VBoxContainer
@@ -142,6 +139,40 @@ func calc_frame() -> void:
 	ResourceSaver.save(animation, \"res://shader_motion/animations/exported_animation.tres\")
 "
 
+[sub_resource type="GDScript" id="GDScript_8m4vw"]
+script/source = "extends Node
+
+@export var ui_name: Label
+@export var ui_position: Label
+@export var ui_rotation: Label
+
+
+func _ready():
+	NodeHelpers.stop_if_any_is_null(self, [ui_name, ui_position, ui_rotation], \"Show Bone Info\")
+
+
+func show_bone(bone: Node3D):
+	ui_name.text = bone.name
+	ui_position.text = str(bone.position)
+	if bone.quaternion.is_finite():
+		ui_rotation.text = str(bone.quaternion)
+	else:
+		ui_rotation.text = \"\"
+"
+
+[sub_resource type="PackedScene" id="PackedScene_7o7e4"]
+_bundled = {
+"conn_count": 0,
+"conns": PackedInt32Array(),
+"editable_instances": [],
+"names": PackedStringArray("PanelContainer", "PanelContainer", "script", "ui_name", "ui_position", "ui_rotation", "MarginContainer", "MarginContainer", "layout_mode", "theme_override_constants/margin_left", "VBoxContainer", "GridContainer", "layout_mode", "columns", "NameLabel", "Label", "layout_mode", "text", "horizontal_alignment", "NameValue", "Label", "layout_mode", "PositionLabel", "Label", "layout_mode", "text", "horizontal_alignment", "PositionValue", "Label", "layout_mode", "RotationLabel", "Label", "layout_mode", "text", "horizontal_alignment", "RotationValue", "Label", "layout_mode"),
+"node_count": 9,
+"node_paths": [NodePath("."), NodePath("./MarginContainer"), NodePath("./MarginContainer/VBoxContainer"), NodePath("./MarginContainer/VBoxContainer"), NodePath("./MarginContainer/VBoxContainer"), NodePath("./MarginContainer/VBoxContainer"), NodePath("./MarginContainer/VBoxContainer"), NodePath("./MarginContainer/VBoxContainer")],
+"nodes": PackedInt32Array(-1, -1, 1, 0, -1, 4, 2, 0, 1073741827, 1, 1073741828, 2, 1073741829, 3, 0, 1073741824, 0, 7, 6, -1, 2, 8, 4, 9, 5, 0, 1073741825, 0, 11, 10, -1, 2, 12, 6, 13, 7, 0, 1073741826, 0, 15, 14, -1, 3, 16, 8, 17, 9, 18, 10, 0, 1073741827, 0, 20, 19, -1, 1, 21, 11, 0, 1073741828, 0, 23, 22, -1, 3, 24, 12, 25, 13, 26, 14, 0, 1073741829, 0, 28, 27, -1, 1, 29, 15, 0, 1073741830, 0, 31, 30, -1, 3, 32, 16, 33, 17, 34, 18, 0, 1073741831, 0, 36, 35, -1, 1, 37, 19, 0),
+"variants": [SubResource("GDScript_8m4vw"), NodePath("MarginContainer/VBoxContainer/NameValue"), NodePath("MarginContainer/VBoxContainer/PositionValue"), NodePath("MarginContainer/VBoxContainer/RotationValue"), 2, 8, 2, 2, 2, "Name : ", 2, 2, 2, "Position : ", 2, 2, 2, "Rotation : ", 2, 2],
+"version": 2
+}
+
 [node name="Control" type="VBoxContainer" node_paths=PackedStringArray("shadermotion_frame_pixels_display", "analyzed_bones_list", "result_bones_list")]
 anchors_preset = 15
 anchor_right = 1.0
@@ -150,104 +181,12 @@ grow_horizontal = 2
 grow_vertical = 2
 script = SubResource("GDScript_q2ump")
 shadermotion_bone_analyzer = ExtResource("2_tblnc")
-shadermotion_frame_pixels_display = NodePath("HBoxContainer/TextureRect")
-analyzed_bones_list = NodePath("HBoxContainer/Control/ScrollContainer/VBoxContainer")
-bone_info_scene = ExtResource("4_n3rm5")
-result_bones_list = NodePath("HBoxContainer/Control2/ScrollContainer2/ComputedBonesList")
+shadermotion_frame_pixels_display = NodePath("")
+analyzed_bones_list = NodePath("")
+bone_info_scene = SubResource("PackedScene_7o7e4")
+result_bones_list = NodePath("")
 skeleton_root_path = "%GeneralSkeleton"
-
-[node name="PanelContainer" type="PanelContainer" parent="."]
-layout_mode = 2
-
-[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer"]
-custom_minimum_size = Vector2(0, 32)
-layout_mode = 2
-alignment = 1
-
-[node name="Label" type="Label" parent="PanelContainer/HBoxContainer"]
-layout_mode = 2
-text = "ShaderMeowMeow To Mecanim Bones"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="webm_player" type="Control" parent="."]
-custom_minimum_size = Vector2(1920, 1080)
-layout_mode = 2
-size_flags_vertical = 3
-
-[node name="VideoStreamPlayer" type="VideoStreamPlayer" parent="webm_player"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-stream = ExtResource("5_7ccxj")
-volume_db = -80.0
-autoplay = true
-
-[node name="PanelContainer2" type="PanelContainer" parent="."]
-layout_mode = 2
-
-[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer2"]
-layout_mode = 2
-alignment = 2
-
-[node name="ExportButton" type="TextureButton" parent="PanelContainer2/HBoxContainer"]
-custom_minimum_size = Vector2(32, 32)
-layout_mode = 2
-texture_normal = ExtResource("6_2mg3l")
-texture_pressed = ExtResource("6_2mg3l")
-texture_hover = ExtResource("6_2mg3l")
-texture_disabled = ExtResource("6_2mg3l")
-texture_focused = ExtResource("6_2mg3l")
-ignore_texture_size = true
-stretch_mode = 0
-
-[node name="HBoxContainer" type="HBoxContainer" parent="."]
-layout_mode = 2
-size_flags_vertical = 3
-
-[node name="TextureRect" type="TextureRect" parent="HBoxContainer"]
-layout_mode = 2
-expand_mode = 3
-
-[node name="Control" type="Control" parent="HBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="ScrollContainer" type="ScrollContainer" parent="HBoxContainer/Control"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-size_flags_horizontal = 3
-
-[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/Control/ScrollContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-
-[node name="Control2" type="Control" parent="HBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="ScrollContainer2" type="ScrollContainer" parent="HBoxContainer/Control2"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-size_flags_horizontal = 3
-
-[node name="ComputedBonesList" type="VBoxContainer" parent="HBoxContainer/Control2/ScrollContainer2"]
-layout_mode = 2
 
 [node name="Node3D" type="Node3D" parent="."]
 transform = Transform3D(6.12303e-17, 0, -1, 0, 1, 0, 1, 0, 6.12303e-17, 0, 0, 0)
 rotation_edit_mode = 1
-
-[connection signal="pressed" from="PanelContainer2/HBoxContainer/ExportButton" to="." method="_on_export_button_pressed"]
