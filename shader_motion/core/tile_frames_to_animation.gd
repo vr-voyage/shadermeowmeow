@@ -82,18 +82,27 @@ func _ready():
 		animation_names.push_back(animation)
 	animation.length = current_animation_names.back()
 
+	add_frames_to_animation(animation, analyzed_pixels)
+	ResourceSaver.save(
+		animation,
+		"res://shader_motion/animations/exported_animation_faster_onready.tres")
+	get_tree().quit()
 
-func _process(delta):
-	calc_frame()
+func add_frames_to_animation(
+	animation:Animation,
+	frames_to_convert:TileFrames
+):
+	for frame_reference in frames_to_convert.tiles:
+		_add_animation_frame(animation, frames_to_convert, frame_reference)
 
+func _add_animation_frame(
+	animation:Animation,
+	frames:TileFrames,
+	frame_reference:float,
+):
 
-func calc_frame() -> void:
-	if len(animation_names) <= 0:
-		get_tree().quit()
-		return
-
-	var animation_time = animation_names.pop_front()
-	var motions: ShaderMotionHelpers.ParsedMotions = analyzed_pixels.get_motion_data_for(animation_time)
+	var motions: ShaderMotionHelpers.ParsedMotions = frames.get_motion_data_for(frame_reference)
+	var animation_time:float = frame_reference
 
 	var precomputed_skeleton_human_scale: float = 0.749392
 	ShaderMotionHelpers._shadermotion_apply_human_pose(skeleton_bones, precomputed_skeleton_human_scale, motions)
@@ -123,4 +132,5 @@ func calc_frame() -> void:
 	bone_position.z = -bone_position.z
 	animation.position_track_insert_key(hips_position_track_index, animation_time, bone_position)
 
-	ResourceSaver.save(animation, "res://shader_motion/animations/exported_animation_faster.tres")
+
+
