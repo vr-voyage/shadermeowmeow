@@ -13,7 +13,7 @@ func _process(_delta):
 	tiles.tiles = frames
 	print(stream_position)
 
-	if stream_position >= 30:
+	if stream_position >= 5:
 		printerr(stream_position)
 		ResourceSaver.save(tiles, "res://shader_motion/frames/result_frames.res")
 		get_tree().quit()

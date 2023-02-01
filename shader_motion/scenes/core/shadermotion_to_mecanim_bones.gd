@@ -3,7 +3,6 @@ extends VBoxContainer
 @export var shadermotion_bone_analyzer: PackedScene
 @export var shadermotion_frame_pixels_display: TextureRect
 
-@export var analyzed_bones_list: Container
 @export var analyzed_pixels: TileFrames = load("res://shader_motion/frames/result_frames.res")
 
 @export var bone_info_scene: PackedScene
@@ -37,7 +36,6 @@ func _ready():
 		[
 			shadermotion_bone_analyzer,
 			shadermotion_frame_pixels_display,
-			analyzed_bones_list,
 			analyzed_pixels,
 			bone_info_scene,
 			result_bones_list
@@ -47,7 +45,6 @@ func _ready():
 	if should_stop:
 		return
 
-	NodeHelpers.remove_children_from(analyzed_bones_list)
 	var current_animation_names : Array = analyzed_pixels.tiles.keys()
 	current_animation_names.pop_back()
 	for animation in current_animation_names:
@@ -93,9 +90,8 @@ func calc_frame() -> void:
 	var motions: ShaderMotionHelpers.ParsedMotions = ShaderMotionHelpers.ParsedMotions.new()
 	var mecanim_bone_names = ShaderMotionHelpers.MecanimBodyBone.keys()
 	var bone_names = ShaderMotionHelpers.MecanimBodyBone.keys()
+	var analyzer = shadermotion_bone_analyzer.instantiate()
 	for bone in range(0, int(ShaderMotionHelpers.MecanimBodyBone.LastBone)):
-		var analyzer = shadermotion_bone_analyzer.instantiate()
-		analyzed_bones_list.add_child(analyzer)
 		analyzer.analyze_bone_from(analyzed_pixels, animation_time, bone, mecanim_bone_names[bone])
 		motions.swing_twists[bone].set_motion_data(analyzer.computed_swing_twist, analyzer.computed_rotation)
 
@@ -103,7 +99,7 @@ func calc_frame() -> void:
 			motions.hips.set_transform(
 				analyzer.computed_swing_twist, analyzer.computed_rotation, analyzer.computed_scale
 			)
-		analyzer.queue_free()
+	analyzer.queue_free()
 	print(animation_time)
 	var precomputed_skeleton_human_scale: float = 0.749392
 	ShaderMotionHelpers._shadermotion_apply_human_pose(skeleton_bones, precomputed_skeleton_human_scale, motions)
