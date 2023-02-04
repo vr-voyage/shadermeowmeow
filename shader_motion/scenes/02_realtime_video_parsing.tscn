@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://c8fcbo1585ccq"]
 
-[ext_resource type="VideoStream" path="res://shader_motion/presentation_webm/[Vket2021] Shadermotion ： Presentation (EN) [FN0nvPv3A-c].webm" id="1_pewth"]
+[ext_resource type="VideoStream" path="res://shader_motion/presentation_webm/[Vket2021] Shadermotion ： Presentation (EN) [FN0nvPv3A-c].webm" id="1_f2ime"]
 [ext_resource type="Script" path="res://shader_motion/scenes/02_realtime_video_parsing.gd" id="2_svvtl"]
 
 [node name="RealtimeVideoParsing" type="VBoxContainer"]
@@ -13,10 +13,11 @@ grow_vertical = 2
 [node name="Parser" type="VideoStreamPlayer" parent="."]
 layout_mode = 2
 size_flags_vertical = 3
-stream = ExtResource("1_pewth")
+stream = ExtResource("1_f2ime")
+volume_db = -80.0
 autoplay = true
 expand = true
 script = ExtResource("2_svvtl")
 skeleton_root_path = "%GeneralSkeleton"
 generated_animation_filepath = "res://shader_motion/animations/real_time_frames.tres"
-max_seconds_saved = 9999.0
+max_seconds_saved = 5.0

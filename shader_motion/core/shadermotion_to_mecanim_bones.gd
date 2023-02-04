@@ -69,7 +69,7 @@ func _ready():
 		var current_index: int = animation.get_track_count()
 		animation.add_track(Animation.TYPE_ROTATION_3D)
 		animation.track_set_path(current_index, animation_path)
-		animation.track_set_interpolation_type(current_index, Animation.INTERPOLATION_LINEAR)
+		animation.track_set_interpolation_type(current_index, Animation.INTERPOLATION_CUBIC)
 
 	var hips_bone = ShaderMotionHelpers.MecanimBodyBone.Hips
 	var bone_name: String = bone_names[hips_bone]
@@ -78,7 +78,7 @@ func _ready():
 	var current_index: int = animation.get_track_count()
 	animation.add_track(Animation.TYPE_POSITION_3D)
 	animation.track_set_path(current_index, animation_path)
-	animation.track_set_interpolation_type(current_index, Animation.INTERPOLATION_LINEAR)
+	animation.track_set_interpolation_type(current_index, Animation.INTERPOLATION_CUBIC)
 
 	print(animation_names)
 	

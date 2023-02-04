@@ -36,14 +36,14 @@ func _prepare_animation_tracks(
 			bone,
 			base_animation,
 			Animation.TYPE_ROTATION_3D,
-			Animation.INTERPOLATION_LINEAR)
+			Animation.INTERPOLATION_CUBIC)
 
 	var hip_bone:ShaderMotionHelpers.MecanimBodyBone = ShaderMotionHelpers.MecanimBodyBone.Hips
 	animation_position_tracks[hip_bone] = _create_track_for(
 		hip_bone,
 		base_animation,
 		Animation.TYPE_POSITION_3D,
-		Animation.INTERPOLATION_LINEAR)
+		Animation.INTERPOLATION_CUBIC)
 
 
 var skeleton_bones:Array[Node3D]
@@ -156,7 +156,6 @@ func _ready():
 	_cached_bones_names = ShaderMotionHelpers.MecanimBodyBone.keys()
 	skeleton_bones = _generate_dummy_bones_array()
 	_prepare_animation_tracks(animation, _cached_bones_names)
-	pass # Replace with function body.
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.

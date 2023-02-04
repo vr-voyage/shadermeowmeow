@@ -49,14 +49,14 @@ func _prepare_animation_tracks(
 			bone,
 			base_animation,
 			Animation.TYPE_ROTATION_3D,
-			Animation.INTERPOLATION_LINEAR)
+			Animation.INTERPOLATION_CUBIC)
 
 	var hip_bone:ShaderMotionHelpers.MecanimBodyBone = ShaderMotionHelpers.MecanimBodyBone.Hips
 	animation_position_tracks[hip_bone] = _create_track_for(
 		hip_bone,
 		base_animation,
 		Animation.TYPE_POSITION_3D,
-		Animation.INTERPOLATION_LINEAR)
+		Animation.INTERPOLATION_CUBIC)
 
 
 
