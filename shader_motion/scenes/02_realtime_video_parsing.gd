@@ -10,6 +10,10 @@ var _cached_bones_names
 var animation_rotation_tracks:Dictionary = Dictionary()
 var animation_position_tracks:Dictionary = Dictionary()
 
+@export var threed_model:Node3D
+
+
+
 func _animation_path_for(
 	bone:ShaderMotionHelpers.MecanimBodyBone,
 	bone_names
@@ -24,7 +28,7 @@ func _create_track_for(
 ) -> int:
 	var track_index:int = base_animation.add_track(animation_type)
 	base_animation.track_set_path(track_index, _animation_path_for(bone, _cached_bones_names))
-	base_animation.track_set_interpolation_type(track_index, animation_type)
+	base_animation.track_set_interpolation_type(track_index, interpolation)
 	return track_index
 
 func _prepare_animation_tracks(
@@ -122,6 +126,10 @@ func _add_animation_frame(
 	var precomputed_skeleton_human_scale: float = 0.749392
 	ShaderMotionHelpers._shadermotion_apply_human_pose(skeleton_bones, precomputed_skeleton_human_scale, motions)
 
+	var godot_bones_rotations: Array[Quaternion] = []
+	godot_bones_rotations.resize(ShaderMotionHelpers.MecanimBodyBone.LastBone)
+	godot_bones_rotations.fill(NodeHelpers.invalid_quaternion)
+
 	for bone in range(0, int(ShaderMotionHelpers.MecanimBodyBone.LastBone)):
 		if not animation_rotation_tracks.has(bone):
 			continue
@@ -133,6 +141,7 @@ func _add_animation_frame(
 			continue
 
 		var godot_rotation: Quaternion = GodotHelpers.unity_rotation_to_godot(unity_bone_rotation)
+		godot_bones_rotations[bone] = godot_rotation
 
 		var animation_track_index: int = animation_rotation_tracks[bone]
 	
@@ -143,18 +152,28 @@ func _add_animation_frame(
 	var hips_position_track_index:int = animation_position_tracks[hips_bone]
 	var bone_position: Vector3 = skeleton_bones[hips_bone].position
 	bone_position.z = -bone_position.z
+
+	threed_model.apply_shadermotion_movements(skeleton_bones_id, bone_position, godot_bones_rotations)
 	animation.position_track_insert_key(hips_position_track_index, stream_time, bone_position)
 
 func save_and_quit(stream_time:float):
 	animation.length = stream_time
 	ResourceSaver.save(animation, generated_animation_filepath)
-	get_tree().quit()
+	print("Animation saved to : %s" % generated_animation_filepath)
+	threed_model.play_animation()
+	queue_free()
+	#get_tree().quit()
+
+func _shadermotion_to_skeleton_bones_relations(bone_names:PackedStringArray) -> PackedInt32Array:
+	return threed_model.get_bones_ids(bone_names)
 
 
+var skeleton_bones_id:PackedInt32Array
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	_cached_bones_names = ShaderMotionHelpers.MecanimBodyBone.keys()
 	skeleton_bones = _generate_dummy_bones_array()
+	skeleton_bones_id = _shadermotion_to_skeleton_bones_relations(_cached_bones_names)
 	_prepare_animation_tracks(animation, _cached_bones_names)
 
 
