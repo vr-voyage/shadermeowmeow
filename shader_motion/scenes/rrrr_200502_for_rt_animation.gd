@@ -30,7 +30,7 @@ func apply_shadermotion_movements(bones_id:PackedInt32Array, hips_position:Vecto
 		return
 	skeleton.reset_bone_poses()
 	skeleton.set_bone_pose_position(hips_id, hips_position)
-	for bone in range(len(bones_id) - 1):
+	for bone in range(ShaderMotionHelpers.MecanimBodyBone.LastBone):
 		var bone_id = bones_id[bone]
 		if bone_id < 0:
 			printerr("Invalid bone_id for bone %d" % bone)

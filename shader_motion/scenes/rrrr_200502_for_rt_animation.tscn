@@ -1,7 +1,7 @@
 [gd_scene load_steps=12 format=3 uid="uid://cudgsassodf55"]
 
 [ext_resource type="PackedScene" uid="uid://d0g6w0msqy7c8" path="res://shader_motion/RRRR/RRRR_200502-VRCHAT.glb" id="1_kmgwq"]
-[ext_resource type="Animation" uid="uid://2vgjxb807ajx" path="res://shader_motion/animations/real_time_frames.tres" id="2_hh1kp"]
+[ext_resource type="Animation" uid="uid://xo5rx2mabp5" path="res://shader_motion/animations/real_time_frames.tres" id="2_hh1kp"]
 [ext_resource type="Script" path="res://shader_motion/scenes/rrrr_200502_for_rt_animation.gd" id="2_knht1"]
 [ext_resource type="Texture2D" uid="uid://bf3gqqn6yfuf2" path="res://shader_motion/RRRR/RRRR_200502-VRCHAT_setRRRR.png" id="3_0mga6"]
 [ext_resource type="Texture2D" uid="uid://dm4us6ot8kw13" path="res://shader_motion/RRRR/RRRR_200502-VRCHAT_faceoption.png" id="4_lb2oe"]

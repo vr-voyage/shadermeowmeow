@@ -1,0 +1,42 @@
+[gd_scene load_steps=6 format=3 uid="uid://d1sarfun4sk1n"]
+
+[ext_resource type="VideoStream" path="res://shader_motion/presentation_webm/[Vket2021] Shadermotion ： Presentation (EN) [FN0nvPv3A-c].webm" id="1_ho24h"]
+[ext_resource type="Script" path="res://shader_motion/scenes/03_realtime_poses.gd" id="2_oy13m"]
+[ext_resource type="PackedScene" uid="uid://cudgsassodf55" path="res://shader_motion/scenes/rrrr_200502_for_rt_animation.tscn" id="3_rmxx5"]
+
+[sub_resource type="Environment" id="Environment_8xml7"]
+background_color = Color(0, 0, 0, 0)
+ambient_light_source = 2
+ambient_light_color = Color(1, 1, 1, 1)
+
+[sub_resource type="World3D" id="World3D_pcglq"]
+environment = SubResource("Environment_8xml7")
+
+[node name="RealtimeVideoParsing" type="PanelContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Parser" type="VideoStreamPlayer" parent="." node_paths=PackedStringArray("threed_model")]
+layout_mode = 2
+stream = ExtResource("1_ho24h")
+volume_db = -80.0
+autoplay = true
+expand = true
+script = ExtResource("2_oy13m")
+threed_model = NodePath("../SubViewportContainer/SubViewport/RRRR_200502-VRCHAT")
+
+[node name="SubViewportContainer" type="SubViewportContainer" parent="."]
+layout_mode = 2
+stretch = true
+
+[node name="SubViewport" type="SubViewport" parent="SubViewportContainer"]
+world_3d = SubResource("World3D_pcglq")
+transparent_bg = true
+handle_input_locally = false
+size = Vector2i(1920, 1080)
+render_target_update_mode = 4
+
+[node name="RRRR_200502-VRCHAT" parent="SubViewportContainer/SubViewport" instance=ExtResource("3_rmxx5")]
